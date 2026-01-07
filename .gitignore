@@ -1,0 +1,20 @@
+# --- SYSTEM JUNK ---
+node_modules/
+__pycache__/
+.vscode/
+*.env
+*.zip
+*.pdf
+*.png
+*.txt
+
+# --- IGNORE SPECIFIC DATASET ---
+BACKEND/remedial_dataset/
+
+# --- IGNORE EXTRA FOLDERS ---
+NEW RESEARCH/
+RESULTS/
+UPDATED SNAPSHOTS/
+WORKING SNAPSHOTS/
+White Aesthetic/
+WHITE THEMED/
