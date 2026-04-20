@@ -1,8 +1,6 @@
-python: 3.11
-
-build:
-  deploy: BACKEND
-  cmds:
-    - pip install -r requirements.txt
-
-start: gunicorn app:app --chdir BACKEND --bind :$PORT
+services:
+  - name: synaptic-cinema-backend
+    env: python
+    pythonVersion: "3.11"
+    buildCommand: cd BACKEND && pip install -r requirements.txt
+    startCommand: cd BACKEND && gunicorn app:app --bind :$PORT
