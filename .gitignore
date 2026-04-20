@@ -1,5 +1,6 @@
 # --- SYSTEM JUNK ---
 node_modules/
+.next/
 __pycache__/
 .vscode/
 *.env
