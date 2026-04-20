@@ -23,6 +23,7 @@ export default function Home() {
   const [featuredMovies, setFeaturedMovies] = useState([])
   const [popularSeries, setPopularSeries] = useState([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     const loadContent = async () => {
@@ -49,8 +50,9 @@ export default function Home() {
         setFeaturedMovies(data.featuredMovies || [])
         setPopularSeries(data.popularSeries || [])
         sessionStorage.setItem(cacheKey, JSON.stringify({ timestamp: Date.now(), data }))
-      } catch (error) {
-        console.error('Error loading home content:', error)
+      } catch (err) {
+        console.error('Error loading home content:', err)
+        setError('Unable to load content. Please check your connection and try again.')
       } finally {
         setLoading(false)
       }
@@ -81,6 +83,13 @@ export default function Home() {
           <p className="hero-subtitle">Discover thousands of movies and series with stunning visuals and immersive storytelling.</p>
         </div>
       </section>
+
+      {error && (
+        <div className="error-banner">
+          <p>{error}</p>
+          <button onClick={() => window.location.reload()} className="retry-button">Retry</button>
+        </div>
+      )}
 
       <section className="content-section">
         <MovieSlider

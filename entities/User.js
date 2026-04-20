@@ -20,20 +20,17 @@ const mockUser = {
 export const User = {
   // Simulates fetching the current user's data[cite: 5, 290, 569].
   me: async () => {
-    console.log("Fetching mock user data...");
     return Promise.resolve(mockUser);
   },
 
   // Simulates updating user data on a server[cite: 293, 577].
   updateMyUserData: async (data) => {
-    console.log("Updating mock user data with:", data);
     Object.assign(mockUser, data);
     return Promise.resolve(mockUser);
   },
 
   // Simulates a logout action.
   logout: async () => {
-    console.log("Logging out...");
     // In a real app, this would clear tokens and redirect.
     window.location.href = '/';
     return Promise.resolve();

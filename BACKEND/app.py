@@ -39,9 +39,6 @@ CORS(app, resources={r"/*": {"origins": [
 
 # --- NEW IMPORTS for Real Emotion Detection ---
 # You will need to install these libraries: pip install deepface opencv-python
-import cv2
-import numpy as np
-import base64
 from deepface import DeepFace
 
 # --- Configuration ---
@@ -537,4 +534,5 @@ if __name__ == '__main__':
     import logging
     log = logging.getLogger('werkzeug')
     log.setLevel(logging.ERROR)
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)

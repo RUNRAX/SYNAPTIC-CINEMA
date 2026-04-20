@@ -98,7 +98,11 @@ export default function Synaptic() {
 
     } catch (error) {
       console.error("Emotion detection failed:", error)
-      setCameraError("Could not analyze emotion. Please try again.")
+      setCameraError(
+        error.message?.includes('Failed to fetch')
+          ? "Cannot reach the analysis server. Please try again later."
+          : "Could not analyze emotion. Please try again."
+      )
     } finally {
       setIsAnalyzing(false)
     }
