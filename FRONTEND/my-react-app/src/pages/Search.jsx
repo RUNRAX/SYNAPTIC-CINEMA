@@ -22,16 +22,6 @@ export default function Search() {
   const [showFilters, setShowFilters] = useState(false);
   const [sortBy, setSortBy] = useState('relevance');
   
-  // Unique genres and years are now derived from search results for relevance
-  const uniqueGenres = useMemo(() => {
-    const genres = searchResults.map(movie => movie.genre).filter(Boolean);
-    return [...new Set(genres)];
-  }, [searchResults]);
-
-  const uniqueYears = useMemo(() => {
-    const years = searchResults.map(movie => movie.year).filter(Boolean);
-    return [...new Set(years)].sort((a, b) => b - a);
-  }, [searchResults]);
 
   // This useEffect triggers a new search when the query or filters change.
   // A debounce is used to prevent API calls on every keystroke.
@@ -47,7 +37,7 @@ export default function Search() {
     return () => {
       clearTimeout(handler);
     };
-  }, [searchQuery]);
+  }, [searchQuery, performQuerySearch]);
 
   const handleMovieClick = (movie) => {
     if (movie && movie.id) {

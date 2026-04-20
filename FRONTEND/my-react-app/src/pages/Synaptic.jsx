@@ -19,11 +19,12 @@ export default function Synaptic() {
   // This effect is now only for cleaning up the camera stream on unmount.
   useEffect(() => {
     return () => {
-      if (videoRef.current?.srcObject) {
-        const stream = videoRef.current.srcObject;
+      const video = videoRef.current;
+      if (video?.srcObject) {
+        const stream = video.srcObject;
         const tracks = stream.getTracks();
         tracks.forEach(track => track.stop());
-        videoRef.current.srcObject = null;
+        video.srcObject = null;
       }
     };
   }, []);

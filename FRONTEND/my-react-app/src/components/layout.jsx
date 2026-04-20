@@ -25,11 +25,10 @@ export default function Layout() {
   useEffect(() => {
     if (mounted) {
       setTransitioning(true);
-      // Remove the transitioning class after the animation is complete
       const timer = setTimeout(() => setTransitioning(false), 800);
       return () => clearTimeout(timer);
     }
-  }, [location.pathname]);
+  }, [location.pathname, mounted]);
 
   // The check for 'Welcome' page is no longer needed here[cite: 258]; App.js handles it.
   if (!mounted) return null;

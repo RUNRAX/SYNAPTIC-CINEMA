@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MovieSlider from '../components/MovieSlider';
 import MovieGrid from '../components/MovieGrid';
-import { Award, Clock, Star } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { createPageUrl } from '../utils/index.js';
 import './Home.css'; // Assuming you created this from the previous step
 

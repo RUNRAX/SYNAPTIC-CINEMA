@@ -58,7 +58,7 @@ export default function MovieDetails() {
     if (movieId) {
       loadData(movieId);
     }
-  }, [window.location.search]);
+  }, []);
 
   const loadData = async (movieId, movieType) => {
     setLoading(true);
