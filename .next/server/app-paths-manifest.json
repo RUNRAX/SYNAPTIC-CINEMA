@@ -1,0 +1,12 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/image-proxy/route": "app/api/image-proxy/route.js",
+  "/page": "app/page.js",
+  "/(main)/Home/page": "app/(main)/Home/page.js",
+  "/(main)/EmotionResults/page": "app/(main)/EmotionResults/page.js",
+  "/(main)/MovieDetails/page": "app/(main)/MovieDetails/page.js",
+  "/(main)/Profile/page": "app/(main)/Profile/page.js",
+  "/(main)/Search/page": "app/(main)/Search/page.js",
+  "/(main)/Settings/page": "app/(main)/Settings/page.js",
+  "/(main)/Synaptic/page": "app/(main)/Synaptic/page.js"
+}
