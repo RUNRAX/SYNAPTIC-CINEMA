@@ -1,5 +1,5 @@
 // The base URL of your running Flask backend
-const API_BASE_URL = "http://localhost:5000";
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 /**
  * Fetches content from the backend based on a specific category.
