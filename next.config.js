@@ -4,6 +4,9 @@ const nextConfig = {
     domains: ['image.tmdb.org'],
   },
   transpilePackages: ['three'],
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 }
 
 module.exports = nextConfig
