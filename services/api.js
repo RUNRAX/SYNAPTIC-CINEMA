@@ -1,5 +1,7 @@
+import { API_URL } from '@/lib/config';
+
 // The base URL of your running Flask backend
-const API_BASE_URL = "http://localhost:5000";
+const API_BASE_URL = API_URL;
 
 /**
  * Fetches content from the backend based on a specific category.

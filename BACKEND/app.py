@@ -31,7 +31,11 @@ emotion_labels = ['surprise', 'fear', 'disgust', 'happy', 'sad', 'angry', 'neutr
 
 # --- Flask App Initialization ---
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app, resources={r"/*": {"origins": [
+    "https://synaptic-cinema.vercel.app",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000"
+]}})
 
 # --- NEW IMPORTS for Real Emotion Detection ---
 # You will need to install these libraries: pip install deepface opencv-python

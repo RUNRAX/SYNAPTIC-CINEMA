@@ -4,6 +4,8 @@ node_modules/
 __pycache__/
 .vscode/
 *.env
+!.env.production
+.env.local
 *.zip
 *.pdf
 *.png

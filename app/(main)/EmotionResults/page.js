@@ -6,7 +6,7 @@ import { ArrowLeft } from 'lucide-react'
 import MovieGrid from '@/components/MovieGrid'
 import './EmotionResults.css'
 
-const API_URL = 'http://127.0.0.1:5000'
+import { API_URL } from '@/lib/config'
 const CACHE_DURATION = 3600 * 1000
 
 export default function EmotionResults() {

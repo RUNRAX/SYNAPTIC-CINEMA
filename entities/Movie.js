@@ -1,3 +1,5 @@
+import { API_URL } from '@/lib/config';
+
 export class Movie {
   /**
    * Gets a single movie or series by its ID and type.
@@ -6,7 +8,7 @@ export class Movie {
     if (!id || !type) return null;
     try {
       // Corrected IP address
-      const response = await fetch(`http://127.0.0.1:5000/details?id=${id}&type=${type}`);
+      const response = await fetch(`${API_URL}/details?id=${id}&type=${type}`);
       if (!response.ok) {
         throw new Error(`Network response was not ok: ${response.statusText}`);
       }
@@ -27,7 +29,7 @@ export class Movie {
       }
       // Add other potential filters here if needed in the future
 
-      const response = await fetch(`http://127.0.0.1:5000/search?${params.toString()}`);
+      const response = await fetch(`${API_URL}/search?${params.toString()}`);
       if (!response.ok) {
         throw new Error(`Network response was not ok: ${response.statusText}`);
       }

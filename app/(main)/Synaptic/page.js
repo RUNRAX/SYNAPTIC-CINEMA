@@ -6,7 +6,7 @@ import GalaxySystem from '@/components/GalaxySystem'
 import FloatingAstronaut from '@/components/FloatingAstronaut'
 import { Camera, AlertTriangle } from 'lucide-react'
 
-const API_URL = 'http://127.0.0.1:5000'
+import { API_URL } from '@/lib/config'
 
 export default function Synaptic() {
   const router = useRouter()

@@ -6,7 +6,7 @@ import MovieGrid from '@/components/MovieGrid'
 import { useRouter } from 'next/navigation'
 
 // Define the base URL for your backend API
-const API_URL = 'http://127.0.0.1:5000'
+import { API_URL } from '@/lib/config'
 
 export default function Search() {
   const router = useRouter()
