@@ -529,4 +529,8 @@ def format_details(item, content_type, trailer_key=None): # <-- Add trailer_key 
 if __name__ == '__main__':
     print("🚀 Starting Flask server...")
     load_all_models()
-    app.run(host='0.0.0.0', port=5000)
+    # Suppress Flask/Werkzeug development server warnings
+    import logging
+    log = logging.getLogger('werkzeug')
+    log.setLevel(logging.ERROR)
+    app.run(host='0.0.0.0', port=5000, debug=False)
