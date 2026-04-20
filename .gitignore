@@ -6,7 +6,7 @@ __pycache__/
 *.zip
 *.pdf
 *.png
-*.txt
+!BACKEND/requirements.txt
 
 # --- IGNORE SPECIFIC DATASET ---
 BACKEND/remedial_dataset/
