@@ -5,7 +5,7 @@ aiohttp==3.9.1
 tensorflow>=2.15.0
 opencv-python>=4.9.0
 numpy==1.26.3
-pandas==2.1.4
+pandas>=2.2.0
 deepface==0.0.87
 python-dotenv==1.0.0
 gunicorn==21.2.0
