@@ -1,26 +1,22 @@
-.slider-container { margin-bottom: 3rem; position: relative; }
-.slider-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
-.slider-title { font-size: 1.5rem; font-weight: 700; color: var(--grey-800); letter-spacing: -0.02em; }
-.slider-controls { display: flex; gap: 0.5rem; }
-.slider-button { width: 48px; height: 48px; border-radius: 50%; background: var(--glass-bg); backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); color: var(--grey-600);
+.slider-container { margin-bottom: 2.75rem; position: relative; }
+.slider-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.3rem; }
+.slider-title { font-size: 1.45rem; font-weight: 700; color: var(--text-strong); letter-spacing: -0.03em; }
+.slider-controls { display: flex; gap: 0.6rem; }
+.slider-button { width: 2.9rem; height: 2.9rem; border-radius: 50%; background: rgba(255, 255, 255, 0.58); backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.58); display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: transform 0.22s ease, background 0.22s ease, box-shadow 0.22s ease; color: var(--text-soft);
 }
 .slider-button:hover:not(:disabled) {
-  transform: scale(1.1); background: var(--silver-light); color: var(--grey-800); box-shadow: 0 8px 25px var(--shadow-light);
+  transform: translateY(-2px); background: rgba(255, 255, 255, 0.8); color: var(--text-strong); box-shadow: 0 12px 28px rgba(93, 108, 153, 0.14);
 }
 .slider-button:disabled { opacity: 0.4; cursor: not-allowed; }
 .slider-wrapper { position: relative; overflow: hidden; border-radius: 16px; }
-.slider-track { display: flex; gap: 1.5rem; padding: 1rem 0; overflow-x: auto; scroll-behavior: smooth;
-  scrollbar-width: none; -ms-overflow-style: none; perspective: 1000px;
+.slider-track { display: flex; gap: 1rem; padding: 0.4rem 0 0.4rem; overflow-x: auto; scroll-behavior: smooth;
+  scrollbar-width: none; -ms-overflow-style: none;
 }
 .slider-track::-webkit-scrollbar { display: none; }
-.slider-item { flex: 0 0 250px; transform-style: preserve-3d;
-/* ADD THIS: Apply the same fade-in animation */
-  animation: card-fade-in-up 3.6s cubic-bezier(0.4, 0, 0.2, 1) both;
-}
+.slider-item { flex: 0 0 240px; animation: card-fade-in-up 0.55s cubic-bezier(0.4, 0, 0.2, 1) both; }
 
-/* ADD THIS: Make sure the keyframes are also in this file or a global file */
 @keyframes card-fade-in-up {
   0% {
     opacity: 0;

@@ -141,12 +141,18 @@ export default function Search() {
         /* Styles remain unchanged */
         .search-container {
           min-height: 100vh;
-          background: linear-gradient(135deg, var(--primary-white) 0%, var(--secondary-white) 100%);
-          padding: 2rem;
+          background: transparent;
+          padding: 0 0 2rem;
         }
         .search-header {
           text-align: center;
-          margin-bottom: 3rem;
+          margin-bottom: 2rem;
+          padding: 2rem 1.5rem;
+          border-radius: 32px;
+          background: var(--surface-elevated);
+          border: 1px solid var(--glass-border-strong);
+          backdrop-filter: blur(28px) saturate(170%);
+          box-shadow: var(--panel-shadow);
           animation: header-appear 1s cubic-bezier(0.4, 0, 0.2, 1) both;
         }
         @keyframes header-appear {

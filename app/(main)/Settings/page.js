@@ -123,8 +123,8 @@ export default function Settings() {
     <>
       <style>{`
         /* All existing styles remain unchanged */
-        .settings-container { min-height: 100vh; background: linear-gradient(135deg, var(--primary-white) 0%, var(--secondary-white) 100%); padding: 2rem; }
-        .settings-header { text-align: center; margin-bottom: 3rem; }
+        .settings-container { min-height: 100vh; background: transparent; padding: 0 0 2rem; }
+        .settings-header { text-align: center; margin-bottom: 2rem; padding: 1.8rem; border-radius: 32px; background: var(--surface-elevated); border: 1px solid var(--glass-border-strong); backdrop-filter: blur(28px) saturate(170%); box-shadow: var(--panel-shadow); }
         .settings-title { font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, var(--grey-800) 0%, var(--silver) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 1rem; letter-spacing: -0.02em; }
         .settings-content { max-width: 800px; margin: 0 auto; display: grid; gap: 2rem; }
         .settings-section { background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 24px; padding: 2rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }

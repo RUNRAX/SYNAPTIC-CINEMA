@@ -2,9 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import GalaxySystem from '@/components/GalaxySystem'
-import FloatingAstronaut from '@/components/FloatingAstronaut'
-import { Camera, AlertTriangle } from 'lucide-react'
+import { Camera, AlertTriangle, Sparkles } from 'lucide-react'
 import { detectDominantEmotion, loadFaceApiModels } from '@/lib/faceApi'
 
 export default function Synaptic() {
@@ -130,12 +128,17 @@ export default function Synaptic() {
   return (
     <>
       <div className="synaptic-container">
-        <div className="synaptic-background">
-          <GalaxySystem />
-          <FloatingAstronaut />
+        <div className="synaptic-background" aria-hidden="true">
+          <div className="synaptic-orb orb-one" />
+          <div className="synaptic-orb orb-two" />
+          <div className="synaptic-orb orb-three" />
         </div>
 
         <div className="synaptic-foreground">
+          <div className="synaptic-badge">
+            <Sparkles size={16} />
+            Camera analysis
+          </div>
           <h1 className="synaptic-title">Synaptic Analysis</h1>
           <p className="synaptic-subtitle">Detect your emotional state through facial recognition</p>
           <div className={`model-status ${modelStatus}`}>
@@ -200,7 +203,7 @@ export default function Synaptic() {
 
       <style jsx>{`
         .synaptic-container {
-          min-height: 100vh;
+          min-height: calc(100vh - 4rem);
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -210,11 +213,43 @@ export default function Synaptic() {
         }
         .synaptic-background {
           position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          z-index: -1;
+          inset: 0;
+          z-index: 0;
+          pointer-events: none;
+        }
+        .synaptic-orb {
+          position: absolute;
+          border-radius: 999px;
+          filter: blur(70px);
+          opacity: 0.68;
+          animation: drift 18s ease-in-out infinite;
+        }
+        .synaptic-orb.orb-one {
+          width: 22rem;
+          height: 22rem;
+          top: 10%;
+          left: 8%;
+          background: rgba(120, 183, 255, 0.32);
+        }
+        .synaptic-orb.orb-two {
+          width: 18rem;
+          height: 18rem;
+          right: 14%;
+          top: 16%;
+          background: rgba(255, 151, 206, 0.28);
+          animation-delay: -6s;
+        }
+        .synaptic-orb.orb-three {
+          width: 20rem;
+          height: 20rem;
+          right: 18%;
+          bottom: 10%;
+          background: rgba(255, 200, 112, 0.24);
+          animation-delay: -11s;
+        }
+        @keyframes drift {
+          0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+          50% { transform: translate3d(1.4rem, -1rem, 0) scale(1.06); }
         }
         .synaptic-foreground {
           display: flex;
@@ -222,26 +257,39 @@ export default function Synaptic() {
           align-items: center;
           justify-content: center;
           width: 100%;
-          z-index: 1;
-          background: transparent;
-          backdrop-filter: blur(0px);
-          border: 1px solid var(--glass-border);
-          border-radius: 24px;
+          z-index: 2;
+          background: linear-gradient(180deg, rgba(255, 255, 255, 0.56), rgba(255, 255, 255, 0.32));
+          backdrop-filter: blur(28px) saturate(170%);
+          border: 1px solid rgba(255, 255, 255, 0.6);
+          border-radius: 38px;
           padding: 3rem;
           max-width: 1200px;
-          box-shadow: 0 25px 50px var(--shadow-medium);
+          box-shadow: var(--panel-shadow);
+        }
+        .synaptic-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          margin-bottom: 1rem;
+          padding: 0.55rem 0.9rem;
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.58);
+          border: 1px solid rgba(255, 255, 255, 0.62);
+          color: var(--text-soft);
+          font-size: 0.88rem;
+          font-weight: 700;
         }
         .synaptic-title {
           font-size: 3rem;
           font-weight: 800;
-          background: linear-gradient(135deg, var(--grey-800) 0%, var(--silver) 100%);
+          background: linear-gradient(135deg, var(--text-strong) 0%, #5f6de3 46%, var(--text-strong) 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           margin-bottom: 1rem;
         }
         .synaptic-subtitle {
           font-size: 1.2rem;
-          color: var(--grey-600);
+          color: var(--text-soft);
           margin-bottom: 1rem;
         }
         .model-status {
@@ -273,11 +321,12 @@ export default function Synaptic() {
           width: 100%;
           max-width: 640px;
           aspect-ratio: 4/3;
-          background: var(--glass-bg);
-          border: 2px solid var(--glass-border);
-          border-radius: 20px;
+          background: rgba(255, 255, 255, 0.4);
+          border: 1px solid rgba(255, 255, 255, 0.62);
+          border-radius: 28px;
           overflow: hidden;
           position: relative;
+          box-shadow: 0 20px 44px rgba(86, 100, 151, 0.12);
         }
         .camera-video {
           width: 100%;
@@ -290,7 +339,7 @@ export default function Synaptic() {
           left: 50%;
           transform: translate(-50%, -50%);
           text-align: center;
-          color: var(--grey-500);
+          color: var(--text-muted);
         }
         .camera-placeholder p {
           margin-top: 1rem;
@@ -316,26 +365,27 @@ export default function Synaptic() {
           font-size: 1rem;
           font-weight: 600;
           cursor: pointer;
-          transition: all 0.3s;
+          transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
           display: flex;
           align-items: center;
           gap: 0.5rem;
         }
         .camera-button.start {
-          background: var(--silver);
+          background: linear-gradient(135deg, #7f8cff, #5f6de3);
           border: none;
-          color: var(--grey-800);
+          color: white;
+          box-shadow: 0 14px 28px rgba(95, 109, 227, 0.22);
         }
         .camera-button.start:hover {
-          background: var(--silver-dark);
+          transform: translateY(-2px);
         }
         .camera-button.stop {
-          background: transparent;
-          border: 1px solid var(--glass-border);
-          color: var(--grey-700);
+          background: rgba(255, 255, 255, 0.54);
+          border: 1px solid rgba(255, 255, 255, 0.64);
+          color: var(--text-strong);
         }
         .camera-button.analyze {
-          background: var(--grey-800);
+          background: var(--text-strong);
           border: none;
           color: white;
         }
@@ -349,14 +399,29 @@ export default function Synaptic() {
         .emotion-result {
           margin-top: 2rem;
           padding: 1.5rem 2rem;
-          background: var(--glass-bg);
-          border-radius: 16px;
+          background: rgba(255, 255, 255, 0.48);
+          border-radius: 24px;
+          border: 1px solid rgba(255, 255, 255, 0.6);
           text-align: center;
           display: grid;
           gap: 0.5rem;
         }
         .emotion-result strong {
-          color: var(--silver);
+          color: var(--silver-dark);
+        }
+        @media (max-width: 768px) {
+          .synaptic-container {
+            min-height: auto;
+            padding: 0.25rem 0 2rem;
+          }
+          .synaptic-foreground {
+            padding: 1.5rem;
+            border-radius: 28px;
+          }
+          .synaptic-title {
+            font-size: 2.35rem;
+            text-align: center;
+          }
         }
       `}</style>
     </>

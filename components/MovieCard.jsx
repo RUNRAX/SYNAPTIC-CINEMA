@@ -1,31 +1,26 @@
-import React, { useState, memo } from 'react';
-import { Star, Play } from 'lucide-react';
-import './MovieCard.css'; // Import the external CSS
+import React, { useState, memo } from 'react'
+import { Star, Play } from 'lucide-react'
+import './MovieCard.css'
 
 function MovieCard({ movie, onClick, onHover }) {
-  const [isHovered, setIsHovered] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-    if (onHover) onHover(movie);
-  };
+  const [imageLoaded, setImageLoaded] = useState(false)
+  const rating = typeof movie.vote_average === 'number' ? movie.vote_average.toFixed(1) : movie.rating
 
   return (
-    <div 
-      className={`movie-card ${isHovered ? 'is-hovered' : ''}`}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={() => onClick(movie)}
+    <div
+      className="movie-card"
+      onMouseEnter={() => onHover?.(movie)}
+      onClick={() => onClick?.(movie)}
     >
-      <div className="movie-card-shimmer"></div>
-      
+      <div className="movie-card-shimmer" />
+      <div className="movie-card-gradient" />
+
       {movie.poster ? (
-        <img 
+        <img
           src={movie.poster}
           alt={movie.title}
           className="movie-poster"
-          loading="lazy" // <-- PERFORMANCE WIN
+          loading="lazy"
           onLoad={() => setImageLoaded(true)}
           style={{ opacity: imageLoaded ? 1 : 0 }}
         />
@@ -41,19 +36,17 @@ function MovieCard({ movie, onClick, onHover }) {
         <h3 className="movie-title">{movie.title}</h3>
         <div className="movie-meta">
           <span className="movie-year">{movie.year}</span>
-          {movie.rating && (
+          {rating && (
             <div className="movie-rating">
               <Star size={14} fill="var(--silver)" color="var(--silver)" />
-              {movie.rating}
+              {rating}
             </div>
           )}
         </div>
-        {movie.genre && (
-          <div className="movie-genre">{movie.genre}</div>
-        )}
+        {movie.genre && <div className="movie-genre">{movie.genre}</div>}
       </div>
     </div>
-  );
+  )
 }
 
-export default memo(MovieCard); // <-- PREVENTS UNNECESSARY RE-RENDERS
+export default memo(MovieCard)

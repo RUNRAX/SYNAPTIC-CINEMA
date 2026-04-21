@@ -1,6 +1,5 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Home, Eye, Search, User, Settings } from 'lucide-react'
@@ -16,165 +15,272 @@ const navigationItems = [
 
 export default function MainLayout({ children }) {
   const pathname = usePathname()
-  const [mounted, setMounted] = useState(false)
-  const [transitioning, setTransitioning] = useState(false)
-  const showBackground = !pathname?.includes('Synaptic')
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  useEffect(() => {
-    if (mounted) {
-      setTransitioning(true)
-      const timer = setTimeout(() => setTransitioning(false), 800)
-      return () => clearTimeout(timer)
-    }
-  }, [pathname, mounted])
-
-  if (!mounted) return null
+  const activeItem = navigationItems.find((item) => pathname?.startsWith(item.href)) || navigationItems[0]
 
   return (
-    <div className="app-container">
-      {showBackground && <PersistentBackground />}
-      <nav className="sidebar">
+    <div className="app-shell">
+      <PersistentBackground />
+
+      <aside className="sidebar">
         <div className="sidebar-brand">
-          <h1 className="brand-text">Synaptic</h1>
+          <div className="brand-mark">S</div>
+          <div>
+            <h1 className="brand-text">Synaptic</h1>
+            <p className="brand-subtitle">Mood-first movie discovery</p>
+          </div>
         </div>
 
         <div className="nav-menu">
           {navigationItems.map((item) => (
-            <div key={item.title} className="nav-item">
-              <Link
-                href={item.href}
-                className={`nav-link ${pathname === item.href ? 'active' : ''}`}
-              >
+            <Link key={item.title} href={item.href} className={`nav-link ${pathname === item.href ? 'active' : ''}`}>
+              <span className="nav-icon-wrap">
                 <item.icon className="nav-icon" />
-                {item.title}
-              </Link>
-            </div>
+              </span>
+              <span className="nav-copy">
+                <span className="nav-title">{item.title}</span>
+                <span className="nav-caption">Open {item.title.toLowerCase()}</span>
+              </span>
+            </Link>
           ))}
         </div>
+
+        <div className="sidebar-footer">
+          <p>Glass-frost cinematic shell inspired by modern iOS surfaces.</p>
+        </div>
+      </aside>
+
+      <div className="content-shell">
+        <header className="mobile-header">
+          <div className="mobile-brand">
+            <span className="mobile-brand-mark">S</span>
+            <div>
+              <strong>Synaptic</strong>
+              <span>{activeItem.title}</span>
+            </div>
+          </div>
+        </header>
+
+        <main className="main-content">
+          <div className="page-container">{children}</div>
+        </main>
+      </div>
+
+      <nav className="mobile-dock">
+        {navigationItems.map((item) => (
+          <Link key={item.title} href={item.href} className={`mobile-link ${pathname === item.href ? 'active' : ''}`}>
+            <item.icon className="mobile-icon" />
+            <span>{item.title}</span>
+          </Link>
+        ))}
       </nav>
 
-      <main className={`main-content ${transitioning ? 'transitioning' : ''}`}>
-        <div className="page-container">
-          {children}
-        </div>
-      </main>
-
       <style jsx>{`
-        .app-container {
+        .app-shell {
           min-height: 100vh;
           display: flex;
-          background: linear-gradient(135deg, var(--primary-white) 0%, var(--secondary-white) 100%);
           position: relative;
         }
-        .app-container::before {
-          content: '';
+
+        .sidebar {
+          width: 304px;
+          margin: 1.25rem;
+          padding: 1.1rem;
           position: fixed;
           top: 0;
-          left: 0;
-          right: 0;
           bottom: 0;
-          background:
-            radial-gradient(circle at 20% 80%, var(--glass-bg) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, var(--glass-bg) 0%, transparent 50%);
-          pointer-events: none;
-          z-index: 0;
+          z-index: 20;
+          border-radius: 32px;
+          background: var(--surface-elevated);
+          border: 1px solid var(--glass-border-strong);
+          backdrop-filter: blur(28px) saturate(170%);
+          box-shadow: var(--panel-shadow);
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
         }
-        .sidebar {
-          width: 280px;
-          background: var(--glass-bg);
-          backdrop-filter: blur(20px);
-          border-right: 1px solid var(--glass-border);
-          padding: 2rem 0;
-          position: fixed;
-          height: 100vh;
-          z-index: 100;
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+
         .sidebar-brand {
-          padding: 0 2rem 3rem;
-          border-bottom: 1px solid var(--glass-border);
-          margin-bottom: 2rem;
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding: 0.6rem;
+        }
+        .brand-mark,
+        .mobile-brand-mark {
+          width: 3rem;
+          height: 3rem;
+          border-radius: 18px;
+          display: grid;
+          place-items: center;
+          font-weight: 800;
+          color: var(--text-strong);
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.42));
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 12px 28px rgba(93, 108, 153, 0.18);
         }
         .brand-text {
-          font-size: 1.75rem;
+          margin: 0;
+          font-size: 1.5rem;
           font-weight: 700;
-          background: linear-gradient(135deg, var(--grey-800) 0%, var(--silver) 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          letter-spacing: -0.02em;
+          color: var(--text-strong);
         }
-        .nav-menu { padding: 0 1rem; }
-        .nav-item { margin-bottom: 0.5rem; }
+        .brand-subtitle {
+          margin: 0.2rem 0 0;
+          color: var(--text-soft);
+          font-size: 0.94rem;
+        }
+        .nav-menu {
+          display: grid;
+          gap: 0.65rem;
+        }
         .nav-link {
           display: flex;
           align-items: center;
-          padding: 1rem 1.5rem;
-          color: var(--grey-600);
+          gap: 0.95rem;
+          padding: 0.95rem 1rem;
+          color: var(--text-soft);
           text-decoration: none;
-          border-radius: 16px;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          border-radius: 22px;
+          transition: transform 0.22s ease, background 0.22s ease, box-shadow 0.22s ease, color 0.22s ease;
           position: relative;
-          overflow: hidden;
-          font-weight: 500;
+          background: rgba(255, 255, 255, 0.24);
+          border: 1px solid rgba(255, 255, 255, 0.24);
         }
-        .nav-link::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, transparent, var(--glass-bg), transparent);
-          transition: left 0.5s ease;
+        .nav-link:hover,
+        .nav-link.active {
+          color: var(--text-strong);
+          transform: translateY(-1px);
+          background: rgba(255, 255, 255, 0.48);
+          box-shadow: 0 16px 34px rgba(93, 108, 153, 0.12);
         }
-        .nav-link:hover::before { left: 100%; }
-        .nav-link:hover, .nav-link.active {
-          color: var(--grey-800);
-          background: var(--glass-bg);
-          transform: translateY(-2px);
-          box-shadow: 0 10px 25px var(--shadow-light);
+        .nav-icon-wrap {
+          width: 2.8rem;
+          height: 2.8rem;
+          border-radius: 18px;
+          display: grid;
+          place-items: center;
+          background: rgba(255, 255, 255, 0.54);
+          border: 1px solid rgba(255, 255, 255, 0.38);
+          flex-shrink: 0;
         }
         .nav-icon {
-          width: 24px;
-          height: 24px;
-          margin-right: 1rem;
+          width: 1.15rem;
+          height: 1.15rem;
+        }
+        .nav-copy {
+          display: grid;
+          gap: 0.16rem;
+        }
+        .nav-title {
+          font-weight: 650;
+        }
+        .nav-caption {
+          font-size: 0.82rem;
+          color: var(--text-muted);
+        }
+        .sidebar-footer {
+          margin-top: auto;
+          padding: 1rem 0.4rem 0.3rem;
+          color: var(--text-muted);
+          font-size: 0.9rem;
+          line-height: 1.5;
+        }
+        .content-shell {
+          flex: 1;
+          margin-left: 336px;
+          position: relative;
+          z-index: 2;
+        }
+        .mobile-header {
+          display: none;
         }
         .main-content {
-          flex: 1;
-          margin-left: 280px;
           min-height: 100vh;
-          position: relative;
-          z-index: 1;
-        }
-        .main-content.transitioning {
-          animation: page-transition 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        @keyframes page-transition {
-          0% {
-            clip-path: circle(0% at 50% 50%);
-            opacity: 0.8;
-            transform: scale(1.05);
-          }
-          100% {
-            clip-path: circle(150% at 50% 50%);
-            opacity: 1;
-            transform: scale(1);
-          }
         }
         .page-container {
-          padding: 2rem;
-          max-width: 1400px;
+          padding: 2rem 2rem 3rem;
+          max-width: 1500px;
           margin: 0 auto;
         }
+        .mobile-dock {
+          display: none;
+        }
         @media (max-width: 1024px) {
-          .sidebar { transform: translateX(-100%); }
-          .main-content { margin-left: 0; }
-          .page-container { padding: 1rem; }
+          .sidebar {
+            display: none;
+          }
+          .content-shell {
+            margin-left: 0;
+          }
+          .mobile-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: calc(1rem + env(safe-area-inset-top, 0px)) 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 12;
+          }
+          .mobile-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0.95rem;
+            border-radius: 24px;
+            background: var(--surface-elevated);
+            border: 1px solid var(--glass-border-strong);
+            backdrop-filter: blur(24px) saturate(170%);
+            box-shadow: var(--panel-shadow);
+          }
+          .mobile-brand strong {
+            display: block;
+            color: var(--text-strong);
+            font-size: 1rem;
+          }
+          .mobile-brand span {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            margin-top: 0.1rem;
+          }
+          .page-container {
+            padding: 0.5rem 1rem calc(7rem + env(safe-area-inset-bottom, 0px));
+          }
+          .mobile-dock {
+            position: fixed;
+            left: 50%;
+            bottom: calc(0.9rem + env(safe-area-inset-bottom, 0px));
+            transform: translateX(-50%);
+            width: min(94vw, 32rem);
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.35rem;
+            padding: 0.55rem;
+            z-index: 25;
+            border-radius: 28px;
+            background: rgba(255, 255, 255, 0.58);
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(30px) saturate(170%);
+            box-shadow: 0 22px 60px rgba(58, 78, 120, 0.18);
+          }
+          .mobile-link {
+            display: grid;
+            place-items: center;
+            gap: 0.25rem;
+            padding: 0.7rem 0.35rem;
+            border-radius: 20px;
+            text-decoration: none;
+            color: var(--text-soft);
+            font-size: 0.7rem;
+            font-weight: 600;
+          }
+          .mobile-link.active {
+            color: var(--text-strong);
+            background: rgba(255, 255, 255, 0.55);
+          }
+          .mobile-icon {
+            width: 1.1rem;
+            height: 1.1rem;
+          }
         }
       `}</style>
     </div>

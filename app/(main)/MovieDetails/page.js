@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { Suspense, useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Movie } from '@/entities/Movie'
 import { Review } from '@/entities/Review'
@@ -28,7 +28,7 @@ const StarRatingInput = ({ rating, setRating }) => {
   )
 }
 
-export default function MovieDetails() {
+function MovieDetailsContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [movie, setMovie] = useState(null)
@@ -493,5 +493,13 @@ export default function MovieDetails() {
         }
       `}</style>
     </div>
+  )
+}
+
+export default function MovieDetails() {
+  return (
+    <Suspense fallback={<div className="loading-container"></div>}>
+      <MovieDetailsContent />
+    </Suspense>
   )
 }

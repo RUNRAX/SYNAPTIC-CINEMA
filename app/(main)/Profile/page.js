@@ -53,12 +53,18 @@ export default function Profile() {
       <style>{`
         .profile-container {
           min-height: 100vh;
-          background: linear-gradient(135deg, var(--primary-white) 0%, var(--secondary-white) 100%);
-          padding: 2rem;
+          background: transparent;
+          padding: 0 0 2rem;
         }
         .profile-header {
           text-align: center;
-          margin-bottom: 3rem;
+          margin-bottom: 2rem;
+          padding: 1.8rem;
+          border-radius: 32px;
+          background: var(--surface-elevated);
+          border: 1px solid var(--glass-border-strong);
+          backdrop-filter: blur(28px) saturate(170%);
+          box-shadow: var(--panel-shadow);
         }
         .profile-title {
           font-size: 2.5rem;
