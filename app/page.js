@@ -37,10 +37,11 @@ export default function Welcome() {
   return (
     <div className={`welcome-container ${entering ? 'entering' : ''}`}>
       <div className="welcome-backdrop" aria-hidden="true">
-        <div className="welcome-orb orb-a" />
-        <div className="welcome-orb orb-b" />
-        <div className="welcome-orb orb-c" />
-        <div className="welcome-grid" />
+        <div className="welcome-aurora a1" />
+        <div className="welcome-aurora a2" />
+        <div className="welcome-aurora a3" />
+        <div className="welcome-aurora a4" />
+        <div className="welcome-vignette" />
       </div>
 
       <div className="welcome-content">
@@ -108,59 +109,69 @@ export default function Welcome() {
           opacity: 0;
           transform: scale(1.03);
         }
+
+        /* ── Aurora Background ── */
         .welcome-backdrop {
           position: absolute;
           inset: 0;
-          background:
-            radial-gradient(circle at 18% 16%, rgba(111, 180, 255, 0.28), transparent 28%),
-            radial-gradient(circle at 82% 20%, rgba(255, 145, 198, 0.22), transparent 25%),
-            radial-gradient(circle at 72% 78%, rgba(255, 197, 115, 0.18), transparent 26%),
-            linear-gradient(180deg, rgba(250, 246, 255, 0.98) 0%, rgba(238, 244, 255, 0.98) 100%);
+          background: #0a0e1a;
         }
-        .welcome-orb {
+        .welcome-aurora {
           position: absolute;
-          border-radius: 999px;
-          filter: blur(75px);
-          opacity: 0.72;
-          animation: drift 16s ease-in-out infinite;
+          border-radius: 50%;
+          filter: blur(100px);
+          mix-blend-mode: screen;
+          will-change: transform;
+          opacity: 0.7;
         }
-        .orb-a {
-          width: 28rem;
-          height: 28rem;
-          top: -8rem;
-          right: -8rem;
-          background: rgba(111, 180, 255, 0.28);
+        .welcome-aurora.a1 {
+          width: 120vw; height: 50vh;
+          top: -10%; left: -20%;
+          background: radial-gradient(ellipse at center, rgba(120, 40, 200, 0.50) 0%, rgba(80, 20, 160, 0.25) 40%, transparent 70%);
+          animation: aurora-w1 20s ease-in-out infinite alternate;
         }
-        .orb-b {
-          width: 20rem;
-          height: 20rem;
-          left: -4rem;
-          bottom: 4rem;
-          background: rgba(255, 145, 198, 0.24);
-          animation-delay: -6s;
+        .welcome-aurora.a2 {
+          width: 100vw; height: 40vh;
+          top: 5%; right: -15%;
+          background: radial-gradient(ellipse at center, rgba(0, 200, 170, 0.40) 0%, rgba(0, 150, 130, 0.18) 45%, transparent 70%);
+          animation: aurora-w2 16s ease-in-out infinite alternate;
         }
-        .orb-c {
-          width: 18rem;
-          height: 18rem;
-          left: 50%;
-          top: 18%;
-          background: rgba(121, 255, 213, 0.18);
-          animation-delay: -11s;
+        .welcome-aurora.a3 {
+          width: 90vw; height: 45vh;
+          bottom: 5%; left: -10%;
+          background: radial-gradient(ellipse at center, rgba(200, 50, 180, 0.45) 0%, rgba(160, 30, 140, 0.20) 40%, transparent 70%);
+          animation: aurora-w3 14s ease-in-out infinite alternate;
         }
-        .welcome-grid {
+        .welcome-aurora.a4 {
+          width: 110vw; height: 35vh;
+          top: 30%; left: 10%;
+          background: radial-gradient(ellipse at center, rgba(80, 180, 255, 0.30) 0%, rgba(60, 130, 220, 0.12) 45%, transparent 70%);
+          animation: aurora-w4 22s ease-in-out infinite alternate;
+        }
+        .welcome-vignette {
           position: absolute;
           inset: 0;
-          opacity: 0.24;
-          background-image:
-            linear-gradient(rgba(255, 255, 255, 0.55) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.55) 1px, transparent 1px);
-          background-size: 72px 72px;
-          mask-image: radial-gradient(circle at center, black 35%, transparent 92%);
+          background: radial-gradient(ellipse at center, transparent 40%, rgba(8, 10, 22, 0.55) 100%);
         }
-        @keyframes drift {
-          0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-          50% { transform: translate3d(1.5rem, -1rem, 0) scale(1.05); }
+
+        @keyframes aurora-w1 {
+          0%   { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+          100% { transform: translate3d(12vw, 8vh, 0) rotate(8deg) scale(1.15); }
         }
+        @keyframes aurora-w2 {
+          0%   { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+          100% { transform: translate3d(-15vw, 5vh, 0) rotate(-6deg) scale(1.10); }
+        }
+        @keyframes aurora-w3 {
+          0%   { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+          100% { transform: translate3d(10vw, -10vh, 0) rotate(10deg) scale(1.12); }
+        }
+        @keyframes aurora-w4 {
+          0%   { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+          100% { transform: translate3d(-8vw, 6vh, 0) rotate(-5deg) scale(1.08); }
+        }
+
+        /* ── Content Card — Dark Frosted Glass ── */
         .welcome-content {
           position: relative;
           z-index: 2;
@@ -168,12 +179,12 @@ export default function Welcome() {
           max-width: 40rem;
         }
         .content-card {
-          background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.42));
-          backdrop-filter: blur(30px) saturate(170%);
-          border: 1px solid rgba(255, 255, 255, 0.64);
+          background: rgba(12, 16, 35, 0.55);
+          backdrop-filter: blur(40px) saturate(140%);
+          border: 1px solid rgba(255, 255, 255, 0.08);
           border-radius: 36px;
           padding: 3rem;
-          box-shadow: 0 30px 80px rgba(82, 97, 153, 0.18);
+          box-shadow: 0 30px 80px rgba(0, 0, 0, 0.50);
           text-align: center;
         }
         .welcome-chip {
@@ -183,16 +194,16 @@ export default function Welcome() {
           padding: 0.55rem 0.9rem;
           margin-bottom: 1rem;
           border-radius: 999px;
-          background: rgba(255, 255, 255, 0.58);
-          border: 1px solid rgba(255, 255, 255, 0.62);
-          color: var(--text-soft);
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.10);
+          color: #b0bde0;
           font-size: 0.88rem;
           font-weight: 700;
         }
         .welcome-title {
           font-size: clamp(3rem, 8vw, 5rem);
           font-weight: 800;
-          background: linear-gradient(135deg, var(--text-strong) 0%, #5f6de3 46%, var(--text-strong) 100%);
+          background: linear-gradient(135deg, #eef2ff 0%, #a0b4ff 46%, #c090ff 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           margin: 0 0 0.8rem;
@@ -200,7 +211,7 @@ export default function Welcome() {
         }
         .welcome-subtitle {
           font-size: 1.08rem;
-          color: var(--text-soft);
+          color: #8494c0;
           margin: 0 auto 2rem;
           max-width: 28rem;
           line-height: 1.7;
@@ -211,18 +222,18 @@ export default function Welcome() {
           gap: 0.9rem;
           padding: 1.2rem;
           border-radius: 24px;
-          background: rgba(255, 255, 255, 0.48);
-          border: 1px solid rgba(255, 255, 255, 0.58);
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(255, 255, 255, 0.06);
         }
         .user-detail {
           display: flex;
           justify-content: space-between;
           gap: 1rem;
-          color: var(--text-strong);
+          color: #eef2ff;
           font-size: 0.95rem;
         }
         .user-detail-label {
-          color: var(--text-muted);
+          color: #6e7da8;
           font-weight: 600;
           text-transform: uppercase;
           letter-spacing: 0.08em;
@@ -239,7 +250,7 @@ export default function Welcome() {
           font-size: 1rem;
           font-weight: 700;
           cursor: pointer;
-          transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+          transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
           display: inline-flex;
           align-items: center;
           justify-content: center;
@@ -250,12 +261,12 @@ export default function Welcome() {
         .enter-button.primary {
           background: linear-gradient(135deg, #7f8cff, #5f6de3);
           color: white;
-          box-shadow: 0 18px 34px rgba(95, 109, 227, 0.22);
+          box-shadow: 0 18px 34px rgba(95, 109, 227, 0.30);
         }
         .enter-button.secondary {
-          background: rgba(255, 255, 255, 0.64);
-          color: var(--text-strong);
-          border-color: rgba(255, 255, 255, 0.62);
+          background: rgba(255, 255, 255, 0.06);
+          color: #eef2ff;
+          border-color: rgba(255, 255, 255, 0.10);
         }
         .enter-button:hover {
           transform: translateY(-2px);
@@ -263,8 +274,8 @@ export default function Welcome() {
         .loading-spinner {
           width: 54px;
           height: 54px;
-          border: 4px solid rgba(127, 140, 255, 0.18);
-          border-top-color: #5f6de3;
+          border: 4px solid rgba(140, 160, 255, 0.15);
+          border-top-color: #7f8cff;
           border-radius: 50%;
           animation: spin 0.9s linear infinite;
           margin: 2rem auto 0;

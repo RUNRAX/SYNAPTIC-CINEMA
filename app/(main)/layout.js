@@ -81,6 +81,7 @@ export default function MainLayout({ children }) {
           position: relative;
         }
 
+        /* ═══ SIDEBAR — Dark Frosted Glass ═══ */
         .sidebar {
           width: 304px;
           margin: 1.25rem;
@@ -90,10 +91,10 @@ export default function MainLayout({ children }) {
           bottom: 0;
           z-index: 20;
           border-radius: 32px;
-          background: var(--surface-elevated);
-          border: 1px solid var(--glass-border-strong);
-          backdrop-filter: blur(28px) saturate(170%);
-          box-shadow: var(--panel-shadow);
+          background: rgba(12, 16, 35, 0.60);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          backdrop-filter: blur(40px) saturate(140%);
+          box-shadow: 0 30px 80px rgba(0, 0, 0, 0.50);
           display: flex;
           flex-direction: column;
           gap: 1.5rem;
@@ -113,21 +114,23 @@ export default function MainLayout({ children }) {
           display: grid;
           place-items: center;
           font-weight: 800;
-          color: var(--text-strong);
-          background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.42));
-          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 12px 28px rgba(93, 108, 153, 0.18);
+          color: #fff;
+          background: linear-gradient(135deg, rgba(140, 100, 255, 0.5), rgba(80, 60, 200, 0.35));
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 12px 28px rgba(0, 0, 0, 0.30);
         }
         .brand-text {
           margin: 0;
           font-size: 1.5rem;
           font-weight: 700;
-          color: var(--text-strong);
+          color: #eef2ff;
         }
         .brand-subtitle {
           margin: 0.2rem 0 0;
-          color: var(--text-soft);
+          color: #8494c0;
           font-size: 0.94rem;
         }
+
+        /* ═══ NAV LINKS ═══ */
         .nav-menu {
           display: grid;
           gap: 0.65rem;
@@ -137,20 +140,21 @@ export default function MainLayout({ children }) {
           align-items: center;
           gap: 0.95rem;
           padding: 0.95rem 1rem;
-          color: var(--text-soft);
+          color: #8494c0;
           text-decoration: none;
           border-radius: 22px;
-          transition: transform 0.22s ease, background 0.22s ease, box-shadow 0.22s ease, color 0.22s ease;
+          transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
           position: relative;
-          background: rgba(255, 255, 255, 0.24);
-          border: 1px solid rgba(255, 255, 255, 0.24);
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(255, 255, 255, 0.04);
         }
         .nav-link:hover,
         .nav-link.active {
-          color: var(--text-strong);
+          color: #eef2ff;
           transform: translateY(-1px);
-          background: rgba(255, 255, 255, 0.48);
-          box-shadow: 0 16px 34px rgba(93, 108, 153, 0.12);
+          background: rgba(255, 255, 255, 0.08);
+          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+          border-color: rgba(255, 255, 255, 0.10);
         }
         .nav-icon-wrap {
           width: 2.8rem;
@@ -158,8 +162,8 @@ export default function MainLayout({ children }) {
           border-radius: 18px;
           display: grid;
           place-items: center;
-          background: rgba(255, 255, 255, 0.54);
-          border: 1px solid rgba(255, 255, 255, 0.38);
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.06);
           flex-shrink: 0;
         }
         .nav-icon {
@@ -175,15 +179,17 @@ export default function MainLayout({ children }) {
         }
         .nav-caption {
           font-size: 0.82rem;
-          color: var(--text-muted);
+          color: #6e7da8;
         }
         .sidebar-footer {
           margin-top: auto;
           padding: 1rem 0.4rem 0.3rem;
-          color: var(--text-muted);
+          color: #6e7da8;
           font-size: 0.9rem;
           line-height: 1.5;
         }
+
+        /* ═══ CONTENT SHELL ═══ */
         .content-shell {
           flex: 1;
           margin-left: 336px;
@@ -204,6 +210,8 @@ export default function MainLayout({ children }) {
         .mobile-dock {
           display: none;
         }
+
+        /* ═══ MOBILE ═══ */
         @media (max-width: 1024px) {
           .sidebar {
             display: none;
@@ -226,19 +234,19 @@ export default function MainLayout({ children }) {
             gap: 0.75rem;
             padding: 0.75rem 0.95rem;
             border-radius: 24px;
-            background: var(--surface-elevated);
-            border: 1px solid var(--glass-border-strong);
-            backdrop-filter: blur(24px) saturate(170%);
-            box-shadow: var(--panel-shadow);
+            background: rgba(12, 16, 35, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(40px) saturate(140%);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.40);
           }
           .mobile-brand strong {
             display: block;
-            color: var(--text-strong);
+            color: #eef2ff;
             font-size: 1rem;
           }
           .mobile-brand span {
             display: block;
-            color: var(--text-muted);
+            color: #6e7da8;
             font-size: 0.78rem;
             margin-top: 0.1rem;
           }
@@ -257,10 +265,10 @@ export default function MainLayout({ children }) {
             padding: 0.55rem;
             z-index: 25;
             border-radius: 28px;
-            background: rgba(255, 255, 255, 0.58);
-            border: 1px solid rgba(255, 255, 255, 0.55);
-            backdrop-filter: blur(30px) saturate(170%);
-            box-shadow: 0 22px 60px rgba(58, 78, 120, 0.18);
+            background: rgba(12, 16, 35, 0.70);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(40px) saturate(140%);
+            box-shadow: 0 22px 60px rgba(0, 0, 0, 0.45);
           }
           .mobile-link {
             display: grid;
@@ -269,13 +277,13 @@ export default function MainLayout({ children }) {
             padding: 0.7rem 0.35rem;
             border-radius: 20px;
             text-decoration: none;
-            color: var(--text-soft);
+            color: #8494c0;
             font-size: 0.7rem;
             font-weight: 600;
           }
           .mobile-link.active {
-            color: var(--text-strong);
-            background: rgba(255, 255, 255, 0.55);
+            color: #eef2ff;
+            background: rgba(255, 255, 255, 0.08);
           }
           .mobile-icon {
             width: 1.1rem;

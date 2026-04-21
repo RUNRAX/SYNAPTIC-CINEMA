@@ -27,9 +27,9 @@ function MovieCard({ movie, onClick, onHover }) {
       ) : (
         <div className="poster-placeholder">No Image</div>
       )}
-      
+
       <div className="play-overlay">
-        <Play size={28} color="var(--grey-700)" fill="var(--grey-700)" />
+        <Play size={28} color="#eef2ff" fill="#eef2ff" />
       </div>
 
       <div className="movie-info">
@@ -38,7 +38,7 @@ function MovieCard({ movie, onClick, onHover }) {
           <span className="movie-year">{movie.year}</span>
           {rating && (
             <div className="movie-rating">
-              <Star size={14} fill="var(--silver)" color="var(--silver)" />
+              <Star size={14} fill="#a0b4ff" color="#a0b4ff" />
               {rating}
             </div>
           )}

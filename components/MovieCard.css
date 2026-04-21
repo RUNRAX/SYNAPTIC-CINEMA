@@ -1,21 +1,55 @@
+/* ═══════════════════════════════════════════════════════════════
+   MOVIE CARD — Dark Frosted Glass + Northern Lights Transparency
+   Default: 20% opacity (aurora shows through)
+   Hover:   100% opacity, pop up with glow
+   ═══════════════════════════════════════════════════════════════ */
+
 .movie-card {
   position: relative;
   border-radius: 28px;
   overflow: hidden;
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.42);
-  border: 1px solid rgba(255, 255, 255, 0.52);
-  box-shadow: 0 18px 42px rgba(86, 100, 151, 0.12);
+  background: rgba(12, 16, 35, 0.60);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
   transform: translateZ(0);
-  transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+
+  /* ── THE KEY: start at 20% opacity ── */
+  opacity: 0.2;
+
+  transition:
+    opacity 0.18s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.18s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.18s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.18s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ── Hover: fully visible + pop up ── */
 .movie-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 26px 52px rgba(86, 100, 151, 0.18);
-  border-color: rgba(255, 255, 255, 0.74);
+  opacity: 1;
+  transform: translateY(-12px) scale(1.05);
+  box-shadow:
+    0 0 40px rgba(120, 60, 220, 0.25),
+    0 24px 50px rgba(0, 0, 0, 0.45);
+  border-color: rgba(255, 255, 255, 0.14);
 }
 
+/* Bottom gradient overlay for text readability */
+.movie-card-gradient {
+  position: absolute;
+  inset: auto 0 0;
+  height: 50%;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(8, 10, 22, 0.35) 40%,
+    rgba(8, 10, 22, 0.80) 100%
+  );
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Shimmer effect — only on hover */
 .movie-card-shimmer {
   position: absolute;
   inset: 0;
@@ -25,47 +59,40 @@
   background: linear-gradient(
     110deg,
     transparent 25%,
-    rgba(255, 255, 255, 0.1) 40%,
-    rgba(255, 255, 255, 0.3) 50%,
-    rgba(255, 255, 255, 0.1) 60%,
+    rgba(255, 255, 255, 0.06) 40%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.06) 60%,
     transparent 75%
   );
   background-size: 400% 100%;
-  transition: opacity 0.35s ease;
-}
-
-.movie-card-gradient {
-  position: absolute;
-  inset: auto 0 0;
-  height: 44%;
-  background: linear-gradient(180deg, transparent, rgba(9, 16, 34, 0.1) 30%, rgba(9, 16, 34, 0.55));
-  z-index: 2;
-  pointer-events: none;
+  transition: opacity 0.18s ease;
 }
 
 .movie-card:hover .movie-card-shimmer {
   opacity: 1;
-  animation: continuous-shimmer 2.2s linear infinite;
+  animation: card-shimmer 2s linear infinite;
 }
 
-@keyframes continuous-shimmer {
-  0% { background-position: 200% 0; }
+@keyframes card-shimmer {
+  0%   { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
 
+/* ── Poster ── */
 .movie-poster {
   width: 100%;
   aspect-ratio: 2/3;
   object-fit: cover;
   position: relative;
   z-index: 1;
-  transition: transform 0.24s ease, opacity 0.2s ease;
+  transition: transform 0.18s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s ease;
 }
 
 .movie-card:hover .movie-poster {
   transform: scale(1.04);
 }
 
+/* ── Info overlay ── */
 .movie-info {
   padding: 1.2rem 1.25rem 1.35rem;
   position: absolute;
@@ -77,7 +104,7 @@
 .movie-title {
   font-size: 1.05rem;
   font-weight: 700;
-  color: #f8fbff;
+  color: #f0f4ff;
   margin-bottom: 0.5rem;
   line-height: 1.35;
   display: -webkit-box;
@@ -95,7 +122,7 @@
 }
 
 .movie-year {
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(255, 255, 255, 0.70);
   font-size: 0.88rem;
   font-weight: 500;
 }
@@ -104,31 +131,32 @@
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  color: #f9fbff;
+  color: #f0f4ff;
   font-size: 0.88rem;
   font-weight: 700;
   padding: 0.3rem 0.55rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.10);
   backdrop-filter: blur(16px);
 }
 
 .movie-genre {
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(255, 255, 255, 0.55);
   font-size: 0.76rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-weight: 700;
 }
 
+/* ── Play overlay ── */
 .play-overlay {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0.92);
+  transform: translate(-50%, -50%) scale(0.85);
   width: 66px;
   height: 66px;
-  background: rgba(255, 255, 255, 0.76);
+  background: rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(20px);
   border-radius: 50%;
   display: flex;
@@ -136,8 +164,8 @@
   justify-content: center;
   opacity: 0;
   z-index: 4;
-  border: 1px solid rgba(255, 255, 255, 0.65);
-  transition: opacity 0.24s ease, transform 0.24s ease;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: opacity 0.18s ease, transform 0.18s ease;
 }
 
 .movie-card:hover .play-overlay {
@@ -145,14 +173,15 @@
   transform: translate(-50%, -50%) scale(1);
 }
 
+/* ── Poster placeholder ── */
 .poster-placeholder {
   width: 100%;
   aspect-ratio: 2/3;
-  background: linear-gradient(135deg, rgba(160, 175, 255, 0.4), rgba(255, 170, 205, 0.25));
+  background: linear-gradient(135deg, rgba(60, 40, 120, 0.4), rgba(30, 20, 70, 0.6));
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-soft);
+  color: #6e7da8;
   font-size: 0.9rem;
   font-weight: 600;
 }
