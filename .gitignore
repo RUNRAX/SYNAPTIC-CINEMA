@@ -21,3 +21,9 @@ UPDATED SNAPSHOTS/
 WORKING SNAPSHOTS/
 White Aesthetic/
 WHITE THEMED/
+
+public/
+package-lock.json
+*.png
+*.jpg
+*.mp4

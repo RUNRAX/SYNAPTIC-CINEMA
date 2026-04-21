@@ -119,7 +119,7 @@ export default function Welcome() {
         .welcome-aurora {
           position: absolute;
           border-radius: 50%;
-          filter: blur(100px);
+          filter: blur(10px);
           mix-blend-mode: screen;
           will-change: transform;
           opacity: 0.7;

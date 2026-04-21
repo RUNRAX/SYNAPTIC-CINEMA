@@ -54,6 +54,7 @@
 
 html {
   overflow-y: scroll;
+  scroll-behavior: smooth;
 }
 
 html,
@@ -68,6 +69,7 @@ body {
     'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-overflow-scrolling: touch;
   background: #0a0e1a;
   color: var(--text-strong);
   min-height: 100vh;

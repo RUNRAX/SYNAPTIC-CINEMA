@@ -139,31 +139,36 @@ export default function MainLayout({ children }) {
           display: flex;
           align-items: center;
           gap: 0.95rem;
-          padding: 0.95rem 1rem;
+          padding: 0.85rem 1.1rem;
           color: #8494c0;
           text-decoration: none;
-          border-radius: 22px;
-          transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
+          border-radius: 99px;
+          transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
           position: relative;
-          background: rgba(255, 255, 255, 0.04);
-          border: 1px solid rgba(255, 255, 255, 0.04);
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .nav-link:hover,
-        .nav-link.active {
+        .nav-link:hover {
           color: #eef2ff;
-          transform: translateY(-1px);
+          transform: translateY(-2px) scale(1.01);
           background: rgba(255, 255, 255, 0.08);
-          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
-          border-color: rgba(255, 255, 255, 0.10);
+          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+          border-color: rgba(255, 255, 255, 0.15);
+        }
+        .nav-link.active {
+          color: #fff;
+          background: linear-gradient(135deg, rgba(140, 100, 255, 0.25), rgba(80, 60, 200, 0.15));
+          border-color: rgba(140, 100, 255, 0.4);
+          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
         .nav-icon-wrap {
-          width: 2.8rem;
-          height: 2.8rem;
-          border-radius: 18px;
+          width: 2.6rem;
+          height: 2.6rem;
+          border-radius: 50%;
           display: grid;
           place-items: center;
-          background: rgba(255, 255, 255, 0.06);
-          border: 1px solid rgba(255, 255, 255, 0.06);
+          background: rgba(255, 255, 255, 0.07);
+          border: 1px solid rgba(255, 255, 255, 0.08);
           flex-shrink: 0;
         }
         .nav-icon {
