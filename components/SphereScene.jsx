@@ -67,7 +67,7 @@ function ThunderStrikeEffect({ position }) {
 function MovieCard({ movie, isHovered, ...props }) {
   const meshRef = useRef();
   
-  const posterUrl = movie.poster ? `http://localhost:4000/image-proxy?path=${movie.poster}` : fallbackPosterUrl;
+  const posterUrl = movie.poster || fallbackPosterUrl;
 
   const texture = useLoader(THREE.TextureLoader, posterUrl);
 

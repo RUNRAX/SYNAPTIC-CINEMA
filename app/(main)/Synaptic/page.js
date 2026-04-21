@@ -5,23 +5,42 @@ import { useRouter } from 'next/navigation'
 import GalaxySystem from '@/components/GalaxySystem'
 import FloatingAstronaut from '@/components/FloatingAstronaut'
 import { Camera, AlertTriangle } from 'lucide-react'
-
-import { API_URL } from '@/lib/config'
+import { detectDominantEmotion, loadFaceApiModels } from '@/lib/faceApi'
 
 export default function Synaptic() {
   const router = useRouter()
   const videoRef = useRef(null)
   const [isStreaming, setIsStreaming] = useState(false)
   const [detectedEmotion, setDetectedEmotion] = useState(null)
+  const [analysisConfidence, setAnalysisConfidence] = useState(0)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [cameraError, setCameraError] = useState(null)
+  const [modelStatus, setModelStatus] = useState('loading')
 
   useEffect(() => {
+    let cancelled = false
+
+    loadFaceApiModels()
+      .then(() => {
+        if (!cancelled) {
+          setModelStatus('ready')
+        }
+      })
+      .catch((error) => {
+        console.error('Failed to load face-api models:', error)
+        if (!cancelled) {
+          setModelStatus('error')
+          setCameraError('Emotion models could not be loaded. Please refresh and try again.')
+        }
+      })
+
     return () => {
+      cancelled = true
+
       if (videoRef.current?.srcObject) {
         const stream = videoRef.current.srcObject
         const tracks = stream.getTracks()
-        tracks.forEach(track => track.stop())
+        tracks.forEach((track) => track.stop())
         videoRef.current.srcObject = null
       }
     }
@@ -29,80 +48,80 @@ export default function Synaptic() {
 
   const startCamera = async () => {
     setCameraError(null)
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: 'user' },
-        })
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream
-          videoRef.current.oncanplay = () => {
-            videoRef.current.play()
-            setIsStreaming(true)
-          }
-        }
-      } catch (error) {
-        console.error("Error accessing camera:", error)
-        if (error.name === "NotAllowedError") {
-          setCameraError("Camera access denied. Please enable it in your browser settings.")
-        } else {
-          setCameraError("Could not access the camera. It may be in use by another app.")
+    setDetectedEmotion(null)
+    setAnalysisConfidence(0)
+
+    if (modelStatus === 'error') {
+      setCameraError('Emotion models are unavailable. Refresh the page to retry loading them.')
+      return
+    }
+
+    if (!navigator.mediaDevices?.getUserMedia) {
+      setCameraError('Your browser does not support camera access.')
+      return
+    }
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'user' },
+      })
+
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream
+        videoRef.current.oncanplay = () => {
+          videoRef.current.play()
+          setIsStreaming(true)
         }
       }
-    } else {
-      setCameraError("Your browser does not support camera access.")
+    } catch (error) {
+      console.error('Error accessing camera:', error)
+      if (error.name === 'NotAllowedError') {
+        setCameraError('Camera access denied. Please enable it in your browser settings.')
+      } else {
+        setCameraError('Could not access the camera. It may be in use by another app.')
+      }
     }
   }
 
   const stopCamera = () => {
     if (videoRef.current?.srcObject) {
-      videoRef.current.srcObject.getTracks().forEach(track => track.stop())
+      videoRef.current.srcObject.getTracks().forEach((track) => track.stop())
       videoRef.current.srcObject = null
       setIsStreaming(false)
       setDetectedEmotion(null)
+      setAnalysisConfidence(0)
       setCameraError(null)
     }
   }
 
   const analyzeEmotion = async () => {
-    if (!videoRef.current || !isStreaming) return
+    if (!videoRef.current || !isStreaming || modelStatus !== 'ready') {
+      return
+    }
 
     setIsAnalyzing(true)
     setDetectedEmotion(null)
-
-    const canvas = document.createElement('canvas')
-    canvas.width = videoRef.current.videoWidth
-    canvas.height = videoRef.current.videoHeight
-    const ctx = canvas.getContext('2d')
-    ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height)
-    const imageData = canvas.toDataURL('image/jpeg', 0.8)
+    setAnalysisConfidence(0)
+    setCameraError(null)
 
     try {
-      const response = await fetch(`${API_URL}/detect_emotion`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ image: imageData }),
-      })
+      const result = await detectDominantEmotion(videoRef.current)
 
-      if (!response.ok) {
-        throw new Error(`Server error: ${response.statusText}`)
+      if (!result.hasFace) {
+        setCameraError('No face detected. Center your face in the frame and try again.')
+        return
       }
 
-      const data = await response.json()
-      const emotion = data.emotion
+      const emotion = result.emotion
       setDetectedEmotion(emotion)
+      setAnalysisConfidence(result.confidence)
 
       setTimeout(() => {
         router.push(`/EmotionResults?emotion=${emotion}`)
       }, 1500)
-
     } catch (error) {
-      console.error("Emotion detection failed:", error)
-      setCameraError(
-        error.message?.includes('Failed to fetch')
-          ? "Cannot reach the analysis server. Please try again later."
-          : "Could not analyze emotion. Please try again."
-      )
+      console.error('Emotion detection failed:', error)
+      setCameraError('Could not analyze emotion in the browser. Please try again.')
     } finally {
       setIsAnalyzing(false)
     }
@@ -119,15 +138,15 @@ export default function Synaptic() {
         <div className="synaptic-foreground">
           <h1 className="synaptic-title">Synaptic Analysis</h1>
           <p className="synaptic-subtitle">Detect your emotional state through facial recognition</p>
+          <div className={`model-status ${modelStatus}`}>
+            {modelStatus === 'loading' && 'Loading face-api.js models...'}
+            {modelStatus === 'ready' && 'Face detection is running locally in your browser'}
+            {modelStatus === 'error' && 'Model loading failed'}
+          </div>
 
           <div className="camera-section">
             <div className="camera-container">
-              <video
-                ref={videoRef}
-                className="camera-video"
-                playsInline
-                muted
-              />
+              <video ref={videoRef} className="camera-video" playsInline muted />
               {!isStreaming && (
                 <div className="camera-placeholder">
                   <Camera size={64} />
@@ -157,9 +176,9 @@ export default function Synaptic() {
                   <button
                     className="camera-button analyze"
                     onClick={analyzeEmotion}
-                    disabled={isAnalyzing}
+                    disabled={isAnalyzing || modelStatus !== 'ready'}
                   >
-                    {isAnalyzing ? 'Analyzing...' : 'Analyze Emotion'}
+                    {isAnalyzing ? 'Analyzing...' : modelStatus === 'ready' ? 'Analyze Emotion' : 'Preparing AI...'}
                   </button>
                 </>
               )}
@@ -167,7 +186,12 @@ export default function Synaptic() {
 
             {detectedEmotion && (
               <div className="emotion-result">
-                <p>Detected emotion: <strong>{detectedEmotion}</strong></p>
+                <p>
+                  Detected emotion: <strong>{detectedEmotion}</strong>
+                </p>
+                <p>
+                  Confidence: <strong>{Math.round(analysisConfidence * 100)}%</strong>
+                </p>
               </div>
             )}
           </div>
@@ -218,7 +242,26 @@ export default function Synaptic() {
         .synaptic-subtitle {
           font-size: 1.2rem;
           color: var(--grey-600);
-          margin-bottom: 3rem;
+          margin-bottom: 1rem;
+        }
+        .model-status {
+          margin-bottom: 2rem;
+          padding: 0.75rem 1rem;
+          border-radius: 999px;
+          font-size: 0.95rem;
+          font-weight: 600;
+        }
+        .model-status.loading {
+          background: rgba(59, 130, 246, 0.12);
+          color: #1d4ed8;
+        }
+        .model-status.ready {
+          background: rgba(34, 197, 94, 0.12);
+          color: #15803d;
+        }
+        .model-status.error {
+          background: rgba(220, 38, 38, 0.12);
+          color: #b91c1c;
         }
         .camera-section {
           display: flex;
@@ -264,6 +307,8 @@ export default function Synaptic() {
         .camera-controls {
           display: flex;
           gap: 1rem;
+          flex-wrap: wrap;
+          justify-content: center;
         }
         .camera-button {
           padding: 1rem 2rem;
@@ -307,6 +352,8 @@ export default function Synaptic() {
           background: var(--glass-bg);
           border-radius: 16px;
           text-align: center;
+          display: grid;
+          gap: 0.5rem;
         }
         .emotion-result strong {
           color: var(--silver);
