@@ -221,6 +221,14 @@ export default function Analysis() {
                     ))}
                   </div>
                 )}
+                <div className="mt-8">
+                  <RippleButton 
+                    onClick={startAnalysis}
+                    className="px-6 py-3 border border-[rgba(255,255,255,0.2)] text-mid hover:border-black hover:text-black glass-frost-light font-body text-[10px] tracking-widest uppercase transition-colors"
+                  >
+                    Rescan
+                  </RippleButton>
+                </div>
               </div>
             ) : (
               <RippleButton 
