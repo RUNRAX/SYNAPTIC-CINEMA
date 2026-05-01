@@ -41,7 +41,7 @@ export default function MovieCard({ movie, onClick }) {
             src={movie.poster}
             alt={movie.title || 'Movie Poster'}
             fill
-            className="object-cover transition-transform duration-[600ms] ease-[cubic-bezier(0.77,0,0.18,1)] group-hover:scale-105"
+            className="object-cover transition-transform duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
             onError={() => setImageError(true)}
           />
@@ -54,14 +54,14 @@ export default function MovieCard({ movie, onClick }) {
         
         {/* Rating Badge (if available) */}
         {movie.vote_average > 0 && (
-          <div className="absolute top-2 right-2 bg-black/80 backdrop-blur-sm text-cream px-2 py-1 font-body text-[9px] tracking-widest z-10 transition-colors group-hover:bg-accent group-hover:text-black">
+          <div className="absolute top-2 right-2 bg-black/80 backdrop-blur-sm text-cream px-2 py-1 font-body text-[9px] tracking-widest z-10 transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:bg-accent group-hover:text-black">
             {movie.vote_average.toFixed(1)}
           </div>
         )}
       </div>
 
       {/* Content */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 glass-frost border-t border-[rgba(255,255,255,0.1)] transition-all duration-300 group-hover:bg-black/80 group-hover:text-cream flex flex-col gap-[2px] z-20 rounded-b-2xl">
+      <div className="absolute bottom-0 left-0 right-0 p-4 glass-frost border-t border-[rgba(255,255,255,0.1)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:bg-black/80 group-hover:text-cream flex flex-col gap-[2px] z-20 rounded-b-2xl">
         <h3 className="font-body font-bold text-[11px] truncate uppercase tracking-wide text-cream">{movie.title}</h3>
         <p className="font-body text-[9px] text-cream/70 uppercase tracking-wider">
           {movie.year} · {movie.genre}
