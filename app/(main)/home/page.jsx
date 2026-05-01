@@ -62,7 +62,7 @@ export default function Home() {
           <h1 
             ref={titleRef}
             className="font-display text-[clamp(60px,8vw,100px)] leading-[0.92] text-black uppercase mb-12 animate-enter"
-            style={{ transform: `translate(${x * 24}px, ${y * 12}px)`, transition: 'transform 0.15s ease-out' }}
+            style={{ transform: `translate(${x * 24}px, ${y * 12}px)` }}
           >
             <span className="block">A faster,</span>
             <span className="block">mood-shaped</span>
@@ -83,7 +83,10 @@ export default function Home() {
 
         {/* Right Zone - Visual + Stats */}
         <div className="w-full lg:w-[320px] shrink-0 border-t lg:border-t-0 lg:border-l border-[rgba(0,0,0,0.1)] flex flex-col relative z-10 glass-frost">
-          <div className="flex-1 flex items-center justify-center p-8 animate-enter relative">
+          <div 
+            className="flex-1 flex items-center justify-center p-8 animate-enter relative"
+            style={{ transform: `translate(${x * -16}px, ${y * -8}px)` }}
+          >
             <LensGraphic />
           </div>
 
