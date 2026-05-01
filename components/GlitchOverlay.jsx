@@ -31,7 +31,7 @@ export default function GlitchOverlay() {
       })
 
       // Phase 1: Break & Show Overlay (15% background)
-      gsap.set(overlay, { opacity: 1, backgroundColor: 'rgba(0,0,0,0.15)' })
+      gsap.set(overlay, { opacity: 1 })
       gsap.set(content, { opacity: 1 })
       
       // Intense strobe flicker mixed with glitch
@@ -138,8 +138,14 @@ export default function GlitchOverlay() {
     <div 
       id="glitch-overlay" 
       ref={overlayRef}
-      className="fixed inset-0 z-[8888] pointer-events-none flex items-center justify-center opacity-0 bg-black/15 backdrop-blur-sm"
+      className="fixed inset-0 z-[8888] pointer-events-none flex items-center justify-center opacity-0"
+      style={{ willChange: 'opacity' }}
     >
+      {/* Smooth backdrop layer - no backdrop-filter to avoid tearing during animation */}
+      <div 
+        className="absolute inset-0 bg-black/20"
+        style={{ willChange: 'opacity' }}
+      />
       <div className="content-container relative flex items-center justify-center opacity-0 w-full h-full max-w-7xl mx-auto">
         
         {/* Background Code Snippets - Black & White */}

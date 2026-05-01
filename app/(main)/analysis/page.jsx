@@ -65,12 +65,23 @@ export default function Analysis() {
       let moodGenres = DEFAULT_MOOD_GENRES
       try {
         const stored = localStorage.getItem('customMoodGenres')
-        if (stored) moodGenres = JSON.parse(stored)
+        if (stored) {
+          const parsed = JSON.parse(stored)
+          // Only use stored genres — if user has customized,
+          // respect their selection even if it's empty
+          moodGenres = parsed
+        }
       } catch (e) {}
       
       // Combine genres from top 2 emotions if array is passed, otherwise just use the single emotion
       const emotionList = Array.isArray(emotions) ? emotions.slice(0, 2).map(e => e.emotion) : [emotions]
       const selectedGenres = [...new Set(emotionList.flatMap(emo => moodGenres[emo] || []))]
+      
+      // If no genres are mapped for this emotion(s), use a sensible fallback
+      if (selectedGenres.length === 0) {
+        const fallback = DEFAULT_MOOD_GENRES[emotionList[0]] || ['DOCUMENTARY']
+        selectedGenres.push(...fallback)
+      }
       
       setAvailableGenres(selectedGenres)
       setSelectedGenre(selectedGenres[0] || 'DOCUMENTARY')
