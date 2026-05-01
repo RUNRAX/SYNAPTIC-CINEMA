@@ -1,49 +1,35 @@
-# Implementation Plan: Details Layout & Glitch Transition Revamp
+# Synaptic Cinema UI Updates & Glitch Transition Refactor
 
-This plan outlines the required changes to remove the horizontal line styling, append new metadata beneath the trailer, and overhaul the glitch transition to use central geometric shapes with 50% transparency.
+## Goal Description
+The objective is to fix UI inconsistencies on the Details page (invisible IMDb score and empty gaps) and to completely overhaul the Glitch Overlay transition. The new transition will feature the word "SYNAPTIC" glitching in the center with diagonal scratches, heavy background blur, and a timing adjustment to ensure the next page is already loaded when the transition resolves.
 
 ## User Review Required
-
-> [!IMPORTANT]  
-> Please review the proposed changes below. If you have the second reference image available, let me know any specific colors or arrangements of the geometric shapes. Otherwise, I will implement a premium, aesthetic geometric glitch (circles, rectangles, squares) in the center of the screen.
-> 
-> Also, TMDB does not natively provide "Rotten Tomatoes" scores or "OTT Platforms" by default without extra API calls (like OMDb or TMDB watch providers). For now, I will use placeholder mock data for Rotten Tomatoes and OTT Platforms, or if you prefer, please confirm we should fetch them from a specific provider.
+Please review the proposed design of the new glitch transition. It uses "SYNAPTIC" text and diagonal slashes instead of the previous geometric shapes and horizontal lines. Let me know if you approve of these changes.
 
 ## Proposed Changes
 
----
+### `app/(main)/details/page.jsx`
+- **Fix IMDb Visibility**: The IMDb score is currently invisible because it has both `bg-black` and `text-black`. We will change it to `text-accent` or `text-cream` to make it legible against the dark background.
+- **Fill the Gap**: To make the metadata section look complete, we will extract additional information from the `details` object (such as `duration` and `release_date`) and add new rows below "ROTTEN TOMATOES" and "AVAILABLE ON".
 
-### Page Layout Refinement
-
-#### [MODIFY] `app/(main)/details/page.jsx`
-- **Remove Horizontal Lines:** 
-  - Delete the `<GlitchDivider />` component invocation at the bottom of the details section.
-  - Remove the `border-b border-[rgba(0,0,0,0.1)]` classes from the `Hero Backdrop` and `Main Content` wrapper divs.
-  - Remove the `lg:border-r border-[rgba(0,0,0,0.1)]` from the left column (Synopsis).
-- **Add Metadata Space:** 
-  - Below the Trailer iframe inside the right column, append a new metadata block.
-  - The block will display four categories: `Genre`, `IMDB`, `Rotten Tomatoes`, and `Available On` (OTT).
-  - Use high-fidelity brutalist/editorial styling matching the rest of the application (e.g., uppercase text, small fonts, wide tracking, borders for separation).
-
----
-
-### Glitch Transition Overhaul
-
-#### [MODIFY] `components/GlitchOverlay.jsx`
-- **Transparency:** 
-  - Change the overall overlay background and the final "black screen" flash to `bg-black/50` or an equivalent semi-transparent dark backdrop instead of full opacity black.
-  - Make sure the parent container uses `backdrop-blur-sm` or similar to keep the transition smooth but partially transparent.
-- **Geometric Shapes vs. Horizontal Lines:**
-  - Remove the 10 horizontal `.transition-slice` elements.
-  - Replace them with a cluster of geometric SVGs/divs (squares, thin rectangles, circles) positioned absolutely in the center region of the screen.
-  - These shapes will act as the "glitch" artifacts: scaling, skewing, and blinking rapidly using GSAP, accompanied by the RGB splits.
-  - Ensure the aesthetic looks premium, dynamic, and closely mimics a modern interface glitch rather than a broken TV scanline effect.
+### `components/GlitchOverlay.jsx`
+- **Remove Old Elements**: Delete the `.geo-shape` geometric shapes and the `.scanline-burst` horizontal lines to comply with the new aesthetic requirements.
+- **"SYNAPTIC" Text Glitch**: 
+  - Add a centered container with three text layers: a main white "SYNAPTIC" layer, a cyan layer, and a red layer.
+  - Animate the cyan and red layers using GSAP to shift their X and Y positions randomly, creating a chromatic aberration/glitch effect.
+- **Scratches/Slashes**:
+  - Add several thin, angled `div` elements positioned randomly across the screen.
+  - Animate their opacity and scale during the GSAP timeline to create a slashing effect.
+- **Background & Timing**:
+  - Update the overlay background to `bg-black/80 backdrop-blur-xl` for a heavy blur effect.
+  - Modify the GSAP timeline:
+    - **Phase 1**: Quickly fade in the overlay, blur, and text.
+    - **Phase 2**: Trigger the `callback` (page navigation).
+    - **Phase 3**: Perform the rapid text glitches and slash flashes while the page behind is navigating. Hold the overlay opaque for ~600ms so the new page renders.
+    - **Phase 4**: Fade out the overlay cleanly, revealing the fully loaded new page.
 
 ## Verification Plan
-
 ### Manual Verification
-1. Open any movie details page (`/details?id=...`).
-2. Verify that horizontal dividing lines are gone.
-3. Verify that the new metadata section (Genre, IMDB, Rotten Tomatoes, OTT Platform) is visible immediately below the trailer.
-4. Trigger a back navigation (`← BACK TO SECTOR`).
-5. Verify the glitch transition uses center-aligned geometric shapes instead of horizontal slices, and that the underlying page remains 50% visible (transparent overlay).
+- Navigate to the Details page and verify the IMDb score is clearly visible.
+- Check that the metadata section has been expanded to fill the gap.
+- Click a link to trigger the transition. Ensure the screen blurs heavily, "SYNAPTIC" glitches in the center, diagonal scratches appear, no horizontal lines are present, and the new page is visible immediately after the overlay fades.

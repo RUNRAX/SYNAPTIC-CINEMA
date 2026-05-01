@@ -1,3 +1,3 @@
-- [x] Remove horizontal lines and border styles from `app/(main)/details/page.jsx`
-- [x] Add Genre, IMDB, Rotten Tomatoes, and OTT Platform metadata section below trailer in `app/(main)/details/page.jsx`
-- [x] Refactor `components/GlitchOverlay.jsx` to use 50% transparency and central geometric shapes for glitch transition
+- [x] Fix IMDb score visibility and add extra metadata rows in `app/(main)/details/page.jsx`
+- [x] Refactor `components/GlitchOverlay.jsx` to use "SYNAPTIC" text glitch, diagonal scratches, heavy blur, and remove geometric shapes/horizontal lines
+- [x] Adjust GSAP timeline in `components/GlitchOverlay.jsx` to hold overlay opaque while the new page loads after callback

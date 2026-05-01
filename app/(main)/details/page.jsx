@@ -205,9 +205,21 @@ export default function Details() {
               <span className="font-body text-[10px] tracking-widest text-mid uppercase">GENRE</span>
               <span className="font-body text-[11px] font-bold text-black uppercase text-right">{details.genre || 'UNKNOWN'}</span>
             </div>
+            {details.duration && (
+              <div className="flex justify-between items-center border-b border-[rgba(0,0,0,0.1)] pb-2">
+                <span className="font-body text-[10px] tracking-widest text-mid uppercase">DURATION</span>
+                <span className="font-body text-[11px] font-bold text-black uppercase text-right">{details.duration}</span>
+              </div>
+            )}
+            {details.release_date && (
+              <div className="flex justify-between items-center border-b border-[rgba(0,0,0,0.1)] pb-2">
+                <span className="font-body text-[10px] tracking-widest text-mid uppercase">RELEASED</span>
+                <span className="font-body text-[11px] font-bold text-black uppercase text-right">{details.release_date}</span>
+              </div>
+            )}
             <div className="flex justify-between items-center border-b border-[rgba(0,0,0,0.1)] pb-2">
               <span className="font-body text-[10px] tracking-widest text-mid uppercase">IMDB</span>
-              <span className="font-body text-[11px] font-bold text-black uppercase bg-black text-accent px-2 py-0.5 text-right">{details.vote_average ? details.vote_average.toFixed(1) : 'N/A'}</span>
+              <span className="font-body text-[11px] font-bold bg-black text-cream px-2 py-0.5 text-right">{details.vote_average ? details.vote_average.toFixed(1) : 'N/A'}</span>
             </div>
             <div className="flex justify-between items-center border-b border-[rgba(0,0,0,0.1)] pb-2">
               <span className="font-body text-[10px] tracking-widest text-mid uppercase">ROTTEN TOMATOES</span>

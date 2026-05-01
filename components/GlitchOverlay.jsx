@@ -5,7 +5,6 @@ import gsap from 'gsap'
 
 export default function GlitchOverlay() {
   const overlayRef = useRef(null)
-  const contentRef = useRef(null)
 
   useEffect(() => {
     const handleGlitch = (e) => {
@@ -16,96 +15,86 @@ export default function GlitchOverlay() {
         return
       }
 
-      // Shapes for the glitch
-      const shapes = overlay.querySelectorAll('.geo-shape')
-      const rgbCyan = overlay.querySelector('.rgb-cyan')
-      const rgbRed = overlay.querySelector('.rgb-red')
-      const scanlineBurst = overlay.querySelector('.scanline-burst')
-      const noise = overlay.querySelector('.noise-burst')
+      const textCyan = overlay.querySelector('.synaptic-text-cyan')
+      const textRed = overlay.querySelector('.synaptic-text-red')
+      const slashes = overlay.querySelectorAll('.slash')
+      const content = overlay.querySelector('.content-container')
 
-      // Main Timeline
       const tl = gsap.timeline({
         onComplete: () => {
           gsap.set(overlay, { opacity: 0 })
-          // Reset styles
-          gsap.set(shapes, { clearProps: 'all' })
-          gsap.set([rgbCyan, rgbRed, scanlineBurst, noise], { clearProps: 'all' })
+          gsap.set([textCyan, textRed, slashes, content], { clearProps: 'all' })
         }
       })
 
-      // Phase 1: Break
-      gsap.set(overlay, { opacity: 1, backgroundColor: 'rgba(0,0,0,0)' })
+      // Phase 1: Break & Show Overlay
+      gsap.set(overlay, { opacity: 1, backgroundColor: 'rgba(0,0,0,0.8)' })
+      gsap.set(content, { opacity: 1 })
       
-      tl.to(shapes, {
-        x: () => gsap.utils.random(-150, 150),
-        y: () => gsap.utils.random(-150, 150),
-        scale: () => gsap.utils.random(0.5, 2.5),
-        skewX: () => gsap.utils.random(-30, 30),
-        rotation: () => gsap.utils.random(-45, 45),
-        opacity: () => gsap.utils.random(0.5, 1),
-        duration: 0.15,
-        stagger: 0.01,
-        ease: 'steps(3)'
-      }, 0)
-
-      tl.to([rgbCyan, rgbRed], {
-        x: (i) => i === 0 ? -6 : 6,
-        opacity: 0.6,
+      // Flash text offset layers
+      tl.to([textCyan, textRed], {
+        x: () => gsap.utils.random(-20, 20),
+        y: () => gsap.utils.random(-10, 10),
+        opacity: 1,
         duration: 0.1,
-        ease: 'none'
+        ease: 'steps(2)',
+        repeat: 3,
+        yoyo: true
       }, 0)
 
-      tl.to(scanlineBurst, {
-        opacity: 0.3,
-        scaleY: 1.2,
-        duration: 0.2
+      // Flash slashes
+      tl.to(slashes, {
+        opacity: () => gsap.utils.random(0.4, 0.9),
+        scaleY: () => gsap.utils.random(1, 1.5),
+        duration: 0.1,
+        stagger: 0.02,
+        ease: 'none',
+        repeat: 3,
+        yoyo: true
       }, 0)
 
-      // Phase 2: Hold & Flash
-      tl.to(overlay, {
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        duration: 0.05,
+      // Main text rapid slight scale to simulate impact
+      tl.to(content, {
+        scale: 1.05,
+        duration: 0.1,
+        yoyo: true,
+        repeat: 1
+      }, 0)
+
+      // Phase 2: Callback execution (while opaque and blurred)
+      tl.call(() => {
+        if (callback) callback()
+      }, [], 0.3)
+
+      // Phase 3: Hold overlay while new page is loading
+      // Add a slight flicker to keep it alive
+      tl.to(content, {
+        opacity: 0.8,
+        duration: 0.1,
         yoyo: true,
         repeat: 3
-      }, 0.2)
+      }, 0.3)
 
-      tl.to(noise, {
-        opacity: 0.4,
+      tl.to([textCyan, textRed], {
+        x: () => gsap.utils.random(-30, 30),
+        opacity: 0.5,
         duration: 0.1,
-        yoyo: true,
-        repeat: 2
-      }, 0.2)
+        ease: 'none',
+        repeat: 3,
+        yoyo: true
+      }, 0.3)
 
-      // Phase 3: Execute Callback (Semi-transparent Screen)
-      tl.to(overlay, {
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        duration: 0.1,
-        onComplete: () => {
-          if (callback) callback()
-        }
-      }, 0.4)
-
-      // Phase 4: Resolve (Fade out)
-      tl.to(shapes, {
-        x: 0,
-        y: 0,
-        scale: 1,
-        skewX: 0,
-        rotation: 0,
-        opacity: 0,
-        duration: 0.15,
-        ease: 'power2.out'
-      }, 0.55)
-
-      tl.to([rgbCyan, rgbRed, scanlineBurst, noise], {
-        opacity: 0,
-        duration: 0.1
-      }, 0.55)
-
-      tl.to(overlay, {
+      // Phase 4: Fade Out cleanly
+      tl.to([content, slashes], {
         opacity: 0,
         duration: 0.15
-      }, 0.6)
+      }, 0.7)
+
+      tl.to(overlay, {
+        opacity: 0,
+        duration: 0.3,
+        ease: 'power2.out'
+      }, 0.85)
     }
 
     window.addEventListener('trigger-glitch', handleGlitch)
@@ -116,38 +105,28 @@ export default function GlitchOverlay() {
     <div 
       id="glitch-overlay" 
       ref={overlayRef}
-      className="fixed inset-0 z-[8888] pointer-events-none flex items-center justify-center opacity-0 bg-black/50 backdrop-blur-sm"
+      className="fixed inset-0 z-[8888] pointer-events-none flex items-center justify-center opacity-0 bg-black/80 backdrop-blur-xl"
     >
-      {/* Geometric Center Shapes */}
-      <div className="relative w-[300px] h-[300px] flex items-center justify-center">
-        {Array.from({ length: 8 }).map((_, i) => {
-          const types = ['rounded-full', 'rounded-none', 'rounded-none w-32 h-4', 'rounded-none w-4 h-32'];
-          const shapeClass = types[i % types.length];
-          // Use pseudo-random static sizing to avoid hydration mismatch if not handled,
-          // but since this is client side overlay rendering it's fine.
-          const size = 40 + (i * 15) % 80;
-          return (
-            <div 
-              key={i} 
-              className={`geo-shape absolute bg-black border border-white will-change-transform opacity-0 ${shapeClass}`}
-              style={{ 
-                width: shapeClass.includes('w-') ? undefined : size, 
-                height: shapeClass.includes('h-') ? undefined : size 
-              }}
-            ></div>
-          )
-        })}
+      <div className="content-container relative flex items-center justify-center opacity-0">
+         <h1 className="font-display text-[60px] md:text-[100px] lg:text-[140px] text-white tracking-tighter uppercase relative z-10 leading-none drop-shadow-xl">SYNAPTIC</h1>
+         <h1 className="synaptic-text-cyan font-display text-[60px] md:text-[100px] lg:text-[140px] text-cyan-400 tracking-tighter uppercase absolute top-0 left-0 mix-blend-screen opacity-0 leading-none">SYNAPTIC</h1>
+         <h1 className="synaptic-text-red font-display text-[60px] md:text-[100px] lg:text-[140px] text-red-600 tracking-tighter uppercase absolute top-0 left-0 mix-blend-screen opacity-0 leading-none">SYNAPTIC</h1>
       </div>
-
-      {/* RGB Layers */}
-      <div className="rgb-cyan absolute inset-0 bg-[rgba(0,255,255,0.2)] mix-blend-screen opacity-0 will-change-transform"></div>
-      <div className="rgb-red absolute inset-0 bg-[rgba(255,0,0,0.2)] mix-blend-screen opacity-0 will-change-transform"></div>
-
-      {/* Scanline Burst */}
-      <div className="scanline-burst absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.5)_2px,rgba(0,0,0,0.5)_4px)] opacity-0 mix-blend-overlay will-change-transform"></div>
-
-      {/* Noise Burst */}
-      <div className="noise-burst absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg viewBox=\\'0 0 256 256\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Cfilter id=\\'noise\\'%3E%3CfeTurbulence type=\\'fractalNoise\\' baseFrequency=\\'0.9\\' numOctaves=\\'4\\' stitchTiles=\\'stitch\\'/%3E%3C/filter%3E%3Crect width=\\'100%25\\' height=\\'100%25\\' filter=\\'url(%23noise)\\'/%3E%3C/svg%3E')] opacity-0 mix-blend-difference will-change-opacity"></div>
+      
+      {/* Scratches/Slashes */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none mix-blend-overlay">
+        {Array.from({length: 8}).map((_, i) => (
+          <div 
+            key={i} 
+            className={`slash absolute bg-white/50 w-[2px] h-[150%] origin-center opacity-0`} 
+            style={{
+               left: `${10 + i * 12}%`,
+               top: '-25%',
+               transform: `rotate(${i % 2 === 0 ? 45 : -45}deg) scaleY(1)`
+            }}
+          ></div>
+        ))}
+      </div>
     </div>
   )
 }
