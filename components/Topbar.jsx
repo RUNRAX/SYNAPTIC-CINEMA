@@ -2,8 +2,10 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { triggerGlitch } from '@/hooks/useGlitch'
 import { Menu } from 'lucide-react'
+import MobileMenu from './MobileMenu'
 
 const topLinks = [
   { label: 'EXHIBITION', href: '/exhibition' },
@@ -14,6 +16,7 @@ const topLinks = [
 export default function Topbar() {
   const pathname = usePathname()
   const router = useRouter()
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const handleNav = (e, href) => {
     e.preventDefault()
@@ -60,9 +63,15 @@ export default function Topbar() {
       </nav>
 
       {/* Mobile Menu Toggle */}
-      <button className="lg:hidden flex items-center gap-2 font-body text-[11px] tracking-widest text-black">
+      <button 
+        className="lg:hidden flex items-center gap-2 font-body text-[11px] tracking-widest text-black"
+        onClick={() => setIsMobileMenuOpen(true)}
+      >
         MENU <Menu size={16} strokeWidth={1.5} />
       </button>
+
+      {/* Mobile Menu Overlay */}
+      <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
     </header>
   )
 }

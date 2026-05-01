@@ -1,6 +1,6 @@
-- [x] Modify `components/MoodBars.jsx` to add Fear and Disgust to `moodData`.
-- [x] Modify `app/(main)/settings/page.jsx` to add disgust to `EMOTIONS` and `DEFAULT_MOOD_GENRES`.
-- [x] Modify `app/(main)/analysis/page.jsx` to add disgust to `DEFAULT_MOOD_GENRES` and map `fear`/`disgust` into `setResults`.
-- [x] Modify `lib/server/tmdb.js` to add `disgust` to `EMOTION_GENRE_MAP`.
-- [x] Modify `BACKEND/app.py` to add `disgust` to `genre_map`.
+- [x] Create `components/MobileMenu.jsx` component for full-screen navigation overlay.
+- [x] Update `components/Topbar.jsx` to import and render `<MobileMenu />`.
+- [x] Add `useState` in `components/Topbar.jsx` to toggle the menu open/closed.
+- [x] Add `onClick` to the Mobile MENU button in `Topbar.jsx` to open the mobile menu.
+- [x] Verify the mobile menu works correctly on small screens.
 - [x] Update `checkpoint_latest` in memory upon completion.

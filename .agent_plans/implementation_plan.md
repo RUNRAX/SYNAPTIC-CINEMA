@@ -1,43 +1,41 @@
-# Add 'Fear' and 'Disgust' Emotions
+# Mobile Menu Implementation Plan
 
-This plan outlines the steps to fully integrate the missing emotions (`fear` and `disgust`) into the platform. While the backend model and `faceApi.js` can detect them, they are currently missing from various UI components and recommendation maps.
+## Issue Description
+Currently, the sidebar and the links in the topbar (Exhibition, Collection) are not present in mobile view. 
 
-## User Review Required
-> [!NOTE]
-> Please review the default genre mapping below for these emotions. Are you satisfied with these genre fallback choices?
-> - **Fear**: `['HORROR', 'THRILLER']`
-> - **Disgust**: `['THRILLER', 'HORROR']` (Can also map to Crime/Mystery if you prefer)
+**Reason:** 
+The `Sidebar.jsx` component and the desktop navigation wrapper in `Topbar.jsx` are styled with Tailwind's `hidden lg:flex` classes. This hides them on smaller screens to conserve space. However, a mobile alternative (like a hamburger menu) was not fully implemented. The `Topbar` has a "MENU" button, but it currently does not do anything when clicked.
 
 ## Proposed Changes
 
----
+To correct this and provide full navigation on mobile devices, we need to implement a mobile menu overlay.
 
-### UI Components
+### 1. `components/MobileMenu.jsx` [NEW]
+Create a new component for the mobile navigation drawer/overlay.
+- It will use the `glass-frost` and dark aesthetic to match the rest of the application.
+- It will display all navigation links that are normally split between the Sidebar and Topbar:
+  - Home
+  - Search
+  - Exhibition
+  - Collection
+  - Analysis
+  - Profile
+  - Settings
+- It will use `framer-motion` for a smooth slide-in or fade-in transition.
+- It will include a close button to dismiss the menu.
 
-#### [MODIFY] `components/MoodBars.jsx`
-- Add `Fear` and `Disgust` to the `moodData` array so they visually render on the Analysis page when detected.
+### 2. `components/Topbar.jsx` [MODIFY]
+Update the Topbar to manage the state of the mobile menu.
+- Add a `useState` hook: `const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)`.
+- Update the existing "MENU" button to toggle this state: `onClick={() => setIsMobileMenuOpen(true)}`.
+- Render the `<MobileMenu />` component, passing the state and the close handler as props.
 
-#### [MODIFY] `app/(main)/settings/page.jsx`
-- Add `disgust` to the `EMOTIONS` array so users can configure it in their Mood & Genre Mapping settings. (Fear is already there).
-- Add a default genre fallback for `disgust` (e.g. `['THRILLER', 'HORROR']`).
-
-#### [MODIFY] `app/(main)/analysis/page.jsx`
-- Ensure `disgust` is present in `DEFAULT_MOOD_GENRES`.
-- Update the `setResults` logic inside `startAnalysis` to correctly pull `fear` (mapped from `fearful` in faceApi) and `disgust` (mapped from `disgusted` in faceApi) from the detection expressions so they are passed to the `MoodBars` component.
-
----
-
-### Backend / Recommendation Logic
-
-#### [MODIFY] `lib/server/tmdb.js`
-- Update `EMOTION_GENRE_MAP` to include `disgust: { movie: [27, 53], tv: [9648, 10765] }`. (Fear is already correctly mapped here).
-
-#### [MODIFY] `BACKEND/app.py`
-- Update the `genre_map` inside the `/recommendations` route to include the exact same mapping for `disgust` to keep the Python backend perfectly synchronized with the Next.js API.
+## User Review Required
+> [!IMPORTANT]
+> The mobile menu will combine links from both the Topbar and Sidebar into a single full-screen glass-frost overlay. Does this approach align with your design vision for mobile devices?
 
 ## Verification Plan
-
-### Manual Verification
-- Go to Settings and verify that "When I am disgust..." appears and can be configured.
-- Go to Analysis, run a facial scan (make a disgusted or fearful face) and verify that the metrics chart displays bars for Fear and Disgust.
-- Ensure recommendations load correctly when these emotions are triggered.
+1. Test the application in mobile view (screen width < 1024px).
+2. Verify that clicking the "MENU" button in the Topbar opens the mobile menu overlay.
+3. Verify that all links (Exhibition, Collection, Home, etc.) are present and clickable.
+4. Verify that clicking a link navigates to the correct page and closes the menu overlay.
