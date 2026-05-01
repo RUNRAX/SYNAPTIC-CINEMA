@@ -1,0 +1,90 @@
+'use client'
+
+import { useRef, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import LensGraphic from '@/components/LensGraphic'
+import MagneticButton from '@/components/MagneticButton'
+import RippleButton from '@/components/RippleButton'
+import { useParallax } from '@/hooks/useParallax'
+
+export default function Home() {
+  const router = useRouter()
+  const heroRef = useRef(null)
+  const titleRef = useRef(null)
+  const { x, y } = useParallax(heroRef)
+
+  // Staggered entry animation is handled by framer-motion in layout, but we can add specific delays
+  useEffect(() => {
+    const elements = document.querySelectorAll('.animate-enter')
+    elements.forEach((el, i) => {
+      el.style.opacity = '0'
+      el.style.transform = 'translateY(20px)'
+      setTimeout(() => {
+        el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out'
+        el.style.opacity = '1'
+        el.style.transform = 'translateY(0)'
+      }, i * 100 + 200) // Delay starts after layout transition
+    })
+  }, [])
+
+  return (
+    <div 
+      ref={heroRef}
+      className="relative w-full h-full min-h-[calc(100vh-104px)] flex flex-col lg:flex-row"
+    >
+      <div className="ghost-text bottom-0 left-4 lg:left-12">CINEMA</div>
+
+      {/* Left Zone - Text */}
+      <div className="flex-1 flex flex-col justify-center px-6 lg:px-16 py-12 lg:py-0 relative z-10">
+        <h1 
+          ref={titleRef}
+          className="font-display text-[clamp(60px,8vw,100px)] leading-[0.92] text-black uppercase mb-12 animate-enter"
+          style={{ transform: `translate(${x * 24}px, ${y * 12}px)`, transition: 'transform 0.15s ease-out' }}
+        >
+          <span className="block">A faster,</span>
+          <span className="block">mood-shaped</span>
+          <span className="block">cinema surface</span>
+          <span className="block">for movies</span>
+          <span className="block">and series.</span>
+        </h1>
+
+        <div className="animate-enter">
+          <MagneticButton 
+            onClick={() => router.push('/collection')}
+            className="w-[100px] h-[100px] rounded-full border border-black text-black hover:bg-black hover:text-cream font-body text-[11px] tracking-widest uppercase transition-colors"
+          >
+            View Details
+          </MagneticButton>
+        </div>
+      </div>
+
+      {/* Right Zone - Visual + Stats */}
+      <div className="w-full lg:w-[320px] shrink-0 border-t lg:border-t-0 lg:border-l border-[rgba(0,0,0,0.1)] flex flex-col relative z-10 bg-cream">
+        {/* Crosshair markers for right zone handled by global GridLines, but we can add specific ones if needed */}
+        
+        {/* Lens Area */}
+        <div className="flex-1 flex items-center justify-center p-8 animate-enter relative">
+          <LensGraphic />
+        </div>
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-2 gap-[1px] bg-[rgba(0,0,0,0.1)] border-t border-[rgba(0,0,0,0.1)]">
+          <StatBox title="Trending Now" value="40+" />
+          <StatBox title="Featured Films" value="40+" />
+          <StatBox title="Popular Series" value="40+" className="col-span-2" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function StatBox({ title, value, className = '' }) {
+  return (
+    <RippleButton className={`group bg-cream p-6 flex flex-col items-start transition-colors duration-300 hover:bg-black animate-enter ${className}`}>
+      <span className="font-display text-4xl lg:text-5xl text-black group-hover:text-cream mb-2 transition-colors duration-300">{value}</span>
+      <span className="font-body text-[10px] text-mid group-hover:text-gray tracking-widest uppercase transition-colors duration-300 w-1/2 leading-relaxed">
+        {title}
+      </span>
+    </RippleButton>
+  )
+}

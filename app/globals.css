@@ -1,152 +1,178 @@
-/* ═══════════════════════════════════════════════════════════════
-   SYNAPTIC — Dark Frosted Glass Design System
-   Single dark theme optimized for northern lights background
-   ═══════════════════════════════════════════════════════════════ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  /* ── Core palette ── */
-  --primary-white: #0a0e1a;
-  --secondary-white: #0f1328;
-  --silver: #a0b4ff;
-  --silver-light: rgba(140, 160, 255, 0.15);
-  --silver-dark: #7b8ef0;
+@layer base {
+  :root {
+    --black: #0A0A0A;
+    --cream: #F2EDE3;
+    --cream-2: #E8E2D4;
+    --gray: #B8B3A8;
+    --mid: #6B6660;
+    --accent: #C8FF00;
+    --red: #FF2D2D;
+    --white: #FFFFFF;
+  }
 
-  /* ── Grey scale (inverted for dark) ── */
-  --grey-100: #0d1224;
-  --grey-200: #151c34;
-  --grey-300: #1e2848;
-  --grey-400: #5a6a9a;
-  --grey-500: #8494c0;
-  --grey-600: #b0bde0;
-  --grey-700: #d8e0f8;
-  --grey-800: #eef2ff;
-  --grey-900: #ffffff;
+  body {
+    background-color: var(--cream);
+    color: var(--black);
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+  
+  /* Apply body font as default */
+  html {
+    font-family: var(--font-space-grotesk), sans-serif;
+  }
 
-  /* ── Shadows ── */
-  --shadow-light: rgba(0, 0, 0, 0.30);
-  --shadow-medium: rgba(0, 0, 0, 0.45);
-  --shadow-heavy: rgba(0, 0, 0, 0.60);
-
-  /* ── Frosted glass surfaces ── */
-  --glass-bg: rgba(12, 16, 35, 0.55);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-border-strong: rgba(255, 255, 255, 0.14);
-  --surface-elevated: linear-gradient(
-    180deg,
-    rgba(16, 22, 48, 0.72),
-    rgba(10, 14, 32, 0.55)
-  );
-  --panel-shadow: 0 30px 80px rgba(0, 0, 0, 0.50);
-
-  /* ── Text ── */
-  --text-strong: #eef2ff;
-  --text-soft: #b0bde0;
-  --text-muted: #6e7da8;
-
-  /* ── Shimmer (dark) ── */
-  --shimmer: rgba(30, 40, 72, 0.65);
-  --shimmer-shine: rgba(80, 100, 180, 0.22);
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html {
-  overflow-y: scroll;
-  scroll-behavior: smooth;
-}
-
-html,
-body {
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-body {
-  margin: 0;
-  font-family: 'SF Pro Display', 'SF Pro Text', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-overflow-scrolling: touch;
-  background: #0a0e1a;
-  color: var(--text-strong);
-  min-height: 100vh;
-}
-
-a {
-  color: inherit;
-}
-
-button,
-input,
-select,
-textarea {
-  font: inherit;
-}
-
-::selection {
-  background: rgba(140, 160, 255, 0.30);
-}
-
-/* ── Skeleton loading (dark glass) ── */
-.movie-card-skeleton {
-  background: rgba(16, 22, 48, 0.50);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 28px;
-  overflow: hidden;
-  position: relative;
-  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.30);
-}
-
-.skeleton-image {
-  width: 100%;
-  aspect-ratio: 2 / 3;
-  background: linear-gradient(135deg, rgba(30, 40, 72, 0.7), rgba(20, 28, 55, 0.5));
-}
-
-.skeleton-text-container {
-  padding: 1.3rem;
-}
-
-.skeleton-text {
-  height: 1rem;
-  background: rgba(40, 52, 90, 0.55);
-  border-radius: 999px;
-  margin-bottom: 0.75rem;
-}
-
-.skeleton-text.short {
-  width: 58%;
-}
-
-.shimmer-wrapper {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    110deg,
-    transparent 22%,
-    rgba(100, 120, 200, 0.12) 46%,
-    transparent 70%
-  );
-  transform: translateX(-100%);
-  animation: shimmer 1.8s linear infinite;
-}
-
-@keyframes shimmer {
-  to {
-    transform: translateX(100%);
+  /* No border radius anywhere unless explicitly a pill */
+  * {
+    border-radius: 0;
+  }
+  
+  /* No box shadows except focus rings */
+  *:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
   }
 }
 
+@layer utilities {
+  .ghost-text {
+    font-family: var(--font-bebas-neue);
+    font-size: clamp(120px, 14vw, 200px);
+    position: absolute;
+    opacity: 0.04;
+    pointer-events: none;
+    line-height: 0.9;
+    white-space: nowrap;
+    z-index: 0;
+  }
+}
+
+/* --- Global Custom Cursor --- */
+body.custom-cursor-active {
+  cursor: none;
+}
+body.custom-cursor-active a, 
+body.custom-cursor-active button, 
+body.custom-cursor-active [onclick] {
+  cursor: none;
+}
+
+#custom-cursor-dot {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  background-color: white;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+}
+
+#custom-cursor-circle {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border: 1px solid white;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+  transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease, transform 0.1s ease-out;
+}
+
+#custom-cursor-circle.hovering {
+  width: 48px;
+  height: 48px;
+  border-color: var(--accent);
+}
+
+#custom-cursor-circle.clicking {
+  transform: translate(-50%, -50%) scale(0.7);
+}
+
+/* --- Noise Overlay --- */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  z-index: 9000;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+}
+
+/* --- Scanline Effect --- */
+.scanline {
+  position: fixed;
+  width: 100%;
+  height: 2px;
+  background: rgba(200, 255, 0, 0.08);
+  animation: scanline 4s linear infinite;
+  pointer-events: none;
+  z-index: 8999;
+}
+@keyframes scanline {
+  0%  { top: -2px; }
+  100%{ top: 100%; }
+}
+
+/* --- Grid Crosshairs --- */
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.grid-h { position:absolute; width:100%; height:1px; background:rgba(0,0,0,0.06); }
+.grid-v { position:absolute; height:100%; width:1px; background:rgba(0,0,0,0.06); }
+.cross  { position:absolute; width:12px; height:12px; pointer-events:none; }
+.cross::before { content:''; position:absolute; width:1px; height:100%; left:50%; top:0; background:rgba(0,0,0,0.2); }
+.cross::after  { content:''; position:absolute; width:100%; height:1px; top:50%; left:0; background:rgba(0,0,0,0.2); }
+
+/* --- Ripple Animation --- */
+@keyframes ripple-expand {
+  0% { transform: scale(0); opacity: 0.8; }
+  100% { transform: scale(30); opacity: 0; }
+}
+
+.ripple-element {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-circle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.12);
+  transform: scale(0);
+  pointer-events: none;
+  animation: ripple-expand 0.6s ease-out;
+  z-index: 99;
+}
+
+/* --- Ticker Animation --- */
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* --- Reduced Motion --- */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, ::before, ::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  .scanline, .noise-overlay {
+    display: none;
   }
 }
