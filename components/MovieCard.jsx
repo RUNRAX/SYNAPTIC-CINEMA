@@ -54,14 +54,14 @@ export default function MovieCard({ movie, onClick }) {
         
         {/* Rating Badge (if available) */}
         {movie.vote_average > 0 && (
-          <div className="absolute top-2 right-2 bg-black text-cream px-2 py-1 font-body text-[9px] tracking-widest z-10 transition-colors group-hover:bg-accent group-hover:text-black">
+          <div className="absolute top-2 right-2 bg-black/80 backdrop-blur-sm text-cream px-2 py-1 font-body text-[9px] tracking-widest z-10 transition-colors group-hover:bg-accent group-hover:text-black">
             {movie.vote_average.toFixed(1)}
           </div>
         )}
       </div>
 
       {/* Content */}
-      <div className="p-4 bg-cream/70 backdrop-blur-md border-t border-[rgba(0,0,0,0.1)] transition-colors duration-300 group-hover:bg-black/70 group-hover:text-cream flex flex-col gap-[2px] z-20 rounded-b-xl">
+      <div className="p-4 glass-frost-light border-t border-[rgba(0,0,0,0.1)] transition-colors duration-300 group-hover:bg-black/70 group-hover:text-cream flex flex-col gap-[2px] z-20 rounded-b-xl">
         <h3 className="font-body font-bold text-[11px] truncate uppercase tracking-wide">{movie.title}</h3>
         <p className="font-body text-[9px] text-mid group-hover:text-gray uppercase tracking-wider">
           {movie.year} · {movie.genre}

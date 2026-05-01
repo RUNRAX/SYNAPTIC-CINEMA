@@ -4,8 +4,10 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import RippleButton from '@/components/RippleButton'
 import { triggerGlitch } from '@/hooks/useGlitch'
+import { useFlickerIn } from '@/hooks/useFlickerIn'
 
 export default function Exhibition() {
+  useFlickerIn()
   const router = useRouter()
   const [panels, setPanels] = useState([])
   const [loading, setLoading] = useState(true)
@@ -34,7 +36,7 @@ export default function Exhibition() {
   return (
     <div className="w-full h-[calc(100vh-104px)] flex flex-col relative overflow-hidden">
       {/* Secondary Ticker - Absolute top */}
-      <div className="absolute top-0 left-0 right-0 h-[32px] bg-black z-20 flex items-center overflow-hidden">
+      <div className="absolute top-0 left-0 right-0 h-[32px] glass-frost-dark z-20 flex items-center overflow-hidden">
         <div className="flex whitespace-nowrap text-[9px] tracking-[0.2em] font-body text-gray uppercase animate-[ticker_16s_linear_infinite] will-change-transform">
           {Array(6).fill('NOIR CLASSICS ◆ SCI-FI VISIONS ◆ WORLD CINEMA ◆ HORROR COLLECTION ◆ DOCUMENTARY SERIES ◆ ').map((text, i) => (
             <span key={i} className="pr-1">{text}</span>
@@ -57,7 +59,7 @@ export default function Exhibition() {
               <RippleButton 
                 key={panel.name}
                 onClick={() => handleNav(panel.name)}
-                className={`flex-1 relative group overflow-hidden exhibition-panel border-b lg:border-b-0 lg:border-r ${isDark ? 'border-[rgba(255,255,255,0.1)]' : 'border-[rgba(0,0,0,0.1)]'} text-left`}
+                className={`flex-1 relative group overflow-hidden exhibition-panel border-b lg:border-b-0 lg:border-r ${isDark ? 'border-[rgba(255,255,255,0.1)] glass-frost-dark' : 'border-[rgba(0,0,0,0.1)] glass-frost'} text-left animate-enter`}
               >
                 {/* Background Poster (Darkened/Tinted) */}
                 <div className="absolute inset-0 z-0">

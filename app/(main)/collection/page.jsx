@@ -5,8 +5,10 @@ import MovieCard from '@/components/MovieCard'
 import { useMovies } from '@/hooks/useMovies'
 import { useEffect, useState } from 'react'
 import { triggerGlitch } from '@/hooks/useGlitch'
+import { useFlickerIn } from '@/hooks/useFlickerIn'
 
 export default function Collection() {
+  useFlickerIn()
   const searchParams = useSearchParams()
   const router = useRouter()
   const genreParam = searchParams.get('genre')
@@ -65,7 +67,7 @@ export default function Collection() {
   return (
     <div className="w-full min-h-full flex flex-col relative pb-8">
       {/* Header */}
-      <div className="px-6 lg:px-12 py-12 relative z-10 border-b border-[rgba(0,0,0,0.1)] flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+      <div className="px-6 lg:px-12 py-12 relative z-10 border-b border-[rgba(0,0,0,0.1)] flex flex-col md:flex-row justify-between items-start md:items-end gap-6 glass-frost animate-enter">
         <div>
           <h1 className="font-display text-7xl text-black leading-none mb-4">Collection</h1>
           <p className="font-body text-[12px] text-mid tracking-[0.08em] uppercase max-w-md">
@@ -73,16 +75,16 @@ export default function Collection() {
           </p>
         </div>
         
-        <div className="flex bg-cream-2 p-1 border border-[rgba(0,0,0,0.1)]">
+        <div className="flex glass-frost-light p-1 border border-[rgba(0,0,0,0.1)] animate-enter">
           <button 
             onClick={() => setShowSaved(false)}
-            className={`px-6 py-2 font-body text-[10px] tracking-widest uppercase transition-colors ${!showSaved ? 'bg-black text-cream' : 'text-black hover:bg-[rgba(0,0,0,0.05)]'}`}
+            className={`px-6 py-2 font-body text-[10px] tracking-widest uppercase transition-colors rounded-lg ${!showSaved ? 'bg-black text-cream glass-frost-dark' : 'text-black hover:bg-[rgba(0,0,0,0.05)]'}`}
           >
             DISCOVER
           </button>
           <button 
             onClick={() => setShowSaved(true)}
-            className={`px-6 py-2 font-body text-[10px] tracking-widest uppercase transition-colors ${showSaved ? 'bg-black text-cream' : 'text-black hover:bg-[rgba(0,0,0,0.05)]'}`}
+            className={`px-6 py-2 font-body text-[10px] tracking-widest uppercase transition-colors rounded-lg ${showSaved ? 'bg-black text-cream glass-frost-dark' : 'text-black hover:bg-[rgba(0,0,0,0.05)]'}`}
           >
             MY SAVED
           </button>

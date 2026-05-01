@@ -6,8 +6,10 @@ import Link from 'next/link'
 import { User } from '@/entities/User'
 import NoiseOverlay from '@/components/NoiseOverlay'
 import MagneticButton from '@/components/MagneticButton'
+import { useFlickerIn } from '@/hooks/useFlickerIn'
 
 export default function Splash() {
+  useFlickerIn()
   const router = useRouter()
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -45,7 +47,7 @@ export default function Splash() {
       </div>
 
       <div className="relative z-10 w-full max-w-md px-6">
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 animate-enter">
           <h2 className="font-display text-8xl tracking-tight leading-[0.85] mb-4">SYNAPTIC<br/>CINEMA</h2>
           <p className="font-body text-[11px] tracking-widest uppercase text-mid max-w-xs mx-auto">
             Mood-first movie discovery. Explore the surface of cinema.
@@ -57,10 +59,10 @@ export default function Splash() {
             <div className="w-8 h-8 border-2 border-t-accent border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin"></div>
           </div>
         ) : (
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 animate-enter">
             {user ? (
               <div className="flex flex-col gap-6">
-                <div className="text-center border border-[rgba(0,0,0,0.1)] p-4 bg-cream-2">
+                <div className="text-center border border-[rgba(0,0,0,0.1)] p-4 glass-frost-light">
                   <p className="font-body text-[11px] tracking-widest text-mid mb-1">WELCOME BACK</p>
                   <p className="font-body font-bold text-sm uppercase">SYNAPTIC USER</p>
                 </div>
@@ -80,10 +82,10 @@ export default function Splash() {
                   ENTER AS GUEST →
                 </MagneticButton>
                 <div className="grid grid-cols-2 gap-4">
-                  <Link href="/login" className="flex items-center justify-center border border-[rgba(0,0,0,0.1)] text-black hover:bg-black hover:text-cream font-body text-[10px] tracking-widest h-12 transition-colors uppercase">
+                  <Link href="/login" className="flex items-center justify-center border border-[rgba(0,0,0,0.1)] text-black hover:bg-black hover:text-cream font-body text-[10px] tracking-widest h-12 transition-colors uppercase glass-frost-light">
                     LOG IN
                   </Link>
-                  <Link href="/signup" className="flex items-center justify-center border border-[rgba(0,0,0,0.1)] text-black hover:bg-black hover:text-cream font-body text-[10px] tracking-widest h-12 transition-colors uppercase">
+                  <Link href="/signup" className="flex items-center justify-center border border-[rgba(0,0,0,0.1)] text-black hover:bg-black hover:text-cream font-body text-[10px] tracking-widest h-12 transition-colors uppercase glass-frost-light">
                     SIGN UP
                   </Link>
                 </div>

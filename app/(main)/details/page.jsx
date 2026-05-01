@@ -7,8 +7,10 @@ import { triggerGlitch } from '@/hooks/useGlitch'
 import MovieSliderSection from '@/components/MovieSliderSection'
 import RippleButton from '@/components/RippleButton'
 import GlitchDivider from '@/components/GlitchDivider'
+import { useFlickerIn } from '@/hooks/useFlickerIn'
 
 export default function Details() {
+  useFlickerIn()
   const searchParams = useSearchParams()
   const router = useRouter()
   const id = searchParams.get('id')
@@ -99,7 +101,7 @@ export default function Details() {
       <div className="fixed top-20 left-6 lg:left-[224px] z-30">
         <button 
           onClick={handleBack}
-          className="bg-black/50 backdrop-blur-md border border-white/20 text-white px-4 py-2 font-body text-[10px] tracking-widest uppercase hover:bg-white hover:text-black transition-colors"
+          className="bg-black/50 backdrop-blur-md border border-white/20 text-white px-4 py-2 font-body text-[10px] tracking-widest uppercase hover:bg-white hover:text-black transition-colors glass-frost-dark rounded-lg animate-enter"
         >
           ← BACK TO SECTOR
         </button>
@@ -120,7 +122,7 @@ export default function Details() {
         <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg viewBox=\\'0 0 256 256\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Cfilter id=\\'noise\\'%3E%3CfeTurbulence type=\\'fractalNoise\\' baseFrequency=\\'0.9\\' numOctaves=\\'4\\' stitchTiles=\\'stitch\\'/%3E%3C/filter%3E%3Crect width=\\'100%25\\' height=\\'100%25\\' filter=\\'url(%23noise)\\'/%3E%3C/svg%3E')] opacity-[0.035] pointer-events-none mix-blend-overlay"></div>
         
         {/* Title Block */}
-        <div className="relative z-10 w-full px-6 lg:px-12 pb-12 flex flex-col md:flex-row md:items-end justify-between gap-8">
+        <div className="relative z-10 w-full px-6 lg:px-12 pb-12 flex flex-col md:flex-row md:items-end justify-between gap-8 animate-enter">
           <div className="max-w-4xl">
             <h1 className="font-display text-[clamp(40px,6vw,120px)] leading-[0.9] text-black uppercase mb-4 drop-shadow-sm">
               {details.title}
@@ -138,7 +140,7 @@ export default function Details() {
 
           <RippleButton 
             onClick={toggleSave}
-            className={`shrink-0 px-8 py-4 font-body text-[11px] tracking-widest uppercase transition-colors border ${isSaved ? 'bg-black text-cream border-black' : 'bg-transparent text-black border-black hover:bg-black hover:text-cream'}`}
+            className={`shrink-0 px-8 py-4 font-body text-[11px] tracking-widest uppercase transition-colors border ${isSaved ? 'bg-black text-cream border-black' : 'bg-transparent text-black border-black hover:bg-black hover:text-cream glass-frost-light'}`}
           >
             {isSaved ? '- REMOVE FROM COLLECTION' : '+ ADD TO COLLECTION'}
           </RippleButton>
@@ -149,7 +151,7 @@ export default function Details() {
       <div className="w-full flex flex-col lg:flex-row">
         
         {/* Left Col: Synopsis & Credits */}
-        <div className="flex-1 p-6 lg:p-12 overflow-hidden min-w-0">
+        <div className="flex-1 p-6 lg:p-12 overflow-hidden min-w-0 animate-enter">
           <h2 className="font-body text-[11px] tracking-[0.2em] uppercase text-mid mb-6">SYNOPSIS</h2>
           <p className="font-body text-[16px] lg:text-[20px] leading-[1.6] text-black max-w-3xl mb-16">
             {details.overview}
@@ -181,7 +183,7 @@ export default function Details() {
         </div>
 
         {/* Right Col: Trailer */}
-        <div className="w-full lg:w-[450px] shrink-0 bg-cream-2 p-6 lg:p-12 flex flex-col">
+        <div className="w-full lg:w-[450px] shrink-0 glass-frost p-6 lg:p-12 flex flex-col animate-enter">
           <h2 className="font-body text-[11px] tracking-[0.2em] uppercase text-mid mb-6">TRAILER ARCHIVE</h2>
           
           {details.trailerKey ? (

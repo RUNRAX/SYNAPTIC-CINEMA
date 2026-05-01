@@ -6,6 +6,7 @@ import MoodBars from '@/components/MoodBars'
 import RippleButton from '@/components/RippleButton'
 import MovieSliderSection from '@/components/MovieSliderSection'
 import { preloadModels, detectMixedEmotions } from '@/lib/faceApi'
+import { useFlickerIn } from '@/hooks/useFlickerIn'
 
 const MOOD_TO_GENRE = {
   happy: 'COMEDY',
@@ -33,6 +34,7 @@ const GENRE_NAME_TO_ID = {
 }
 
 export default function Analysis() {
+  useFlickerIn()
   const router = useRouter()
   const [analyzing, setAnalyzing] = useState(false)
   const [results, setResults] = useState(null)
@@ -166,10 +168,10 @@ export default function Analysis() {
         <div className="ghost-text top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">ANALYSIS</div>
         
         {/* LEFT: Camera / Scanner UI */}
-        <div className="flex-1 border-b lg:border-b-0 lg:border-r border-[rgba(0,0,0,0.1)] p-6 lg:p-12 flex flex-col justify-center relative z-10">
+        <div className="flex-1 border-b lg:border-b-0 lg:border-r border-[rgba(0,0,0,0.1)] p-6 lg:p-12 flex flex-col justify-center relative z-10 animate-enter">
           <h1 className="font-display text-5xl mb-8 uppercase">Facial <br/>Scan</h1>
           
-          <div className="relative w-full aspect-video bg-black max-w-2xl mx-auto border border-black overflow-hidden flex items-center justify-center">
+          <div className="relative w-full aspect-video glass-frost-dark max-w-2xl mx-auto border border-black overflow-hidden flex items-center justify-center">
             {analyzing ? (
               <>
                 <video 
@@ -199,7 +201,7 @@ export default function Analysis() {
                 {results.mixedEmotions && results.mixedEmotions.length > 1 && (
                   <div className="flex flex-wrap gap-2 justify-center mt-4">
                     {results.mixedEmotions.slice(0, 3).map((emo, idx) => (
-                      <span key={idx} className="font-body text-[10px] bg-cream/10 text-cream px-2 py-1 tracking-widest uppercase">
+                      <span key={idx} className="font-body text-[10px] glass-frost-dark text-cream px-2 py-1 tracking-widest uppercase">
                         {emo.emotion} {Math.round(emo.confidence * 100)}%
                       </span>
                     ))}
@@ -218,7 +220,7 @@ export default function Analysis() {
         </div>
 
         {/* RIGHT: Results & Metrics */}
-        <div className="w-full lg:w-[400px] shrink-0 bg-cream-2 p-6 lg:p-12 flex flex-col relative z-10 border-l border-[rgba(0,0,0,0.1)]">
+        <div className="w-full lg:w-[400px] shrink-0 glass-frost p-6 lg:p-12 flex flex-col relative z-10 border-l border-[rgba(0,0,0,0.1)] animate-enter">
           <h2 className="font-display text-3xl mb-8">Metrics</h2>
           
           {results ? (
@@ -235,7 +237,7 @@ export default function Analysis() {
                         key={genre}
                         onClick={() => setSelectedGenre(genre)}
                         className={`px-3 py-1 font-body text-[10px] tracking-widest uppercase border transition-colors ${
-                          selectedGenre === genre ? 'bg-black text-cream border-black' : 'bg-transparent text-mid border-[rgba(0,0,0,0.2)] hover:border-black hover:text-black'
+                          selectedGenre === genre ? 'bg-black text-cream border-black' : 'bg-transparent text-mid border-[rgba(0,0,0,0.2)] hover:border-black hover:text-black glass-frost-light'
                         }`}
                       >
                         {genre}

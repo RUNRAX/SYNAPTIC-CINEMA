@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import RippleButton from '@/components/RippleButton'
+import { useFlickerIn } from '@/hooks/useFlickerIn'
 
 const EMOTIONS = ['happy', 'sad', 'angry', 'fear', 'surprise', 'neutral']
 const GENRES = ['ACTION', 'DRAMA', 'SCI-FI', 'HORROR', 'COMEDY', 'THRILLER', 'DOCUMENTARY', 'ROMANCE']
@@ -16,6 +17,7 @@ const DEFAULT_MOOD_GENRES = {
 }
 
 export default function Settings() {
+  useFlickerIn()
   const [mounted, setMounted] = useState(false)
   const [settings, setSettings] = useState({
     theme: 'light',
@@ -96,7 +98,7 @@ export default function Settings() {
   return (
     <div className="w-full min-h-full flex flex-col relative pb-8">
       {/* Header */}
-      <div className="px-6 lg:px-12 py-12 relative z-10 border-b border-[rgba(0,0,0,0.1)]">
+      <div className="px-6 lg:px-12 py-12 relative z-10 border-b border-[rgba(0,0,0,0.1)] glass-frost animate-enter">
         <h1 className="font-display text-7xl text-black leading-none mb-4">Settings</h1>
         <p className="font-body text-[12px] text-mid tracking-[0.08em] uppercase max-w-md">
           Configure system parameters and preferences
@@ -107,9 +109,9 @@ export default function Settings() {
         <div className="flex flex-col gap-12">
           
           {/* Section: Appearance */}
-          <div>
+          <div className="animate-enter">
             <h2 className="font-body text-[11px] tracking-widest text-mid uppercase mb-6">Appearance</h2>
-            <div className="flex flex-col gap-[1px] bg-[rgba(0,0,0,0.1)] border border-[rgba(0,0,0,0.1)]">
+            <div className="flex flex-col gap-[1px] glass-frost-light border border-[rgba(0,0,0,0.1)] rounded-xl overflow-hidden">
               <SettingToggle 
                 label="Dark Mode" 
                 description="Invert colors for low-light environments"
@@ -120,9 +122,9 @@ export default function Settings() {
           </div>
 
           {/* Section: Content Filters */}
-          <div>
+          <div className="animate-enter">
             <h2 className="font-body text-[11px] tracking-widest text-mid uppercase mb-6">Content Filters</h2>
-            <div className="p-6 bg-cream border border-[rgba(0,0,0,0.1)] flex flex-col gap-4">
+            <div className="p-6 glass-frost border border-[rgba(0,0,0,0.1)] flex flex-col gap-4 rounded-xl">
               <div className="flex justify-between items-end">
                 <div>
                   <h3 className="font-body text-[13px] uppercase tracking-wide mb-1 text-black">Minimum IMDB Rating</h3>
@@ -141,11 +143,11 @@ export default function Settings() {
           </div>
 
           {/* Section: Mood Mapping */}
-          <div>
+          <div className="animate-enter">
             <h2 className="font-body text-[11px] tracking-widest text-mid uppercase mb-6">Mood & Genre Mapping</h2>
-            <div className="flex flex-col gap-[1px] bg-[rgba(0,0,0,0.1)] border border-[rgba(0,0,0,0.1)]">
+            <div className="flex flex-col gap-[1px] glass-frost-light border border-[rgba(0,0,0,0.1)] rounded-xl overflow-hidden">
               {EMOTIONS.map(emotion => (
-                <div key={emotion} className="p-6 bg-cream">
+                <div key={emotion} className="p-6 glass-frost">
                   <h3 className="font-body text-[13px] uppercase tracking-wide mb-4 text-black">When I am {emotion}...</h3>
                   <div className="flex flex-wrap gap-2">
                     {GENRES.map(genre => {
@@ -169,9 +171,9 @@ export default function Settings() {
           </div>
 
           {/* Section: Privacy & Media */}
-          <div>
+          <div className="animate-enter">
             <h2 className="font-body text-[11px] tracking-widest text-mid uppercase mb-6">Privacy & Media</h2>
-            <div className="flex flex-col gap-[1px] bg-[rgba(0,0,0,0.1)] border border-[rgba(0,0,0,0.1)]">
+            <div className="flex flex-col gap-[1px] glass-frost-light border border-[rgba(0,0,0,0.1)] rounded-xl overflow-hidden">
               <SettingToggle 
                 label="Auto-Play Trailers" 
                 description="Automatically play video content on focus"
@@ -198,7 +200,7 @@ export default function Settings() {
       
       {/* Toast Notification */}
       <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 ${showToast ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}>
-        <div className="bg-black text-cream px-6 py-3 border border-[rgba(255,255,255,0.2)] font-body text-[10px] tracking-widest uppercase shadow-2xl flex items-center gap-3">
+        <div className="glass-frost-dark text-cream px-6 py-3 border border-[rgba(255,255,255,0.2)] font-body text-[10px] tracking-widest uppercase shadow-2xl flex items-center gap-3 rounded-lg">
           <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
           Configuration Saved Successfully
         </div>
@@ -209,7 +211,7 @@ export default function Settings() {
 
 function SettingToggle({ label, description, value, onToggle }) {
   return (
-    <div className="flex justify-between items-center p-6 bg-cream hover:bg-cream-2 transition-colors cursor-pointer group" onClick={onToggle}>
+    <div className="flex justify-between items-center p-6 glass-frost hover:bg-[rgba(242,237,227,0.7)] transition-colors cursor-pointer group" onClick={onToggle}>
       <div>
         <h3 className="font-body text-[13px] uppercase tracking-wide mb-1 text-black">{label}</h3>
         <p className="font-body text-[10px] text-mid tracking-widest uppercase">{description}</p>

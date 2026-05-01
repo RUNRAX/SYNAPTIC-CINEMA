@@ -27,7 +27,7 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="fixed left-0 top-0 bottom-0 w-[200px] bg-black border-r border-[rgba(255,255,255,0.1)] flex flex-col z-50 hidden lg:flex">
+    <aside className="fixed left-0 top-0 bottom-0 w-[200px] glass-frost-dark rounded-r-2xl border-r border-[rgba(255,255,255,0.1)] flex flex-col z-50 hidden lg:flex">
       {/* Brand Block */}
       <div className="p-4 border-b border-[rgba(255,255,255,0.1)] flex flex-col gap-8">
         <div className="flex justify-between items-center text-gray font-body text-[11px] tracking-widest">

@@ -5,8 +5,10 @@ import { useRouter } from 'next/navigation'
 import MovieCard from '@/components/MovieCard'
 import { Search as SearchIcon } from 'lucide-react'
 import { triggerGlitch } from '@/hooks/useGlitch'
+import { useFlickerIn } from '@/hooks/useFlickerIn'
 
 export default function Search() {
+  useFlickerIn()
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
   const [movies, setMovies] = useState([])
@@ -52,7 +54,7 @@ export default function Search() {
   return (
     <div className="w-full min-h-full flex flex-col relative pb-8">
       {/* Header & Search Bar */}
-      <div className="px-6 lg:px-12 py-12 relative z-10 border-b border-[rgba(0,0,0,0.1)] bg-cream flex flex-col gap-8 sticky top-0">
+      <div className="px-6 lg:px-12 py-12 relative z-10 border-b border-[rgba(0,0,0,0.1)] glass-frost flex flex-col gap-8 sticky top-0 animate-enter">
         <h1 className="font-display text-7xl text-black leading-none">Search</h1>
         
         <div className="relative max-w-2xl">
@@ -62,7 +64,7 @@ export default function Search() {
             placeholder="Search by title, genre, or mood..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-cream-2 border border-[rgba(0,0,0,0.2)] pl-12 pr-4 py-4 font-body text-[13px] tracking-wide focus:outline-none focus:border-black transition-colors"
+            className="w-full glass-frost-light border border-[rgba(0,0,0,0.2)] pl-12 pr-4 py-4 font-body text-[13px] tracking-wide focus:outline-none focus:border-black transition-colors"
           />
         </div>
       </div>
