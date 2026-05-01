@@ -1,86 +1,105 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
 
 export default function GlitchOverlay() {
   const overlayRef = useRef(null)
-  const g1Ref = useRef(null)
-  const g2Ref = useRef(null)
-  const g3Ref = useRef(null)
+  const contentRef = useRef(null)
 
   useEffect(() => {
     const handleGlitch = (e) => {
       const { callback } = e.detail
       const overlay = overlayRef.current
-      const g1 = g1Ref.current
-      const g2 = g2Ref.current
-      const g3 = g3Ref.current
-
-      if (!overlay || !g1 || !g2 || !g3) {
+      if (!overlay) {
         if (callback) callback()
         return
       }
 
-      // 5-frame glitch sequence, 55ms per frame
-      const frames = [
-        // Frame 1: Black fill + cream clip strip top
-        () => {
-          overlay.style.opacity = '1'
-          g1.style.cssText = 'background:var(--black); opacity:1;'
-          g2.style.cssText = 'background:var(--cream); clip-path:inset(0 0 90% 0); transform:translateX(8px); opacity:0.9;'
-        },
-        // Frame 2: Cream mid-strip + accent slice
-        () => {
-          g2.style.cssText = 'background:var(--cream); clip-path:inset(20% 0 60% 0); transform:translateX(-12px); opacity:0.8;'
-          g3.style.cssText = 'background:var(--accent); clip-path:inset(50% 0 30% 0); opacity:0.4; transform:translateX(4px);'
-        },
-        // Frame 3: Cream lower strip + red slice
-        () => {
-          g2.style.cssText = 'background:var(--cream); clip-path:inset(60% 0 10% 0); transform:translateX(6px);'
-          g3.style.cssText = 'background:var(--red); clip-path:inset(10% 0 80% 0); opacity:0.3; transform:translateX(-8px);'
-        },
-        // Frame 4: Solid black hold
-        () => {
-          g2.style.cssText = ''
-          g3.style.cssText = ''
-          g1.style.cssText = 'background:var(--black); opacity:1;'
-        },
-        // Frame 5: Execute callback
-        () => {
+      // Slices for the glitch
+      const slices = overlay.querySelectorAll('.transition-slice')
+      const rgbCyan = overlay.querySelector('.rgb-cyan')
+      const rgbRed = overlay.querySelector('.rgb-red')
+      const scanlineBurst = overlay.querySelector('.scanline-burst')
+      const noise = overlay.querySelector('.noise-burst')
+
+      // Main Timeline
+      const tl = gsap.timeline({
+        onComplete: () => {
+          gsap.set(overlay, { opacity: 0 })
+          // Reset styles
+          gsap.set(slices, { clearProps: 'all' })
+          gsap.set([rgbCyan, rgbRed, scanlineBurst, noise], { clearProps: 'all' })
+        }
+      })
+
+      // Phase 1: Break
+      gsap.set(overlay, { opacity: 1 })
+      
+      tl.to(slices, {
+        x: () => gsap.utils.random(-80, 80),
+        scaleX: () => gsap.utils.random(0.9, 1.1),
+        skewX: () => gsap.utils.random(-10, 10),
+        duration: 0.15,
+        stagger: 0.01,
+        ease: 'steps(3)'
+      }, 0)
+
+      tl.to([rgbCyan, rgbRed], {
+        x: (i) => i === 0 ? -6 : 6,
+        opacity: 0.8,
+        duration: 0.1,
+        ease: 'none'
+      }, 0)
+
+      tl.to(scanlineBurst, {
+        opacity: 0.5,
+        scaleY: 1.2,
+        duration: 0.2
+      }, 0)
+
+      // Phase 2: Hold & Flash
+      tl.to(overlay, {
+        backgroundColor: 'var(--cream)',
+        duration: 0.05,
+        yoyo: true,
+        repeat: 3
+      }, 0.2)
+
+      tl.to(noise, {
+        opacity: 0.4,
+        duration: 0.1,
+        yoyo: true,
+        repeat: 2
+      }, 0.2)
+
+      // Phase 3: Execute Callback (Black Screen)
+      tl.to(overlay, {
+        backgroundColor: 'var(--black)',
+        duration: 0.1,
+        onComplete: () => {
           if (callback) callback()
-        },
-        // Frame 6: Fade overlay
-        () => {
-          overlay.style.opacity = '0'
-          // clear styles
-          setTimeout(() => {
-            g1.style.cssText = ''
-            g2.style.cssText = ''
-            g3.style.cssText = ''
-          }, 300)
         }
-      ]
+      }, 0.4)
 
-      // Execute sequence
-      let currentFrame = 0
-      const runFrame = () => {
-        if (currentFrame < frames.length) {
-          frames[currentFrame]()
-          currentFrame++
-          
-          if (currentFrame === 4) {
-            // Hold black screen to make total transition 1 second
-            setTimeout(runFrame, 835)
-          } else if (currentFrame === 5) {
-            // Run fade out immediately after callback
-            runFrame()
-          } else {
-            setTimeout(runFrame, 55)
-          }
-        }
-      }
+      // Phase 4: Resolve (Fade out)
+      tl.to(slices, {
+        x: 0,
+        scaleX: 1,
+        skewX: 0,
+        duration: 0.15,
+        ease: 'power2.out'
+      }, 0.55)
 
-      runFrame()
+      tl.to([rgbCyan, rgbRed, scanlineBurst, noise], {
+        opacity: 0,
+        duration: 0.1
+      }, 0.55)
+
+      tl.to(overlay, {
+        opacity: 0,
+        duration: 0.15
+      }, 0.6)
     }
 
     window.addEventListener('trigger-glitch', handleGlitch)
@@ -91,11 +110,25 @@ export default function GlitchOverlay() {
     <div 
       id="glitch-overlay" 
       ref={overlayRef}
-      style={{ position: 'fixed', inset: 0, zIndex: 8888, pointerEvents: 'none', opacity: 0, transition: 'opacity 0.3s ease' }}
+      className="fixed inset-0 z-[8888] pointer-events-none flex flex-col opacity-0"
     >
-      <div className="g1" ref={g1Ref} style={{ position: 'absolute', inset: 0 }}></div>
-      <div className="g2" ref={g2Ref} style={{ position: 'absolute', inset: 0 }}></div>
-      <div className="g3" ref={g3Ref} style={{ position: 'absolute', inset: 0 }}></div>
+      {/* 10 Horizontal Slices */}
+      {Array.from({ length: 10 }).map((_, i) => (
+        <div 
+          key={i} 
+          className="transition-slice flex-1 bg-black will-change-transform"
+        ></div>
+      ))}
+
+      {/* RGB Layers */}
+      <div className="rgb-cyan absolute inset-0 bg-[rgba(0,255,255,0.3)] mix-blend-screen opacity-0 will-change-transform"></div>
+      <div className="rgb-red absolute inset-0 bg-[rgba(255,0,0,0.3)] mix-blend-screen opacity-0 will-change-transform"></div>
+
+      {/* Scanline Burst */}
+      <div className="scanline-burst absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.8)_2px,rgba(0,0,0,0.8)_4px)] opacity-0 mix-blend-overlay will-change-transform"></div>
+
+      {/* Noise Burst */}
+      <div className="noise-burst absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg viewBox=\\'0 0 256 256\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Cfilter id=\\'noise\\'%3E%3CfeTurbulence type=\\'fractalNoise\\' baseFrequency=\\'0.9\\' numOctaves=\\'4\\' stitchTiles=\\'stitch\\'/%3E%3C/filter%3E%3Crect width=\\'100%25\\' height=\\'100%25\\' filter=\\'url(%23noise)\\'/%3E%3C/svg%3E')] opacity-0 mix-blend-difference will-change-opacity"></div>
     </div>
   )
 }

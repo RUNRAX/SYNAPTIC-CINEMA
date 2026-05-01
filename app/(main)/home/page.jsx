@@ -6,6 +6,7 @@ import LensGraphic from '@/components/LensGraphic'
 import MagneticButton from '@/components/MagneticButton'
 import RippleButton from '@/components/RippleButton'
 import MovieSliderSection from '@/components/MovieSliderSection'
+import GlitchCube from '@/components/GlitchCube'
 import { useParallax } from '@/hooks/useParallax'
 
 export default function Home() {
@@ -53,6 +54,8 @@ export default function Home() {
         className="relative w-full min-h-[calc(100vh-104px)] flex flex-col lg:flex-row"
       >
         <div className="ghost-text bottom-0 left-4 lg:left-12">CINEMA</div>
+        
+        <GlitchCube />
 
         {/* Left Zone - Text */}
         <div className="flex-1 flex flex-col justify-center px-6 lg:px-16 py-12 lg:py-0 relative z-10">

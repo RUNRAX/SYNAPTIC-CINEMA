@@ -10,6 +10,7 @@ import NoiseOverlay from '@/components/NoiseOverlay'
 import ScanLine from '@/components/ScanLine'
 import GridLines from '@/components/GridLines'
 import BottomTicker from '@/components/BottomTicker'
+import CinematicBackgroundText from '@/components/CinematicBackgroundText'
 import { useEffect, useState } from 'react'
 import { triggerGlitch } from '@/hooks/useGlitch'
 
@@ -38,6 +39,8 @@ export default function MainLayout({ children }) {
       <GridLines />
       <CustomCursor />
       <GlitchOverlay />
+      
+      <CinematicBackgroundText />
 
       <Sidebar />
       <Topbar />
@@ -47,10 +50,10 @@ export default function MainLayout({ children }) {
           {mounted && (
             <motion.div
               key={pathname}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3, ease: [0.77, 0, 0.18, 1] }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
               onAnimationStart={() => {
                 // The glitch logic is mostly handled by link clicks, but this ensures Framer Motion
                 // can also participate if needed, though we don't double-trigger it.

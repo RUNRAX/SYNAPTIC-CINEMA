@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { triggerGlitch } from '@/hooks/useGlitch'
 import MovieSliderSection from '@/components/MovieSliderSection'
 import RippleButton from '@/components/RippleButton'
+import GlitchDivider from '@/components/GlitchDivider'
 
 export default function Details() {
   const searchParams = useSearchParams()
@@ -164,7 +165,7 @@ export default function Details() {
                       src={`https://image.tmdb.org/t/p/w200${person.profile_path}`} 
                       alt={person.name}
                       fill
-                      className="object-cover grayscale hover:grayscale-0 transition-all duration-300"
+                      className="object-cover transition-all duration-300 hover:scale-105"
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center opacity-10">
@@ -188,7 +189,7 @@ export default function Details() {
               <iframe 
                 src={`https://www.youtube.com/embed/${details.trailerKey}?controls=1&modestbranding=1`} 
                 title="Trailer" 
-                className="absolute inset-0 w-full h-full grayscale group-hover:grayscale-0 transition-all duration-[600ms]"
+                className="absolute inset-0 w-full h-full transition-all duration-[600ms]"
                 allowFullScreen
               ></iframe>
             </div>
@@ -199,6 +200,9 @@ export default function Details() {
           )}
         </div>
       </div>
+
+      {/* Glitch Divider Component */}
+      <GlitchDivider />
 
       {/* Similar Content */}
       {similar.length > 0 && (
