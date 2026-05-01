@@ -1,5 +1,3 @@
-- [x] Implement mobile navigation menu in `Topbar.jsx` (add state, layout for mobile menu).
-- [x] Add hardware acceleration CSS rules (`transform: translateZ(0)`, `will-change: transform, backdrop-filter`) to `.glass-frost` classes in `app/globals.css`.
-- [x] Optimize `MovieCard.jsx` hover animations for smoother performance.
-- [x] Ensure full-screen overlays (`NoiseOverlay`, `ScanLine`) are optimized for rendering.
+- [x] Update `globals.css` with increased transparency and 5px blur for `.glass-frost` classes.
+- [x] Update `globals.css` with high saturation and glow effects for `.glass-frost` classes.
 - [x] Update memory `checkpoint_latest` upon completion.

@@ -65,9 +65,6 @@
     -webkit-backdrop-filter: blur(20px) saturate(300%) brightness(130%);
     border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 16px;
-    transform: translateZ(0);
-    will-change: transform, backdrop-filter;
-    backface-visibility: hidden;
   }
 
   .glass-frost-dark {
@@ -76,9 +73,6 @@
     -webkit-backdrop-filter: blur(20px) saturate(300%) brightness(130%);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
-    transform: translateZ(0);
-    will-change: transform, backdrop-filter;
-    backface-visibility: hidden;
   }
 
   .glass-frost-light {
@@ -87,9 +81,6 @@
     -webkit-backdrop-filter: blur(12px) saturate(250%) brightness(120%);
     border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: 12px;
-    transform: translateZ(0);
-    will-change: transform, backdrop-filter;
-    backface-visibility: hidden;
   }
 
   /* Dark theme overrides */
@@ -175,28 +166,21 @@ body.custom-cursor-active [onclick] {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 128px 128px;
-  transform: translateZ(0);
-  will-change: opacity;
-  contain: strict;
 }
 
 /* --- Scanline Effect --- */
 .scanline {
   position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 2px;
   background: rgba(255, 45, 45, 0.08);
   animation: scanline 4s linear infinite;
   pointer-events: none;
   z-index: 8999;
-  transform: translateZ(0);
-  will-change: transform;
 }
 @keyframes scanline {
-  0%  { transform: translateY(-2px); }
-  100%{ transform: translateY(100vh); }
+  0%  { top: -2px; }
+  100%{ top: 100%; }
 }
 
 /* --- Grid Crosshairs --- */

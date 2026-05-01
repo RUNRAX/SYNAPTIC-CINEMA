@@ -42,7 +42,6 @@ export default function MovieCard({ movie, onClick }) {
             alt={movie.title || 'Movie Poster'}
             fill
             className="object-cover transition-transform duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
-            style={{ transform: 'translateZ(0)', willChange: 'transform' }}
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
             onError={() => setImageError(true)}
           />
@@ -62,10 +61,7 @@ export default function MovieCard({ movie, onClick }) {
       </div>
 
       {/* Content */}
-      <div 
-        className="absolute bottom-0 left-0 right-0 p-4 glass-frost border-t border-[rgba(255,255,255,0.1)] transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:bg-black/80 group-hover:text-cream flex flex-col gap-[2px] z-20 rounded-b-2xl"
-        style={{ transform: 'translateZ(0)' }}
-      >
+      <div className="absolute bottom-0 left-0 right-0 p-4 glass-frost border-t border-[rgba(255,255,255,0.1)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:bg-black/80 group-hover:text-cream flex flex-col gap-[2px] z-20 rounded-b-2xl">
         <h3 className="font-body font-bold text-[11px] truncate uppercase tracking-wide text-cream">{movie.title}</h3>
         <p className="font-body text-[9px] text-cream/70 uppercase tracking-wider">
           {movie.year} · {movie.genre}
