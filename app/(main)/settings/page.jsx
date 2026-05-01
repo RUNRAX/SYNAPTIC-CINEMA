@@ -20,7 +20,7 @@ export default function Settings() {
   useFlickerIn()
   const [mounted, setMounted] = useState(false)
   const [settings, setSettings] = useState({
-    theme: 'light',
+    theme: 'dark',
     minImdbRating: 6.0,
     customMoodGenres: DEFAULT_MOOD_GENRES,
     highPerformance: true,
@@ -33,7 +33,7 @@ export default function Settings() {
 
   useEffect(() => {
     try {
-      const savedTheme = localStorage.getItem('theme') || 'light'
+      const savedTheme = localStorage.getItem('theme') || 'dark'
       const savedMinRating = parseFloat(localStorage.getItem('minImdbRating')) || 6.0
       const savedMoodGenres = JSON.parse(localStorage.getItem('customMoodGenres')) || DEFAULT_MOOD_GENRES
       

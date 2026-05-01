@@ -38,7 +38,9 @@ export default function RootLayout({ children }) {
         <script dangerouslySetInnerHTML={{
           __html: `
             try {
-              if (localStorage.getItem('theme') === 'dark') {
+              if (localStorage.getItem('theme') === 'light') {
+                document.documentElement.removeAttribute('data-theme');
+              } else {
                 document.documentElement.setAttribute('data-theme', 'dark');
               }
             } catch (e) {}
