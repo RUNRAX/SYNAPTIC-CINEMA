@@ -1,6 +1,7 @@
 import { Space_Grotesk, DM_Mono } from 'next/font/google'
 import localFont from 'next/font/local'
 import './globals.css'
+import SmoothScroll from '@/components/SmoothScroll'
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -48,7 +49,9 @@ export default function RootLayout({ children }) {
         }} />
       </head>
       <body>
-        {children}
+        <SmoothScroll>
+          {children}
+        </SmoothScroll>
       </body>
     </html>
   )
