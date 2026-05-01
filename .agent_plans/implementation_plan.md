@@ -1,31 +1,20 @@
-# Global Glass Frost Update
+# Performance Optimization and Mobile Menu Implementation
 
-The goal is to update the visual properties of the floating UI elements (sidebar, top bar, bottom bar, settings cards, etc.) to have higher transparency, a lower blur radius (approx 5%), and a high glow/saturation effect for content scrolling underneath them.
-
-## User Review Required
-
-> [!IMPORTANT]
-> Please confirm my interpretation of your request:
-> You want the `glass-frost` style (which is applied to the Sidebar, Topbar, Bottom Ticker, and UI cards) to be updated globally to have:
-> 1. **Increased transparency** (lower opacity background).
-> 2. **Less blur** (a small blur, around 5px).
-> 3. **High glow and saturation** for any content (like movie cards or text) that passes underneath these floating elements.
->
-> Is this correct, or did you mean to *exclude* the sidebar, top bar, and bottom bar from these changes? (I interpreted "leaving" as a typo for "regarding" or referring to the elements themselves).
+The user reported lag across the site and an unclickable mobile menu.
 
 ## Proposed Changes
 
-### 1. `app/globals.css`
-Update the `.glass-frost` utility classes to achieve the desired effect.
+### 1. Implement Mobile Navigation Menu
+Currently, `Topbar.jsx` has a "MENU" button but no corresponding mobile menu logic. 
+- Create a slide-down or overlay mobile menu in `Topbar.jsx`.
+- Render the navigation items (HOME, SEARCH, ANALYSIS, PROFILE, SETTINGS) when the menu is toggled.
+- Handle routing and close the menu on selection.
 
-#### [MODIFY] globals.css
-- Decrease the alpha channel of the background colors (e.g., from `0.55` to `0.15` or `0.20`).
-- Update `backdrop-filter: blur(16px) saturate(180%)` to `backdrop-filter: blur(5px) saturate(250%) brightness(120%)` to create the 5px blur and the high glow/saturation effect.
-- Apply these changes to `.glass-frost`, `.glass-frost-dark`, and `.glass-frost-light`.
+### 2. Performance Optimizations (Fixing Lag)
+The heavy `backdrop-filter: blur(20px)` on `.glass-frost` classes (used extensively in `MovieCard` and layout components) causes massive GPU strain, especially with 100+ items rendered on the page, resulting in jittery animations and scrolling.
+- **CSS Optimization**: Add hardware acceleration (`transform: translateZ(0)`, `backface-visibility: hidden`, `will-change: transform, backdrop-filter`) to `globals.css` for `.glass-frost` utilities.
+- **MovieCard Optimization**: Optimize `MovieCard.jsx` to only trigger heavy blur effects efficiently or use a solid fallback on mobile devices if needed.
+- **Overlay Optimization**: Ensure all full-screen animated overlays (`NoiseOverlay`, `ScanLine`) are properly hardware-accelerated to prevent repaint lag.
 
-## Verification Plan
-
-### Manual Verification
-- Scroll the page to observe movie cards and background elements passing under the top bar, sidebar, and bottom ticker.
-- Verify that the elements underneath appear highly saturated and glowing.
-- Confirm the blur level is subtle (around 5px) and transparency is increased.
+## User Review Required
+Please confirm if the slide-down overlay style for the mobile menu is acceptable. The performance fixes will maintain the glass-frost aesthetic while leveraging GPU acceleration to ensure buttery smooth 60fps rendering.
