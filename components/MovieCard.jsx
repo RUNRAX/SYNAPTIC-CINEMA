@@ -31,11 +31,11 @@ export default function MovieCard({ movie, onClick }) {
   return (
     <div 
       ref={cardRef}
-      className="group relative w-full h-full aspect-[0.70] overflow-hidden cursor-pointer bg-cream-2 flex flex-col rounded-xl"
+      className="group relative w-full h-full aspect-[0.70] overflow-hidden cursor-pointer bg-cream-2 flex flex-col rounded-2xl"
       onClick={handleClick}
     >
       {/* Poster Image or Fallback */}
-      <div className="relative flex-1 w-full bg-cream overflow-hidden rounded-t-xl">
+      <div className="relative flex-1 w-full bg-cream overflow-hidden rounded-t-2xl">
         {movie.poster && !imageError && movie.poster !== '/placeholder.jpg' ? (
           <Image
             src={movie.poster}
@@ -61,9 +61,9 @@ export default function MovieCard({ movie, onClick }) {
       </div>
 
       {/* Content */}
-      <div className="p-4 glass-frost-light border-t border-[rgba(0,0,0,0.1)] transition-colors duration-300 group-hover:bg-black/70 group-hover:text-cream flex flex-col gap-[2px] z-20 rounded-b-xl">
-        <h3 className="font-body font-bold text-[11px] truncate uppercase tracking-wide">{movie.title}</h3>
-        <p className="font-body text-[9px] text-mid group-hover:text-gray uppercase tracking-wider">
+      <div className="p-4 glass-frost-dark border-t border-[rgba(255,255,255,0.1)] transition-all duration-300 group-hover:bg-black/80 group-hover:text-cream flex flex-col gap-[2px] z-20 rounded-b-2xl">
+        <h3 className="font-body font-bold text-[11px] truncate uppercase tracking-wide text-cream">{movie.title}</h3>
+        <p className="font-body text-[9px] text-gray uppercase tracking-wider">
           {movie.year} · {movie.genre}
         </p>
       </div>

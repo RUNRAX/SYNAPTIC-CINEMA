@@ -45,7 +45,7 @@ export default function MainLayout({ children }) {
       <Sidebar />
       <Topbar />
 
-      <main className="relative z-10 lg:pl-[200px] pt-[48px] pb-[56px] min-h-screen w-full">
+      <main className="relative z-10 lg:pl-[220px] pt-[68px] pb-[76px] min-h-screen w-full">
         <AnimatePresence mode="wait">
           {mounted && (
             <motion.div

@@ -36,7 +36,7 @@ export default function BottomTicker({ items = [] }) {
   const content = items.join(' ✕ ') + ' ✕ '
   
   return (
-    <div className="fixed bottom-0 left-0 lg:left-[200px] right-0 h-[56px] glass-frost-dark rounded-t-2xl border-t border-[rgba(255,255,255,0.1)] overflow-hidden flex items-center z-40">
+    <div className="fixed bottom-[10px] left-[10px] lg:left-[220px] right-[10px] h-[56px] glass-frost-dark rounded-full overflow-hidden flex items-center z-40">
       <div 
         ref={tickerRef} 
         className="flex whitespace-nowrap text-[11px] tracking-[0.12em] font-body text-cream uppercase"

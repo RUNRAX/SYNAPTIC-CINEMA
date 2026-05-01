@@ -111,7 +111,7 @@ export default function Settings() {
           {/* Section: Appearance */}
           <div className="animate-enter">
             <h2 className="font-body text-[11px] tracking-widest text-mid uppercase mb-6">Appearance</h2>
-            <div className="flex flex-col gap-[1px] glass-frost-light border border-[rgba(0,0,0,0.1)] rounded-xl overflow-hidden">
+            <div className="flex flex-col gap-2">
               <SettingToggle 
                 label="Dark Mode" 
                 description="Invert colors for low-light environments"
@@ -124,7 +124,7 @@ export default function Settings() {
           {/* Section: Content Filters */}
           <div className="animate-enter">
             <h2 className="font-body text-[11px] tracking-widest text-mid uppercase mb-6">Content Filters</h2>
-            <div className="p-6 glass-frost border border-[rgba(0,0,0,0.1)] flex flex-col gap-4 rounded-xl">
+            <div className="p-6 glass-frost border border-[rgba(0,0,0,0.1)] flex flex-col gap-4 rounded-3xl">
               <div className="flex justify-between items-end">
                 <div>
                   <h3 className="font-body text-[13px] uppercase tracking-wide mb-1 text-black">Minimum IMDB Rating</h3>
@@ -145,9 +145,9 @@ export default function Settings() {
           {/* Section: Mood Mapping */}
           <div className="animate-enter">
             <h2 className="font-body text-[11px] tracking-widest text-mid uppercase mb-6">Mood & Genre Mapping</h2>
-            <div className="flex flex-col gap-[1px] glass-frost-light border border-[rgba(0,0,0,0.1)] rounded-xl overflow-hidden">
+            <div className="flex flex-col gap-2">
               {EMOTIONS.map(emotion => (
-                <div key={emotion} className="p-6 glass-frost">
+                <div key={emotion} className="p-6 glass-frost rounded-3xl">
                   <h3 className="font-body text-[13px] uppercase tracking-wide mb-4 text-black">When I am {emotion}...</h3>
                   <div className="flex flex-wrap gap-2">
                     {GENRES.map(genre => {
@@ -156,8 +156,10 @@ export default function Settings() {
                         <button
                           key={genre}
                           onClick={() => toggleMoodGenre(emotion, genre)}
-                          className={`px-3 py-1 font-body text-[10px] tracking-widest uppercase border transition-colors ${
-                            isActive ? 'bg-black text-cream border-black' : 'bg-transparent text-mid border-[rgba(0,0,0,0.2)] hover:border-black hover:text-black'
+                          className={`px-3 py-1 font-body text-[10px] tracking-widest uppercase border transition-all duration-300 rounded-full ${
+                            isActive 
+                              ? 'glass-frost-dark text-cream border-[rgba(255,255,255,0.15)]' 
+                              : 'glass-frost-light text-mid border-[rgba(0,0,0,0.1)] hover:border-black hover:text-black'
                           }`}
                         >
                           {genre}
@@ -173,7 +175,7 @@ export default function Settings() {
           {/* Section: Privacy & Media */}
           <div className="animate-enter">
             <h2 className="font-body text-[11px] tracking-widest text-mid uppercase mb-6">Privacy & Media</h2>
-            <div className="flex flex-col gap-[1px] glass-frost-light border border-[rgba(0,0,0,0.1)] rounded-xl overflow-hidden">
+            <div className="flex flex-col gap-2">
               <SettingToggle 
                 label="Auto-Play Trailers" 
                 description="Automatically play video content on focus"
@@ -191,7 +193,7 @@ export default function Settings() {
 
           <RippleButton 
             onClick={handleSave}
-            className="self-start px-8 py-3 bg-black text-cream hover:bg-accent hover:text-black font-body text-[10px] tracking-widest transition-colors uppercase mt-4"
+            className="self-start px-8 py-3 bg-black/80 backdrop-blur-md text-cream hover:bg-accent hover:text-black font-body text-[10px] tracking-widest transition-all duration-300 uppercase mt-4 rounded-full border border-[rgba(255,255,255,0.1)]"
           >
             Save Configuration
           </RippleButton>
@@ -200,7 +202,7 @@ export default function Settings() {
       
       {/* Toast Notification */}
       <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 ${showToast ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}>
-        <div className="glass-frost-dark text-cream px-6 py-3 border border-[rgba(255,255,255,0.2)] font-body text-[10px] tracking-widest uppercase shadow-2xl flex items-center gap-3 rounded-lg">
+        <div className="glass-frost-dark text-cream px-6 py-3 border border-[rgba(255,255,255,0.2)] font-body text-[10px] tracking-widest uppercase shadow-2xl flex items-center gap-3 rounded-full">
           <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
           Configuration Saved Successfully
         </div>
@@ -211,13 +213,13 @@ export default function Settings() {
 
 function SettingToggle({ label, description, value, onToggle }) {
   return (
-    <div className="flex justify-between items-center p-6 glass-frost hover:bg-[rgba(242,237,227,0.7)] transition-colors cursor-pointer group" onClick={onToggle}>
+    <div className="flex justify-between items-center p-6 glass-frost hover:bg-[rgba(242,237,227,0.7)] transition-all duration-300 cursor-pointer group rounded-3xl" onClick={onToggle}>
       <div>
         <h3 className="font-body text-[13px] uppercase tracking-wide mb-1 text-black">{label}</h3>
         <p className="font-body text-[10px] text-mid tracking-widest uppercase">{description}</p>
       </div>
-      <div className={`w-12 h-6 border transition-colors flex items-center px-1 ${value ? 'bg-black border-black' : 'bg-transparent border-[rgba(0,0,0,0.2)]'}`}>
-        <div className={`w-4 h-4 bg-current transition-transform duration-300 ${value ? 'translate-x-[24px] text-accent' : 'translate-x-0 text-mid'}`}></div>
+      <div className={`w-12 h-6 border transition-all duration-300 flex items-center px-1 rounded-full backdrop-blur-sm ${value ? 'bg-black/80 border-black' : 'bg-[rgba(0,0,0,0.05)] border-[rgba(0,0,0,0.15)]'}`}>
+        <div className={`w-4 h-4 rounded-full bg-current transition-transform duration-300 ${value ? 'translate-x-[24px] text-accent' : 'translate-x-0 text-mid'}`}></div>
       </div>
     </div>
   )

@@ -25,7 +25,7 @@ export default function Topbar() {
   }
 
   return (
-    <header className="fixed top-0 left-0 lg:left-[200px] right-0 h-[48px] glass-frost rounded-b-2xl border-b border-[rgba(0,0,0,0.1)] z-40 flex items-center justify-between px-6">
+    <header className="fixed top-[10px] left-[10px] lg:left-[220px] right-[10px] h-[48px] glass-frost rounded-full z-40 flex items-center justify-between px-6">
       {/* Mobile Logo / Brand */}
       <div className="flex items-center gap-3">
         <div className="w-6 h-6 rounded-full border-[1.5px] border-black flex items-center justify-center">

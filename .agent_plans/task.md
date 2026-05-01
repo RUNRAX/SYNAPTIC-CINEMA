@@ -1,7 +1,7 @@
-- [x] Fix IMDb score visibility and add extra metadata rows in `app/(main)/details/page.jsx`
-- [x] Refactor `components/GlitchOverlay.jsx` to use "SYNAPTIC" text glitch, diagonal scratches, heavy blur, and remove geometric shapes/horizontal lines
-- [x] Adjust GSAP timeline in `components/GlitchOverlay.jsx` to hold overlay opaque while the new page loads after callback
-- [x] Refine GlitchOverlay for sharper geometry, faster transition, individual letter glitching, and strictly B&W with minute red.
-
-- [x] Add intense strobe flicker effect to the text container during glitch.
-
+- `[x]` Update Sidebar.jsx for 10px gap and curved corners
+- `[x]` Update Topbar.jsx for 10px gaps and curved corners
+- `[x]` Update BottomTicker.jsx for 10px gaps and curved corners
+- `[x]` Update layout.jsx padding to account for gaps
+- `[x]` Update settings/page.jsx to apply glass-frost and curved corners
+- `[x]` Update MovieCard.jsx for glass-frost on info and curved corners
+- `[x]` Ensure other UI elements get curved corners (e.g. global border-radius)
