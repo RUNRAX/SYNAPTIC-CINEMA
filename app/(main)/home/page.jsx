@@ -7,13 +7,13 @@ import MagneticButton from '@/components/MagneticButton'
 import RippleButton from '@/components/RippleButton'
 import MovieSliderSection from '@/components/MovieSliderSection'
 import GlitchCube from '@/components/GlitchCube'
-import { useParallax } from '@/hooks/useParallax'
+
 
 export default function Home() {
   const router = useRouter()
   const heroRef = useRef(null)
   const titleRef = useRef(null)
-  const { x, y } = useParallax(heroRef)
+
   
   const [data, setData] = useState({ trending: [], featuredMovies: [], popularSeries: [] })
   const [loading, setLoading] = useState(true)
@@ -62,7 +62,6 @@ export default function Home() {
           <h1 
             ref={titleRef}
             className="font-display text-[clamp(60px,8vw,100px)] leading-[0.92] text-black uppercase mb-12 animate-enter"
-            style={{ transform: `translate(${x * 24}px, ${y * 12}px)`, transition: 'transform 0.15s ease-out' }}
           >
             <span className="block">A faster,</span>
             <span className="block">mood-shaped</span>
