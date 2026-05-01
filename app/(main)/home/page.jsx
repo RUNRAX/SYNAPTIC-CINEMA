@@ -38,11 +38,11 @@ export default function Home() {
     const elements = document.querySelectorAll('.animate-enter')
     elements.forEach((el, i) => {
       el.style.opacity = '0'
-      el.style.transform = 'translateY(20px)'
       setTimeout(() => {
-        el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out'
-        el.style.opacity = '1'
-        el.style.transform = 'translateY(0)'
+        const flicker = [0, 1, 0, 1, 0.5, 1, 0, 1]
+        flicker.forEach((val, fi) => {
+          setTimeout(() => { el.style.opacity = String(val) }, fi * 40)
+        })
       }, i * 100 + 200)
     })
   }, [])
@@ -82,13 +82,13 @@ export default function Home() {
         </div>
 
         {/* Right Zone - Visual + Stats */}
-        <div className="w-full lg:w-[320px] shrink-0 border-t lg:border-t-0 lg:border-l border-[rgba(0,0,0,0.1)] flex flex-col relative z-10 bg-cream">
+        <div className="w-full lg:w-[320px] shrink-0 border-t lg:border-t-0 lg:border-l border-[rgba(0,0,0,0.1)] flex flex-col relative z-10 bg-cream/60 backdrop-blur-lg">
           <div className="flex-1 flex items-center justify-center p-8 animate-enter relative">
             <LensGraphic />
           </div>
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-2 gap-[1px] bg-[rgba(0,0,0,0.1)] border-t border-[rgba(0,0,0,0.1)]">
+          <div className="grid grid-cols-2 gap-[1px] bg-[rgba(0,0,0,0.1)] border-t border-[rgba(0,0,0,0.1)] backdrop-blur-md">
             <StatBox title="Trending Now" value={loading ? "..." : data.trending?.length || 0} />
             <StatBox title="Featured Films" value={loading ? "..." : data.featuredMovies?.length || 0} />
             <StatBox title="Popular Series" value={loading ? "..." : data.popularSeries?.length || 0} className="col-span-2" />
@@ -108,7 +108,7 @@ export default function Home() {
 
 function StatBox({ title, value, className = '' }) {
   return (
-    <RippleButton className={`group bg-cream p-6 flex flex-col items-start transition-colors duration-300 hover:bg-black animate-enter ${className}`}>
+    <RippleButton className={`group bg-cream/70 backdrop-blur-sm p-6 flex flex-col items-start transition-colors duration-300 hover:bg-black hover:text-cream animate-enter ${className}`}>
       <span className="font-display text-4xl lg:text-5xl text-black group-hover:text-cream mb-2 transition-colors duration-300">{value}</span>
       <span className="font-body text-[10px] text-mid group-hover:text-gray tracking-widest uppercase transition-colors duration-300 w-1/2 leading-relaxed">
         {title}

@@ -62,7 +62,7 @@ export default function Splash() {
               <div className="flex flex-col gap-6">
                 <div className="text-center border border-[rgba(0,0,0,0.1)] p-4 bg-cream-2">
                   <p className="font-body text-[11px] tracking-widest text-mid mb-1">WELCOME BACK</p>
-                  <p className="font-body font-bold text-sm uppercase">{user.full_name || user.email}</p>
+                  <p className="font-body font-bold text-sm uppercase">SYNAPTIC USER</p>
                 </div>
                 <MagneticButton
                   onClick={enterApp}

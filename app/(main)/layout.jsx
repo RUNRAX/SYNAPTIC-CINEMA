@@ -53,7 +53,7 @@ export default function MainLayout({ children }) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
+              transition={{ duration: 0.08 }}
               onAnimationStart={() => {
                 // The glitch logic is mostly handled by link clicks, but this ensures Framer Motion
                 // can also participate if needed, though we don't double-trigger it.

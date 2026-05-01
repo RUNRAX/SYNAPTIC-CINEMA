@@ -15,8 +15,7 @@ export default function CinematicBackgroundText() {
     const configs = [
       { speed: 60, dir: -1 },
       { speed: 45, dir: 1 },
-      { speed: 70, dir: -1 },
-      { speed: 50, dir: 1 }
+      { speed: 70, dir: -1 }
     ]
 
     const animations = []
@@ -41,7 +40,7 @@ export default function CinematicBackgroundText() {
     }
   }, [])
 
-  const textContent = Array(10).fill('CINEMA ◆ SYNAPTIC ◆ DISCOVER ◆ MOOD ◆ SIGNAL ◆ CURATE ◆ WORLDS ◆').join(' ')
+  const textContent = Array(10).fill('CINEMA ✕ SYNAPTIC ✕ DISCOVER ✕ MOOD ✕ SIGNAL ✕ CURATE ✕ WORLDS ✕').join(' ')
 
   return (
     <div className="cinema-bg-text-container" ref={containerRef}>
@@ -61,12 +60,6 @@ export default function CinematicBackgroundText() {
         <div 
           className="cinema-bg-text-row text-black opacity-[0.02] font-display"
           style={{ fontSize: 'clamp(80px, 10vw, 180px)', transform: 'rotateX(2deg)' }}
-        >
-          {textContent}
-        </div>
-        <div 
-          className="cinema-bg-text-row text-black opacity-[0.03] font-display"
-          style={{ fontSize: 'clamp(80px, 10vw, 180px)', transform: 'rotateX(-4deg)' }}
         >
           {textContent}
         </div>

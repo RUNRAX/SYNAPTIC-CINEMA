@@ -37,10 +37,7 @@
     font-family: var(--font-space-grotesk), sans-serif;
   }
 
-  /* No border radius anywhere unless explicitly a pill */
-  * {
-    border-radius: 0;
-  }
+  /* No box shadows except focus rings */
   
   /* No box shadows except focus rings */
   *:focus-visible {

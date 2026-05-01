@@ -33,7 +33,7 @@ export default function BottomTicker({ items = [] }) {
   if (!items || items.length === 0) return null
 
   // We duplicate the items array so it seamlessly loops
-  const content = items.join(' ◆ ') + ' ◆ '
+  const content = items.join(' ✕ ') + ' ✕ '
   
   return (
     <div className="fixed bottom-0 left-0 lg:left-[200px] right-0 h-[56px] bg-black border-t border-[rgba(255,255,255,0.1)] overflow-hidden flex items-center z-40">

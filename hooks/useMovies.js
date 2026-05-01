@@ -11,15 +11,13 @@ export function useMovies() {
     const fetchApiData = async () => {
       try {
         setLoading(true)
-        const response = await fetch('/api/home_content')
+        const response = await fetch('/api/collection_content')
         const data = await response.json()
         
         if (data) {
-          // Flatten trending, featured, and popular into one list
           const allContent = [
-            ...(data.trending || []),
-            ...(data.featuredMovies || []),
-            ...(data.popularSeries || [])
+            ...(data.movies || []),
+            ...(data.series || [])
           ]
           
           // Remove duplicates by ID

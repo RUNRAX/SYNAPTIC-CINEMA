@@ -31,11 +31,11 @@ export default function MovieCard({ movie, onClick }) {
   return (
     <div 
       ref={cardRef}
-      className="group relative w-full h-full aspect-[0.70] overflow-hidden cursor-pointer bg-cream-2 flex flex-col"
+      className="group relative w-full h-full aspect-[0.70] overflow-hidden cursor-pointer bg-cream-2 flex flex-col rounded-xl"
       onClick={handleClick}
     >
       {/* Poster Image or Fallback */}
-      <div className="relative flex-1 w-full bg-cream overflow-hidden">
+      <div className="relative flex-1 w-full bg-cream overflow-hidden rounded-t-xl">
         {movie.poster && !imageError && movie.poster !== '/placeholder.jpg' ? (
           <Image
             src={movie.poster}
@@ -61,7 +61,7 @@ export default function MovieCard({ movie, onClick }) {
       </div>
 
       {/* Content */}
-      <div className="p-4 bg-cream border-t border-[rgba(0,0,0,0.1)] transition-colors duration-300 group-hover:bg-black group-hover:text-cream flex flex-col gap-[2px] z-20">
+      <div className="p-4 bg-cream/70 backdrop-blur-md border-t border-[rgba(0,0,0,0.1)] transition-colors duration-300 group-hover:bg-black/70 group-hover:text-cream flex flex-col gap-[2px] z-20 rounded-b-xl">
         <h3 className="font-body font-bold text-[11px] truncate uppercase tracking-wide">{movie.title}</h3>
         <p className="font-body text-[9px] text-mid group-hover:text-gray uppercase tracking-wider">
           {movie.year} · {movie.genre}

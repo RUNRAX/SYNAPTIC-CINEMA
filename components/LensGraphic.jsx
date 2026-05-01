@@ -9,10 +9,16 @@ export default function LensGraphic() {
   const reqRef = useRef()
 
   useEffect(() => {
+    let currentSpeed = 0.3;
     const rotate = () => {
-      if (!isHovered && containerRef.current) {
-        rotationRef.current += 0.3
-        containerRef.current.style.transform = `rotate(${rotationRef.current}deg)`
+      if (containerRef.current) {
+        const targetSpeed = isHovered ? 1.5 : 0.3;
+        currentSpeed += (targetSpeed - currentSpeed) * 0.05; // Smoothly interpolate speed
+        rotationRef.current += currentSpeed;
+        
+        // We handle scale in the CSS transition instead of raw setting it here for smoothness
+        const scale = isHovered ? 1.06 : 1;
+        containerRef.current.style.transform = `rotate(${rotationRef.current}deg) scale(${scale})`;
       }
       reqRef.current = requestAnimationFrame(rotate)
     }
@@ -23,16 +29,10 @@ export default function LensGraphic() {
 
   const handleMouseEnter = () => {
     setIsHovered(true)
-    if (containerRef.current) {
-      containerRef.current.style.transform = `rotate(${rotationRef.current + 3}deg) scale(1.06)`
-    }
   }
 
   const handleMouseLeave = () => {
     setIsHovered(false)
-    if (containerRef.current) {
-      containerRef.current.style.transform = `rotate(${rotationRef.current}deg) scale(1)`
-    }
   }
 
   const handleClick = () => {
@@ -50,18 +50,19 @@ export default function LensGraphic() {
     <div className="flex flex-col items-center gap-4">
       <div 
         ref={containerRef}
-        className="w-[160px] h-[160px] rounded-full bg-black flex items-center justify-center cursor-pointer film-circle transition-transform duration-300"
+        className="w-[160px] h-[160px] rounded-full bg-[var(--black)] flex items-center justify-center cursor-pointer film-circle"
+        style={{ transition: 'transform 0.1s ease-out' }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={handleClick}
       >
         <svg viewBox="0 0 100 100" className="w-[120px] h-[120px]">
-          <circle cx="50" cy="50" r="48" fill="none" stroke="#F2EDE3" strokeWidth="1" strokeOpacity="0.2" />
-          <circle cx="50" cy="50" r="30" fill="none" stroke="#F2EDE3" strokeWidth="0.5" strokeOpacity="0.5" />
-          <circle cx="50" cy="50" r="10" fill="none" stroke="#F2EDE3" strokeWidth="1" />
+          <circle cx="50" cy="50" r="48" fill="none" stroke="var(--cream)" strokeWidth="1" strokeOpacity="0.2" />
+          <circle cx="50" cy="50" r="30" fill="none" stroke="var(--cream)" strokeWidth="0.5" strokeOpacity="0.5" />
+          <circle cx="50" cy="50" r="10" fill="none" stroke="var(--cream)" strokeWidth="1" />
           
           {/* Aperture blades */}
-          <g stroke="#F2EDE3" strokeWidth="1" fill="none" strokeOpacity="0.6">
+          <g stroke="var(--cream)" strokeWidth="1" fill="none" strokeOpacity="0.6">
             <line x1="50" y1="20" x2="65" y2="50" />
             <line x1="80" y1="50" x2="50" y2="65" />
             <line x1="50" y1="80" x2="35" y2="50" />

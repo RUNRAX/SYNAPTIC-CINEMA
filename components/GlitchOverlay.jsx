@@ -105,27 +105,27 @@ export default function GlitchOverlay() {
       // Phase 2: Callback execution (Load Next Quicker)
       tl.call(() => {
         if (callback) callback()
-      }, [], 0.15)
+      }, [], 0.05)
 
       // Phase 3: Hold overlay briefly
       tl.to(content, {
         opacity: 0.8,
         duration: 0.05,
         yoyo: true,
-        repeat: 2
+        repeat: 4
       }, 0.15)
 
       // Phase 4: Fade Out cleanly
       tl.to([content, slashes, randomElements], {
         opacity: 0,
         duration: 0.1
-      }, 0.25)
+      }, 0.4)
 
       tl.to(overlay, {
         opacity: 0,
         duration: 0.2,
         ease: 'power2.out'
-      }, 0.3)
+      }, 0.5)
     }
 
     window.addEventListener('trigger-glitch', handleGlitch)
