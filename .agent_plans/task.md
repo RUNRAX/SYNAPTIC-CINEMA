@@ -1,7 +1,3 @@
-- `[x]` Update Sidebar.jsx for 10px gap and curved corners
-- `[x]` Update Topbar.jsx for 10px gaps and curved corners
-- `[x]` Update BottomTicker.jsx for 10px gaps and curved corners
-- `[x]` Update layout.jsx padding to account for gaps
-- `[x]` Update settings/page.jsx to apply glass-frost and curved corners
-- `[x]` Update MovieCard.jsx for glass-frost on info and curved corners
-- `[x]` Ensure other UI elements get curved corners (e.g. global border-radius)
+- [x] Update `globals.css` with increased transparency and 5px blur for `.glass-frost` classes.
+- [x] Update `globals.css` with high saturation and glow effects for `.glass-frost` classes.
+- [x] Update memory `checkpoint_latest` upon completion.
