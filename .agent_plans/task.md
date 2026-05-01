@@ -1,3 +1,8 @@
-- [x] Update `globals.css` with increased transparency and 5px blur for `.glass-frost` classes.
-- [x] Update `globals.css` with high saturation and glow effects for `.glass-frost` classes.
-- [x] Update memory `checkpoint_latest` upon completion.
+- [x] Update `fetchHomeContent` in `lib/server/tmdb.js` to fetch 15 pages for all content sections.
+- [x] Update `searchTmdb` in `lib/server/tmdb.js` to fetch 15 pages.
+- [x] Update `fetchSingleGenre` in `lib/server/tmdb.js` to use `fetchFromDiscover` with 15 pages instead of `tmdbFetch`.
+- [x] Update `fetchBroadGenreFallback` in `lib/server/tmdb.js` to use `fetchFromDiscover` with 15 pages instead of `tmdbFetch`.
+- [x] Update `fetchRecommendations` in `lib/server/tmdb.js` to target 250 items.
+- [x] Update `fetchSimilar` in `lib/server/tmdb.js` to iterate up to 15 pages.
+- [x] Update `fetchExhibitionGenres` in `lib/server/tmdb.js` to fetch 15 pages.
+- [ ] Update `checkpoint_latest` in memory upon completion.
