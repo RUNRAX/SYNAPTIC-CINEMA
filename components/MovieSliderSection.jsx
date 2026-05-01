@@ -1,10 +1,13 @@
 'use client'
 
 import { useRef } from 'react'
+import { useRouter } from 'next/navigation'
 import MovieCard from './MovieCard'
+import { triggerGlitch } from '@/hooks/useGlitch'
 
 export default function MovieSliderSection({ title, movies, loading = false }) {
   const sliderRef = useRef(null)
+  const router = useRouter()
 
   if (!loading && (!movies || movies.length === 0)) return null
 
@@ -27,7 +30,14 @@ export default function MovieSliderSection({ title, movies, loading = false }) {
           ) : (
             movies.map((movie) => (
               <div key={movie.id} className="min-w-[160px] md:min-w-[200px] lg:min-w-[240px] snap-start shrink-0">
-                <MovieCard movie={movie} onClick={(m) => console.log('Movie clicked', m)} />
+                <MovieCard 
+                  movie={movie} 
+                  onClick={(m) => {
+                    triggerGlitch(() => {
+                      router.push(`/details?id=${m.id}&type=${m.type}`)
+                    })
+                  }} 
+                />
               </div>
             ))
           )}

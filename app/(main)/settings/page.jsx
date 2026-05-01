@@ -27,6 +27,7 @@ export default function Settings() {
     autoPlay: true,
     cameraAccess: true
   })
+  const [showToast, setShowToast] = useState(false)
 
   useEffect(() => {
     try {
@@ -85,6 +86,9 @@ export default function Settings() {
     localStorage.setItem('minImdbRating', settings.minImdbRating)
     localStorage.setItem('customMoodGenres', JSON.stringify(settings.customMoodGenres))
     // The theme is saved immediately on toggle, so no need to save here
+    
+    setShowToast(true)
+    setTimeout(() => setShowToast(false), 3000)
   }
 
   if (!mounted) return null
@@ -191,6 +195,14 @@ export default function Settings() {
           </RippleButton>
         </div>
       </div>
+      
+      {/* Toast Notification */}
+      <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 ${showToast ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}>
+        <div className="bg-black text-cream px-6 py-3 border border-[rgba(255,255,255,0.2)] font-body text-[10px] tracking-widest uppercase shadow-2xl flex items-center gap-3">
+          <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
+          Configuration Saved Successfully
+        </div>
+      </div>
     </div>
   )
 }
@@ -203,7 +215,7 @@ function SettingToggle({ label, description, value, onToggle }) {
         <p className="font-body text-[10px] text-mid tracking-widest uppercase">{description}</p>
       </div>
       <div className={`w-12 h-6 border transition-colors flex items-center px-1 ${value ? 'bg-black border-black' : 'bg-transparent border-[rgba(0,0,0,0.2)]'}`}>
-        <div className={`w-4 h-4 bg-current transition-transform ${value ? 'translate-x-6 text-accent' : 'translate-x-0 text-mid'}`}></div>
+        <div className={`w-4 h-4 bg-current transition-transform duration-300 ${value ? 'translate-x-[24px] text-accent' : 'translate-x-0 text-mid'}`}></div>
       </div>
     </div>
   )

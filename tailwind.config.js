@@ -9,13 +9,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        black: '#0A0A0A',
-        cream: '#F2EDE3',
-        'cream-2': '#E8E2D4',
-        gray: '#B8B3A8',
-        mid: '#6B6660',
-        accent: '#C8FF00',
-        red: '#FF2D2D',
+        black: 'var(--black)',
+        cream: 'var(--cream)',
+        'cream-2': 'var(--cream-2)',
+        gray: 'var(--gray)',
+        mid: 'var(--mid)',
+        accent: 'var(--accent)',
+        red: 'var(--red)',
       },
       fontFamily: {
         display: ['var(--font-bebas-neue)', 'sans-serif'],

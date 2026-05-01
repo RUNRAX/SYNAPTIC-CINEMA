@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import MoodBars from '@/components/MoodBars'
 import RippleButton from '@/components/RippleButton'
 import MovieSliderSection from '@/components/MovieSliderSection'
-import { preloadModels, detectDominantEmotion } from '@/lib/faceApi'
+import { preloadModels, detectMixedEmotions } from '@/lib/faceApi'
 
 const MOOD_TO_GENRE = {
   happy: 'COMEDY',
@@ -16,6 +16,15 @@ const MOOD_TO_GENRE = {
   neutral: 'DOCUMENTARY',
   disgust: 'THRILLER',
   melancholy: 'SCI-FI'
+}
+
+const DEFAULT_MOOD_GENRES = {
+  happy: ['COMEDY', 'ROMANCE'],
+  sad: ['DRAMA', 'DOCUMENTARY'],
+  angry: ['ACTION', 'THRILLER'],
+  fear: ['HORROR', 'THRILLER'],
+  surprise: ['SCI-FI', 'THRILLER'],
+  neutral: ['DOCUMENTARY', 'DRAMA']
 }
 
 const GENRE_NAME_TO_ID = {
@@ -45,16 +54,23 @@ export default function Analysis() {
     }
   }, [])
 
-  const fetchRecs = async (emotion) => {
+  const fetchRecs = async (emotions) => {
     setLoadingRecs(true)
     try {
       const minRating = localStorage.getItem('minImdbRating') || 6.0
-      const moodGenres = JSON.parse(localStorage.getItem('customMoodGenres')) || {}
+      let moodGenres = DEFAULT_MOOD_GENRES
+      try {
+        const stored = localStorage.getItem('customMoodGenres')
+        if (stored) moodGenres = JSON.parse(stored)
+      } catch (e) {}
       
-      const selectedGenres = moodGenres[emotion] || []
+      // Combine genres from top 2 emotions if array is passed, otherwise just use the single emotion
+      const emotionList = Array.isArray(emotions) ? emotions.slice(0, 2).map(e => e.emotion) : [emotions]
+      const selectedGenres = [...new Set(emotionList.flatMap(emo => moodGenres[emo] || []))]
       const genreIds = selectedGenres.map(g => GENRE_NAME_TO_ID[g]).filter(Boolean).join(',')
       
-      const res = await fetch(`/api/recommendations?emotion=${emotion}&minImdbRating=${minRating}&genreOverrideIds=${genreIds}`)
+      const primaryEmotion = emotionList[0] || 'neutral'
+      const res = await fetch(`/api/recommendations?emotion=${primaryEmotion}&minImdbRating=${minRating}&genreOverrideIds=${genreIds}`)
       const data = await res.json()
       
       const allContent = [...(data.movies || []), ...(data.series || [])]
@@ -86,7 +102,7 @@ export default function Analysis() {
             if (!videoRef.current) return
             
             attempts++
-            const detection = await detectDominantEmotion(videoRef.current)
+            const detection = await detectMixedEmotions(videoRef.current)
             
             if (detection.hasFace) {
               validReadings.push(detection)
@@ -122,12 +138,13 @@ export default function Analysis() {
                 angry: Math.round((exps.angry || 0) * 100),
                 surprised: Math.round((exps.surprised || 0) * 100),
                 dominantMood: finalReading.emotion,
-                recommendedGenre: MOOD_TO_GENRE[finalReading.emotion] || 'SCI-FI'
+                recommendedGenre: MOOD_TO_GENRE[finalReading.emotion] || 'SCI-FI',
+                mixedEmotions: finalReading.topEmotions || []
               })
               
-              fetchRecs(finalReading.emotion)
+              fetchRecs(finalReading.topEmotions || finalReading.emotion)
             }
-          }, 800)
+          }, 500)
         }
       }
     } catch (err) {
@@ -172,7 +189,16 @@ export default function Analysis() {
             ) : results ? (
               <div className="text-center">
                 <p className="font-body text-[10px] text-gray tracking-widest uppercase mb-2">Scan Complete</p>
-                <h2 className="font-display text-4xl text-cream">Mood: {results.dominantMood}</h2>
+                <h2 className="font-display text-4xl text-cream mb-4">Dominant: {results.dominantMood}</h2>
+                {results.mixedEmotions && results.mixedEmotions.length > 1 && (
+                  <div className="flex flex-wrap gap-2 justify-center mt-4">
+                    {results.mixedEmotions.slice(0, 3).map((emo, idx) => (
+                      <span key={idx} className="font-body text-[10px] bg-cream/10 text-cream px-2 py-1 tracking-widest uppercase">
+                        {emo.emotion} {Math.round(emo.confidence * 100)}%
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             ) : (
               <RippleButton 

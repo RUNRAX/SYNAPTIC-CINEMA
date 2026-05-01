@@ -1,10 +1,13 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import MovieCard from '@/components/MovieCard'
 import { Search as SearchIcon } from 'lucide-react'
+import { triggerGlitch } from '@/hooks/useGlitch'
 
 export default function Search() {
+  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
   const [movies, setMovies] = useState([])
   const [loading, setLoading] = useState(false)
@@ -78,7 +81,11 @@ export default function Search() {
               <MovieCard 
                 key={movie.id} 
                 movie={movie} 
-                onClick={(m) => console.log('Movie clicked', m)}
+                onClick={(m) => {
+                  triggerGlitch(() => {
+                    router.push(`/details?id=${m.id}&type=${m.type}`)
+                  })
+                }}
               />
             ))}
           </div>
