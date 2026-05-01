@@ -37,9 +37,9 @@ export default function GlitchCube() {
       // 4-5 rapid chaotic movements
       for (let i = 0; i < 5; i++) {
         tl.to(cube, {
-          rotateX: \`+=\${gsap.utils.random(-15, 15)}\`,
-          rotateY: \`+=\${gsap.utils.random(-15, 15)}\`,
-          rotateZ: \`+=\${gsap.utils.random(-10, 10)}\`,
+          rotateX: `+=${gsap.utils.random(-15, 15)}`,
+          rotateY: `+=${gsap.utils.random(-15, 15)}`,
+          rotateZ: `+=${gsap.utils.random(-10, 10)}`,
           duration: 0.05,
           ease: "steps(1)"
         })

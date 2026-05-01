@@ -64,8 +64,8 @@ export default function GlitchDivider() {
           key={i} 
           className="glitch-slice" 
           style={{ 
-            top: \`\${(i / 8) * 100}%\`, 
-            height: \`\${gsap.utils.random(2, 10)}px\` 
+            top: `${(i / 8) * 100}%`, 
+            height: `${gsap.utils.random(2, 10)}px` 
           }} 
         />
       ))}
