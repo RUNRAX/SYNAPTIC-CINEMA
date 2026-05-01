@@ -1,8 +1,6 @@
-- [x] Update `fetchHomeContent` in `lib/server/tmdb.js` to fetch 15 pages for all content sections.
-- [x] Update `searchTmdb` in `lib/server/tmdb.js` to fetch 15 pages.
-- [x] Update `fetchSingleGenre` in `lib/server/tmdb.js` to use `fetchFromDiscover` with 15 pages instead of `tmdbFetch`.
-- [x] Update `fetchBroadGenreFallback` in `lib/server/tmdb.js` to use `fetchFromDiscover` with 15 pages instead of `tmdbFetch`.
-- [x] Update `fetchRecommendations` in `lib/server/tmdb.js` to target 250 items.
-- [x] Update `fetchSimilar` in `lib/server/tmdb.js` to iterate up to 15 pages.
-- [x] Update `fetchExhibitionGenres` in `lib/server/tmdb.js` to fetch 15 pages.
-- [ ] Update `checkpoint_latest` in memory upon completion.
+- [x] Modify `components/MoodBars.jsx` to add Fear and Disgust to `moodData`.
+- [x] Modify `app/(main)/settings/page.jsx` to add disgust to `EMOTIONS` and `DEFAULT_MOOD_GENRES`.
+- [x] Modify `app/(main)/analysis/page.jsx` to add disgust to `DEFAULT_MOOD_GENRES` and map `fear`/`disgust` into `setResults`.
+- [x] Modify `lib/server/tmdb.js` to add `disgust` to `EMOTION_GENRE_MAP`.
+- [x] Modify `BACKEND/app.py` to add `disgust` to `genre_map`.
+- [x] Update `checkpoint_latest` in memory upon completion.

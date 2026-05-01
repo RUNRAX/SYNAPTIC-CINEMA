@@ -25,6 +25,7 @@ const DEFAULT_MOOD_GENRES = {
   angry: ['ACTION', 'THRILLER'],
   fear: ['HORROR', 'THRILLER'],
   surprise: ['SCI-FI', 'THRILLER'],
+  disgust: ['THRILLER', 'HORROR'],
   neutral: ['DOCUMENTARY', 'DRAMA']
 }
 
@@ -137,7 +138,7 @@ export default function Analysis() {
               if (validReadings.length === 0) {
                 setAnalyzing(false)
                 setResults({
-                  happy: 0, neutral: 100, sad: 0, angry: 0, surprised: 0,
+                  happy: 0, neutral: 100, sad: 0, angry: 0, surprised: 0, fear: 0, disgust: 0,
                   dominantMood: 'neutral', recommendedGenre: 'DOCUMENTARY'
                 })
                 fetchRecs('neutral')
@@ -156,6 +157,8 @@ export default function Analysis() {
                 sad: Math.round((exps.sad || 0) * 100),
                 angry: Math.round((exps.angry || 0) * 100),
                 surprised: Math.round((exps.surprised || 0) * 100),
+                fear: Math.round((exps.fearful || 0) * 100),
+                disgust: Math.round((exps.disgusted || 0) * 100),
                 dominantMood: finalReading.emotion,
                 recommendedGenre: MOOD_TO_GENRE[finalReading.emotion] || 'SCI-FI',
                 mixedEmotions: finalReading.topEmotions || []

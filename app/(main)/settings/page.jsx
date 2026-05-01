@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import RippleButton from '@/components/RippleButton'
 import { useFlickerIn } from '@/hooks/useFlickerIn'
 
-const EMOTIONS = ['happy', 'sad', 'angry', 'fear', 'surprise', 'neutral']
+const EMOTIONS = ['happy', 'sad', 'angry', 'fear', 'surprise', 'disgust', 'neutral']
 const GENRES = ['ACTION', 'DRAMA', 'SCI-FI', 'HORROR', 'COMEDY', 'THRILLER', 'DOCUMENTARY', 'ROMANCE']
 
 const DEFAULT_MOOD_GENRES = {
@@ -13,6 +13,7 @@ const DEFAULT_MOOD_GENRES = {
   angry: ['ACTION', 'THRILLER'],
   fear: ['HORROR', 'THRILLER'],
   surprise: ['SCI-FI', 'THRILLER'],
+  disgust: ['THRILLER', 'HORROR'],
   neutral: ['DOCUMENTARY', 'DRAMA']
 }
 

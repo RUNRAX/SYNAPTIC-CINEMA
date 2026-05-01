@@ -18,6 +18,8 @@ export default function MoodBars({ moods = {} }) {
     { label: 'Surprised', value: moods.surprised || 0 },
     { label: 'Sad', value: moods.sad || 0 },
     { label: 'Angry', value: moods.angry || 0 },
+    { label: 'Fear', value: moods.fear || 0 },
+    { label: 'Disgust', value: moods.disgust || 0 },
   ]
 
   return (

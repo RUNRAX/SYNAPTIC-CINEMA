@@ -1,31 +1,43 @@
-# Global Glass Frost Update
+# Add 'Fear' and 'Disgust' Emotions
 
-The goal is to update the visual properties of the floating UI elements (sidebar, top bar, bottom bar, settings cards, etc.) to have higher transparency, a lower blur radius (approx 5%), and a high glow/saturation effect for content scrolling underneath them.
+This plan outlines the steps to fully integrate the missing emotions (`fear` and `disgust`) into the platform. While the backend model and `faceApi.js` can detect them, they are currently missing from various UI components and recommendation maps.
 
 ## User Review Required
-
-> [!IMPORTANT]
-> Please confirm my interpretation of your request:
-> You want the `glass-frost` style (which is applied to the Sidebar, Topbar, Bottom Ticker, and UI cards) to be updated globally to have:
-> 1. **Increased transparency** (lower opacity background).
-> 2. **Less blur** (a small blur, around 5px).
-> 3. **High glow and saturation** for any content (like movie cards or text) that passes underneath these floating elements.
->
-> Is this correct, or did you mean to *exclude* the sidebar, top bar, and bottom bar from these changes? (I interpreted "leaving" as a typo for "regarding" or referring to the elements themselves).
+> [!NOTE]
+> Please review the default genre mapping below for these emotions. Are you satisfied with these genre fallback choices?
+> - **Fear**: `['HORROR', 'THRILLER']`
+> - **Disgust**: `['THRILLER', 'HORROR']` (Can also map to Crime/Mystery if you prefer)
 
 ## Proposed Changes
 
-### 1. `app/globals.css`
-Update the `.glass-frost` utility classes to achieve the desired effect.
+---
 
-#### [MODIFY] globals.css
-- Decrease the alpha channel of the background colors (e.g., from `0.55` to `0.15` or `0.20`).
-- Update `backdrop-filter: blur(16px) saturate(180%)` to `backdrop-filter: blur(5px) saturate(250%) brightness(120%)` to create the 5px blur and the high glow/saturation effect.
-- Apply these changes to `.glass-frost`, `.glass-frost-dark`, and `.glass-frost-light`.
+### UI Components
+
+#### [MODIFY] `components/MoodBars.jsx`
+- Add `Fear` and `Disgust` to the `moodData` array so they visually render on the Analysis page when detected.
+
+#### [MODIFY] `app/(main)/settings/page.jsx`
+- Add `disgust` to the `EMOTIONS` array so users can configure it in their Mood & Genre Mapping settings. (Fear is already there).
+- Add a default genre fallback for `disgust` (e.g. `['THRILLER', 'HORROR']`).
+
+#### [MODIFY] `app/(main)/analysis/page.jsx`
+- Ensure `disgust` is present in `DEFAULT_MOOD_GENRES`.
+- Update the `setResults` logic inside `startAnalysis` to correctly pull `fear` (mapped from `fearful` in faceApi) and `disgust` (mapped from `disgusted` in faceApi) from the detection expressions so they are passed to the `MoodBars` component.
+
+---
+
+### Backend / Recommendation Logic
+
+#### [MODIFY] `lib/server/tmdb.js`
+- Update `EMOTION_GENRE_MAP` to include `disgust: { movie: [27, 53], tv: [9648, 10765] }`. (Fear is already correctly mapped here).
+
+#### [MODIFY] `BACKEND/app.py`
+- Update the `genre_map` inside the `/recommendations` route to include the exact same mapping for `disgust` to keep the Python backend perfectly synchronized with the Next.js API.
 
 ## Verification Plan
 
 ### Manual Verification
-- Scroll the page to observe movie cards and background elements passing under the top bar, sidebar, and bottom ticker.
-- Verify that the elements underneath appear highly saturated and glowing.
-- Confirm the blur level is subtle (around 5px) and transparency is increased.
+- Go to Settings and verify that "When I am disgust..." appears and can be configured.
+- Go to Analysis, run a facial scan (make a disgusted or fearful face) and verify that the metrics chart displays bars for Fear and Disgust.
+- Ensure recommendations load correctly when these emotions are triggered.
