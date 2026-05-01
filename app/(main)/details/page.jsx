@@ -111,7 +111,7 @@ export default function Details() {
             src={details.backdrop_url} 
             alt={details.title}
             fill
-            className="object-cover opacity-60 mix-blend-luminosity"
+            className="object-cover opacity-80"
             priority
           />
         )}
@@ -148,7 +148,7 @@ export default function Details() {
       <div className="w-full flex flex-col lg:flex-row border-b border-[rgba(0,0,0,0.1)]">
         
         {/* Left Col: Synopsis & Credits */}
-        <div className="flex-1 p-6 lg:p-12 lg:border-r border-[rgba(0,0,0,0.1)]">
+        <div className="flex-1 p-6 lg:p-12 lg:border-r border-[rgba(0,0,0,0.1)] overflow-hidden min-w-0">
           <h2 className="font-body text-[11px] tracking-[0.2em] uppercase text-mid mb-6">SYNOPSIS</h2>
           <p className="font-body text-[16px] lg:text-[20px] leading-[1.6] text-black max-w-3xl mb-16">
             {details.overview}

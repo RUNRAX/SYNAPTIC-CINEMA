@@ -39,11 +39,17 @@ export default function GlitchOverlay() {
           g2.style.cssText = 'background:var(--cream); clip-path:inset(60% 0 10% 0); transform:translateX(6px);'
           g3.style.cssText = 'background:var(--red); clip-path:inset(10% 0 80% 0); opacity:0.3; transform:translateX(-8px);'
         },
-        // Frame 4: Execute callback
+        // Frame 4: Solid black hold
+        () => {
+          g2.style.cssText = ''
+          g3.style.cssText = ''
+          g1.style.cssText = 'background:var(--black); opacity:1;'
+        },
+        // Frame 5: Execute callback
         () => {
           if (callback) callback()
         },
-        // Frame 5: Fade overlay
+        // Frame 6: Fade overlay
         () => {
           overlay.style.opacity = '0'
           // clear styles
@@ -63,7 +69,10 @@ export default function GlitchOverlay() {
           currentFrame++
           
           if (currentFrame === 4) {
-            // Run callback immediately after frame 3, then proceed to fade out
+            // Hold black screen to make total transition 1 second
+            setTimeout(runFrame, 835)
+          } else if (currentFrame === 5) {
+            // Run fade out immediately after callback
             runFrame()
           } else {
             setTimeout(runFrame, 55)

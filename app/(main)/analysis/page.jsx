@@ -40,6 +40,8 @@ export default function Analysis() {
   // Recommendations state
   const [recommendations, setRecommendations] = useState([])
   const [loadingRecs, setLoadingRecs] = useState(false)
+  const [availableGenres, setAvailableGenres] = useState([])
+  const [selectedGenre, setSelectedGenre] = useState(null)
   
   const videoRef = useRef(null)
   const pollIntervalRef = useRef(null)
@@ -67,6 +69,10 @@ export default function Analysis() {
       // Combine genres from top 2 emotions if array is passed, otherwise just use the single emotion
       const emotionList = Array.isArray(emotions) ? emotions.slice(0, 2).map(e => e.emotion) : [emotions]
       const selectedGenres = [...new Set(emotionList.flatMap(emo => moodGenres[emo] || []))]
+      
+      setAvailableGenres(selectedGenres)
+      setSelectedGenre(selectedGenres[0] || 'DOCUMENTARY')
+      
       const genreIds = selectedGenres.map(g => GENRE_NAME_TO_ID[g]).filter(Boolean).join(',')
       
       const primaryEmotion = emotionList[0] || 'neutral'
@@ -173,7 +179,7 @@ export default function Analysis() {
                   muted 
                   className="w-full h-full object-cover opacity-50 mix-blend-screen grayscale"
                 />
-                <div className="absolute inset-0 bg-[rgba(200,255,0,0.1)]"></div>
+                <div className="absolute inset-0 bg-[rgba(255,45,45,0.1)]"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-[60%] h-[60%] border border-accent animate-pulse relative">
                     <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-accent -translate-x-1 -translate-y-1"></div>
@@ -221,12 +227,30 @@ export default function Analysis() {
               
               <div className="mt-12 pt-8 border-t border-[rgba(0,0,0,0.1)]">
                 <p className="font-body text-[10px] text-mid tracking-[0.1em] uppercase mb-4">RECOMMENDED WORLD</p>
-                <h3 className="font-display text-4xl mb-6">{results.recommendedGenre}</h3>
+                
+                {availableGenres.length > 1 ? (
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {availableGenres.map(genre => (
+                      <button
+                        key={genre}
+                        onClick={() => setSelectedGenre(genre)}
+                        className={`px-3 py-1 font-body text-[10px] tracking-widest uppercase border transition-colors ${
+                          selectedGenre === genre ? 'bg-black text-cream border-black' : 'bg-transparent text-mid border-[rgba(0,0,0,0.2)] hover:border-black hover:text-black'
+                        }`}
+                      >
+                        {genre}
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <h3 className="font-display text-4xl mb-6">{selectedGenre || results.recommendedGenre}</h3>
+                )}
+
                 <RippleButton 
-                  onClick={() => router.push(`/collection?genre=${results.recommendedGenre}`)}
+                  onClick={() => router.push(`/collection?genre=${selectedGenre || results.recommendedGenre}`)}
                   className="w-full py-4 bg-black text-cream hover:bg-accent hover:text-black font-body text-[11px] tracking-widest transition-colors uppercase"
                 >
-                  ENTER {results.recommendedGenre}
+                  ENTER {selectedGenre || results.recommendedGenre}
                 </RippleButton>
               </div>
             </div>

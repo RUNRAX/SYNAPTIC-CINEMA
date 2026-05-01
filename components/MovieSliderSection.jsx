@@ -25,11 +25,11 @@ export default function MovieSliderSection({ title, movies, loading = false }) {
         >
           {loading ? (
             Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="min-w-[160px] md:min-w-[200px] lg:min-w-[240px] aspect-[0.70] bg-[rgba(0,0,0,0.05)] animate-pulse border border-[rgba(0,0,0,0.1)] snap-start shrink-0"></div>
+              <div key={i} className="min-w-[160px] md:min-w-[200px] lg:min-w-[240px] max-w-[160px] md:max-w-[200px] lg:max-w-[240px] aspect-[0.70] bg-[rgba(0,0,0,0.05)] animate-pulse border border-[rgba(0,0,0,0.1)] snap-start shrink-0"></div>
             ))
           ) : (
             movies.map((movie) => (
-              <div key={movie.id} className="min-w-[160px] md:min-w-[200px] lg:min-w-[240px] snap-start shrink-0">
+              <div key={movie.id} className="min-w-[160px] md:min-w-[200px] lg:min-w-[240px] max-w-[160px] md:max-w-[200px] lg:max-w-[240px] aspect-[0.70] snap-start shrink-0">
                 <MovieCard 
                   movie={movie} 
                   onClick={(m) => {

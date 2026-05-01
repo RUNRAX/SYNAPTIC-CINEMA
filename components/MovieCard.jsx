@@ -31,7 +31,7 @@ export default function MovieCard({ movie, onClick }) {
   return (
     <div 
       ref={cardRef}
-      className="group relative w-full aspect-[0.70] overflow-hidden cursor-pointer bg-cream-2 flex flex-col"
+      className="group relative w-full h-full aspect-[0.70] overflow-hidden cursor-pointer bg-cream-2 flex flex-col"
       onClick={handleClick}
     >
       {/* Poster Image or Fallback */}

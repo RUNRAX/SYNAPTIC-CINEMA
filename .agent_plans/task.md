@@ -1,44 +1,20 @@
-# Synaptic Cinema — Task Checklist
+# Synaptic Cinema — Polish & Features Task Checklist
 
-## Component 1 — Face-API.js & Analysis Page
-- [x] Update `lib/faceApi.js` for faster initialization (reduce `inputSize` to `224`)
-- [x] Add `preloadModels()` to `lib/faceApi.js`
-- [x] Rewrite `app/(main)/analysis/page.jsx` to use real `detectDominantEmotion`
-- [x] Implement camera startup on click (with models preloaded)
-- [x] Create polling loop for stable readings
-- [x] Map detected emotion to genre
-- [x] Update `MoodBars` with real percentages
-
-## Component 2 — Movie Poster Display
-- [x] Modify `components/MovieCard.jsx` to render an `<img>` tag with `movie.poster`
-- [x] Add fallback state (halftone pattern) when no poster exists
-- [x] Align `components/MovieCard.css` with the new design
-
-## Component 3 — Remove Demo Data, Use TMDB
-- [x] Clean up `lib/movies.js` (remove hardcoded `MOVIES`)
-- [x] Update `hooks/useMovies.js` to fetch from `/api/home_content`
-- [x] Update `app/(main)/collection/page.jsx` with loading states
-- [x] Update `app/(main)/search/page.jsx` to hit `/api/search?query=X`
-
-## Component 4 — Settings Page & Dark Mode
-- [x] Add `[data-theme="dark"]` variables to `app/globals.css`
-- [x] Update `app/layout.jsx` with theme initialization script
-- [x] Rewrite `app/(main)/settings/page.jsx` to include new sections:
-  - [x] Dark Mode toggle
-  - [x] Minimum IMDB Rating slider
-  - [x] Custom Mood-Genre Mapping multi-selects
-
-## Component 5 — Recommendations Flow
-- [x] Create `components/MovieSliderSection.jsx`
-- [x] Update `app/(main)/analysis/page.jsx` to fetch recommendations after scan
-- [x] Pass settings (IMDB min, genre overrides) to the recommendation API
-- [x] Render fetched movies below the analysis metrics
-
-## Component 6 — Home Page Dynamics
-- [x] Fetch data in `app/(main)/home/page.jsx`
-- [x] Render dynamic stats
-- [x] Add trending movies slider
-
-## Wrap Up
-- [x] Final manual verification of all flows
-- [x] Clear memory checkpoint
+- [x] **Phase 1: Details Page Polish**
+  - [x] Update `app/(main)/details/page.jsx` to show full-color poster (remove `mix-blend-luminosity`, set opacity-80).
+  - [x] Add `overflow-hidden min-w-0` to the left column parent div to fix Cast section scrolling.
+- [x] **Phase 2: Uniform Movie Card Layout**
+  - [x] Update `components/MovieSliderSection.jsx` to enforce `max-w` for cards.
+  - [x] Update `components/MovieCard.jsx` to enforce `h-full`.
+  - [x] Update `components/MovieGrid.css` to use `repeat(auto-fill, minmax(200px, 240px))` with center alignment.
+- [x] **Phase 3: Analysis Page Multi-Genre Dropdown**
+  - [x] Update `app/(main)/analysis/page.jsx` to render genre pills when multiple genres are available instead of a single text block.
+- [x] **Phase 4: Global Accent Color**
+  - [x] Update `app/globals.css` to change `--accent` from `#C8FF00` to `#FF2D2D`.
+  - [x] Update scanline hardcoded color in `app/globals.css`.
+- [x] **Phase 5: Minimum 100 Content Items & Strict IMDB Filter**
+  - [x] Update `lib/server/tmdb.js` `fetchHomeContent`, `fetchRecommendations`, `fetchSimilar`, and `searchTmdb` to fetch more pages.
+  - [x] Update `lib/server/tmdb.js` to fix the `minVoteAverage - 0.7` bug in `fetchBroadGenreFallback`.
+  - [x] Ensure all `vote_average.gte` queries in `lib/server/tmdb.js` enforce a minimum of 6.0.
+- [x] **Phase 6: Glitch Transition Duration**
+  - [x] Update `components/GlitchOverlay.jsx` to hold the transition for 1 full second.

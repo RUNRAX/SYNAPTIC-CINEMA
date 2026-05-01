@@ -9,7 +9,7 @@
     --cream-2: #E8E2D4;
     --gray: #B8B3A8;
     --mid: #6B6660;
-    --accent: #C8FF00;
+    --accent: #FF2D2D;
     --red: #FF2D2D;
     --white: #FFFFFF;
   }
@@ -20,7 +20,7 @@
     --cream-2: #141414;
     --gray: #6B6660;
     --mid: #B8B3A8;
-    --accent: #C8FF00;
+    --accent: #FF2D2D;
     --red: #FF2D2D;
     --white: #0A0A0A;
   }
@@ -124,7 +124,7 @@ body.custom-cursor-active [onclick] {
   position: fixed;
   width: 100%;
   height: 2px;
-  background: rgba(200, 255, 0, 0.08);
+  background: rgba(255, 45, 45, 0.08);
   animation: scanline 4s linear infinite;
   pointer-events: none;
   z-index: 8999;
