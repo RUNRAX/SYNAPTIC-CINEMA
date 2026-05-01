@@ -8,7 +8,7 @@ import { useEffect } from 'react'
 export default function Collection() {
   const searchParams = useSearchParams()
   const genreParam = searchParams.get('genre')
-  const { movies, toggleGenre, activeGenres } = useMovies()
+  const { movies, loading, toggleGenre, activeGenres } = useMovies()
 
   // Apply genre filter from URL if present on mount
   useEffect(() => {
@@ -29,15 +29,23 @@ export default function Collection() {
 
       {/* Grid */}
       <div className="flex-1 w-full relative z-10 bg-[rgba(0,0,0,0.1)] p-[1px]">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-[1px]">
-          {movies.map((movie) => (
-            <MovieCard 
-              key={movie.id} 
-              movie={movie} 
-              onClick={(m) => console.log('Movie clicked', m)}
-            />
-          ))}
-        </div>
+        {loading ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-[1px]">
+            {Array.from({ length: 10 }).map((_, i) => (
+              <div key={i} className="w-full aspect-[0.70] bg-cream animate-pulse border border-[rgba(0,0,0,0.1)]"></div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-[1px]">
+            {movies.map((movie) => (
+              <MovieCard 
+                key={movie.id} 
+                movie={movie} 
+                onClick={(m) => console.log('Movie clicked', m)}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

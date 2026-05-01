@@ -33,7 +33,18 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${dmMono.variable} ${bebasNeue.variable}`}>
+    <html lang="en" className={`${spaceGrotesk.variable} ${dmMono.variable} ${bebasNeue.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            try {
+              if (localStorage.getItem('theme') === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+              }
+            } catch (e) {}
+          `
+        }} />
+      </head>
       <body>
         {children}
       </body>

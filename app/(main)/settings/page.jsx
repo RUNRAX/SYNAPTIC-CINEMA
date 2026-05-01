@@ -1,10 +1,26 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import RippleButton from '@/components/RippleButton'
 
+const EMOTIONS = ['happy', 'sad', 'angry', 'fear', 'surprise', 'neutral']
+const GENRES = ['ACTION', 'DRAMA', 'SCI-FI', 'HORROR', 'COMEDY', 'THRILLER', 'DOCUMENTARY', 'ROMANCE']
+
+const DEFAULT_MOOD_GENRES = {
+  happy: ['COMEDY', 'ROMANCE'],
+  sad: ['DRAMA', 'DOCUMENTARY'],
+  angry: ['ACTION', 'THRILLER'],
+  fear: ['HORROR', 'THRILLER'],
+  surprise: ['SCI-FI', 'THRILLER'],
+  neutral: ['DOCUMENTARY', 'DRAMA']
+}
+
 export default function Settings() {
+  const [mounted, setMounted] = useState(false)
   const [settings, setSettings] = useState({
+    theme: 'light',
+    minImdbRating: 6.0,
+    customMoodGenres: DEFAULT_MOOD_GENRES,
     highPerformance: true,
     haptics: true,
     dataSaver: false,
@@ -12,9 +28,66 @@ export default function Settings() {
     cameraAccess: true
   })
 
+  useEffect(() => {
+    try {
+      const savedTheme = localStorage.getItem('theme') || 'light'
+      const savedMinRating = parseFloat(localStorage.getItem('minImdbRating')) || 6.0
+      const savedMoodGenres = JSON.parse(localStorage.getItem('customMoodGenres')) || DEFAULT_MOOD_GENRES
+      
+      setSettings(prev => ({
+        ...prev,
+        theme: savedTheme,
+        minImdbRating: savedMinRating,
+        customMoodGenres: savedMoodGenres
+      }))
+    } catch (e) {}
+    setMounted(true)
+  }, [])
+
   const toggleSetting = (key) => {
     setSettings(prev => ({ ...prev, [key]: !prev[key] }))
   }
+
+  const toggleTheme = () => {
+    const newTheme = settings.theme === 'dark' ? 'light' : 'dark'
+    setSettings(prev => ({ ...prev, theme: newTheme }))
+    
+    if (newTheme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark')
+    } else {
+      document.documentElement.removeAttribute('data-theme')
+    }
+    localStorage.setItem('theme', newTheme)
+  }
+
+  const updateRating = (e) => {
+    setSettings(prev => ({ ...prev, minImdbRating: parseFloat(e.target.value) }))
+  }
+
+  const toggleMoodGenre = (emotion, genre) => {
+    setSettings(prev => {
+      const current = prev.customMoodGenres[emotion] || []
+      const updated = current.includes(genre)
+        ? current.filter(g => g !== genre)
+        : [...current, genre]
+      
+      return {
+        ...prev,
+        customMoodGenres: {
+          ...prev.customMoodGenres,
+          [emotion]: updated
+        }
+      }
+    })
+  }
+
+  const handleSave = () => {
+    localStorage.setItem('minImdbRating', settings.minImdbRating)
+    localStorage.setItem('customMoodGenres', JSON.stringify(settings.customMoodGenres))
+    // The theme is saved immediately on toggle, so no need to save here
+  }
+
+  if (!mounted) return null
 
   return (
     <div className="w-full min-h-full flex flex-col relative pb-8">
@@ -29,32 +102,69 @@ export default function Settings() {
       <div className="p-6 lg:p-12 relative z-10 max-w-3xl">
         <div className="flex flex-col gap-12">
           
-          {/* Section 1 */}
+          {/* Section: Appearance */}
           <div>
-            <h2 className="font-body text-[11px] tracking-widest text-mid uppercase mb-6">System Performance</h2>
+            <h2 className="font-body text-[11px] tracking-widest text-mid uppercase mb-6">Appearance</h2>
             <div className="flex flex-col gap-[1px] bg-[rgba(0,0,0,0.1)] border border-[rgba(0,0,0,0.1)]">
               <SettingToggle 
-                label="High Performance Mode" 
-                description="Enables complex WebGL and CSS animations"
-                value={settings.highPerformance}
-                onToggle={() => toggleSetting('highPerformance')}
-              />
-              <SettingToggle 
-                label="Haptic Feedback" 
-                description="Enable device vibration on interactions"
-                value={settings.haptics}
-                onToggle={() => toggleSetting('haptics')}
-              />
-              <SettingToggle 
-                label="Data Saver" 
-                description="Load lower resolution imagery to save bandwidth"
-                value={settings.dataSaver}
-                onToggle={() => toggleSetting('dataSaver')}
+                label="Dark Mode" 
+                description="Invert colors for low-light environments"
+                value={settings.theme === 'dark'}
+                onToggle={toggleTheme}
               />
             </div>
           </div>
 
-          {/* Section 2 */}
+          {/* Section: Content Filters */}
+          <div>
+            <h2 className="font-body text-[11px] tracking-widest text-mid uppercase mb-6">Content Filters</h2>
+            <div className="p-6 bg-cream border border-[rgba(0,0,0,0.1)] flex flex-col gap-4">
+              <div className="flex justify-between items-end">
+                <div>
+                  <h3 className="font-body text-[13px] uppercase tracking-wide mb-1 text-black">Minimum IMDB Rating</h3>
+                  <p className="font-body text-[10px] text-mid tracking-widest uppercase">Filter recommendations below this score</p>
+                </div>
+                <span className="font-display text-3xl text-black">{settings.minImdbRating.toFixed(1)}</span>
+              </div>
+              <input 
+                type="range" 
+                min="6.0" max="9.0" step="0.1" 
+                value={settings.minImdbRating} 
+                onChange={updateRating}
+                className="w-full h-1 bg-[rgba(0,0,0,0.1)] appearance-none cursor-pointer accent-black"
+              />
+            </div>
+          </div>
+
+          {/* Section: Mood Mapping */}
+          <div>
+            <h2 className="font-body text-[11px] tracking-widest text-mid uppercase mb-6">Mood & Genre Mapping</h2>
+            <div className="flex flex-col gap-[1px] bg-[rgba(0,0,0,0.1)] border border-[rgba(0,0,0,0.1)]">
+              {EMOTIONS.map(emotion => (
+                <div key={emotion} className="p-6 bg-cream">
+                  <h3 className="font-body text-[13px] uppercase tracking-wide mb-4 text-black">When I am {emotion}...</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {GENRES.map(genre => {
+                      const isActive = (settings.customMoodGenres[emotion] || []).includes(genre)
+                      return (
+                        <button
+                          key={genre}
+                          onClick={() => toggleMoodGenre(emotion, genre)}
+                          className={`px-3 py-1 font-body text-[10px] tracking-widest uppercase border transition-colors ${
+                            isActive ? 'bg-black text-cream border-black' : 'bg-transparent text-mid border-[rgba(0,0,0,0.2)] hover:border-black hover:text-black'
+                          }`}
+                        >
+                          {genre}
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Section: Privacy & Media */}
           <div>
             <h2 className="font-body text-[11px] tracking-widest text-mid uppercase mb-6">Privacy & Media</h2>
             <div className="flex flex-col gap-[1px] bg-[rgba(0,0,0,0.1)] border border-[rgba(0,0,0,0.1)]">
@@ -74,6 +184,7 @@ export default function Settings() {
           </div>
 
           <RippleButton 
+            onClick={handleSave}
             className="self-start px-8 py-3 bg-black text-cream hover:bg-accent hover:text-black font-body text-[10px] tracking-widest transition-colors uppercase mt-4"
           >
             Save Configuration

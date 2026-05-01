@@ -1,62 +1,44 @@
-# SYNAPTIC CINEMA — Rebuild Tasks
+# Synaptic Cinema — Task Checklist
 
-## Phase 1 — Foundation
-- [x] Remove old dependencies (`@react-three/drei`, `@react-three/fiber`, `@studio-freight/lenis`, `three`, `encoding`)
-- [x] Add new dependencies (`tailwindcss`, `postcss`, `autoprefixer`, `gsap`)
-- [x] Create `tailwind.config.js` with brutalist tokens
-- [x] Create `postcss.config.js`
-- [x] Rewrite `app/globals.css` with Tailwind and custom effects
-- [x] Update `next.config.js`
-- [x] Update `jsconfig.json` with aliases
+## Component 1 — Face-API.js & Analysis Page
+- [x] Update `lib/faceApi.js` for faster initialization (reduce `inputSize` to `224`)
+- [x] Add `preloadModels()` to `lib/faceApi.js`
+- [x] Rewrite `app/(main)/analysis/page.jsx` to use real `detectDominantEmotion`
+- [x] Implement camera startup on click (with models preloaded)
+- [x] Create polling loop for stable readings
+- [x] Map detected emotion to genre
+- [x] Update `MoodBars` with real percentages
 
-## Phase 2 — Root Layout + Global Components
-- [x] Rename `app/layout.js` to `app/layout.jsx` and update font loading
-- [x] Create `components/Sidebar.jsx`
-- [x] Create `components/Topbar.jsx`
-- [x] Create `components/BottomTicker.jsx`
-- [x] Create `components/GlitchOverlay.jsx`
-- [x] Create `components/CustomCursor.jsx`
-- [x] Create `components/NoiseOverlay.jsx`
-- [x] Create `components/ScanLine.jsx`
-- [x] Create `components/GridLines.jsx`
-- [x] Create new `app/(main)/layout.jsx` shell and delete old one
+## Component 2 — Movie Poster Display
+- [x] Modify `components/MovieCard.jsx` to render an `<img>` tag with `movie.poster`
+- [x] Add fallback state (halftone pattern) when no poster exists
+- [x] Align `components/MovieCard.css` with the new design
 
-## Phase 3 — Shared Hooks & Utilities
-- [x] Create `hooks/useCursor.js`
-- [x] Create `hooks/useGlitch.js`
-- [x] Create `hooks/useParallax.js`
-- [x] Create `hooks/useMovies.js`
-- [x] Create `lib/movies.js`
-- [x] Create `lib/utils.js`
+## Component 3 — Remove Demo Data, Use TMDB
+- [x] Clean up `lib/movies.js` (remove hardcoded `MOVIES`)
+- [x] Update `hooks/useMovies.js` to fetch from `/api/home_content`
+- [x] Update `app/(main)/collection/page.jsx` with loading states
+- [x] Update `app/(main)/search/page.jsx` to hit `/api/search?query=X`
 
-## Phase 4 — Shared Components
-- [x] Create `components/MovieCard.jsx`
-- [x] Create `components/MagneticButton.jsx`
-- [x] Create `components/RippleButton.jsx`
-- [x] Create `components/LensGraphic.jsx`
-- [x] Create `components/MoodBars.jsx`
+## Component 4 — Settings Page & Dark Mode
+- [x] Add `[data-theme="dark"]` variables to `app/globals.css`
+- [x] Update `app/layout.jsx` with theme initialization script
+- [x] Rewrite `app/(main)/settings/page.jsx` to include new sections:
+  - [x] Dark Mode toggle
+  - [x] Minimum IMDB Rating slider
+  - [x] Custom Mood-Genre Mapping multi-selects
 
-## Phase 5 — Splash, Home, Exhibition, Collection
-- [x] Update `app/page.jsx` (Auth Splash) to brutalist style
-- [x] Create `app/home/page.jsx`
-- [x] Create `app/exhibition/page.jsx`
-- [x] Create `app/collection/page.jsx`
+## Component 5 — Recommendations Flow
+- [x] Create `components/MovieSliderSection.jsx`
+- [x] Update `app/(main)/analysis/page.jsx` to fetch recommendations after scan
+- [x] Pass settings (IMDB min, genre overrides) to the recommendation API
+- [x] Render fetched movies below the analysis metrics
 
-## Phase 6 — Analysis, Search, Profile
-- [x] Create `app/analysis/page.jsx`
-- [x] Create `app/search/page.jsx`
-- [x] Create `app/profile/page.jsx`
+## Component 6 — Home Page Dynamics
+- [x] Fetch data in `app/(main)/home/page.jsx`
+- [x] Render dynamic stats
+- [x] Add trending movies slider
 
-## Phase 7 — Settings Page & TMDB Integration
-- [x] Create `app/settings/page.jsx`
-- [x] Integrate TMDB fetching with `services/api.js` for dynamic content
-
-## Phase 8 — Cleanup
-- [x] Delete old 3D components
-- [x] Delete old route directories (`app/(main)/Home`, etc.)
-- [x] Delete old CSS files
-
-## Phase 9 — Polish
-- [x] Verify glitch transitions and custom cursor
-- [x] Test across resolutions
-- [x] Ensure Lighthouse performance
+## Wrap Up
+- [x] Final manual verification of all flows
+- [x] Clear memory checkpoint

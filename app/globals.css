@@ -14,6 +14,17 @@
     --white: #FFFFFF;
   }
 
+  [data-theme="dark"] {
+    --black: #F2EDE3;
+    --cream: #0A0A0A;
+    --cream-2: #141414;
+    --gray: #6B6660;
+    --mid: #B8B3A8;
+    --accent: #C8FF00;
+    --red: #FF2D2D;
+    --white: #0A0A0A;
+  }
+
   body {
     background-color: var(--cream);
     color: var(--black);
