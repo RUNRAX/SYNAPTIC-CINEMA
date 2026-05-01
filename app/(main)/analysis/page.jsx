@@ -207,12 +207,12 @@ export default function Analysis() {
               </>
             ) : results ? (
               <div className="text-center">
-                <p className="font-body text-[10px] text-gray tracking-widest uppercase mb-2">Scan Complete</p>
-                <h2 className="font-display text-4xl text-cream mb-4">Dominant: {results.dominantMood}</h2>
+                <p className="font-body text-[10px] text-mid tracking-widest uppercase mb-2">Scan Complete</p>
+                <h2 className="font-display text-4xl text-mid mb-4">Dominant: {results.dominantMood}</h2>
                 {results.mixedEmotions && results.mixedEmotions.length > 1 && (
                   <div className="flex flex-wrap gap-2 justify-center mt-4">
                     {results.mixedEmotions.slice(0, 3).map((emo, idx) => (
-                      <span key={idx} className="font-body text-[10px] glass-frost-dark text-cream px-2 py-1 tracking-widest uppercase">
+                      <span key={idx} className="font-body text-[10px] glass-frost-dark text-mid px-2 py-1 tracking-widest uppercase">
                         {emo.emotion} {Math.round(emo.confidence * 100)}%
                       </span>
                     ))}
@@ -222,7 +222,7 @@ export default function Analysis() {
             ) : (
               <RippleButton 
                 onClick={startAnalysis}
-                className="px-8 py-4 border border-cream text-cream hover:bg-cream hover:text-black font-body text-[11px] tracking-widest uppercase transition-colors"
+                className="px-8 py-4 border border-mid text-mid hover:bg-mid hover:text-cream font-body text-[11px] tracking-widest uppercase transition-colors"
               >
                 Initialize Camera
               </RippleButton>
