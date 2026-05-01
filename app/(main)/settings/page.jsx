@@ -158,7 +158,7 @@ export default function Settings() {
                           onClick={() => toggleMoodGenre(emotion, genre)}
                           className={`px-3 py-1 font-body text-[10px] tracking-widest uppercase border transition-all duration-300 rounded-full ${
                             isActive 
-                              ? 'glass-frost-dark text-cream border-[rgba(255,255,255,0.15)]' 
+                              ? 'bg-black text-cream border-black' 
                               : 'glass-frost-light text-mid border-[rgba(0,0,0,0.1)] hover:border-black hover:text-black'
                           }`}
                         >
