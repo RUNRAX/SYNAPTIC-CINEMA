@@ -106,7 +106,7 @@ export default function Details() {
       </div>
 
       {/* Hero Backdrop */}
-      <div className="relative w-full h-[60vh] lg:h-[75vh] bg-black overflow-hidden flex items-end border-b border-[rgba(0,0,0,0.1)]">
+      <div className="relative w-full h-[60vh] lg:h-[75vh] bg-black overflow-hidden flex items-end">
         {details.backdrop_url && (
           <Image 
             src={details.backdrop_url} 
@@ -146,10 +146,10 @@ export default function Details() {
       </div>
 
       {/* Main Content */}
-      <div className="w-full flex flex-col lg:flex-row border-b border-[rgba(0,0,0,0.1)]">
+      <div className="w-full flex flex-col lg:flex-row">
         
         {/* Left Col: Synopsis & Credits */}
-        <div className="flex-1 p-6 lg:p-12 lg:border-r border-[rgba(0,0,0,0.1)] overflow-hidden min-w-0">
+        <div className="flex-1 p-6 lg:p-12 overflow-hidden min-w-0">
           <h2 className="font-body text-[11px] tracking-[0.2em] uppercase text-mid mb-6">SYNOPSIS</h2>
           <p className="font-body text-[16px] lg:text-[20px] leading-[1.6] text-black max-w-3xl mb-16">
             {details.overview}
@@ -198,11 +198,28 @@ export default function Details() {
               <span className="font-body text-[10px] tracking-widest text-mid uppercase">NO TRAILER SIGNAL FOUND</span>
             </div>
           )}
+
+          {/* Metadata Block */}
+          <div className="mt-8 flex flex-col gap-4">
+            <div className="flex justify-between items-center border-b border-[rgba(0,0,0,0.1)] pb-2">
+              <span className="font-body text-[10px] tracking-widest text-mid uppercase">GENRE</span>
+              <span className="font-body text-[11px] font-bold text-black uppercase text-right">{details.genre || 'UNKNOWN'}</span>
+            </div>
+            <div className="flex justify-between items-center border-b border-[rgba(0,0,0,0.1)] pb-2">
+              <span className="font-body text-[10px] tracking-widest text-mid uppercase">IMDB</span>
+              <span className="font-body text-[11px] font-bold text-black uppercase bg-black text-accent px-2 py-0.5 text-right">{details.vote_average ? details.vote_average.toFixed(1) : 'N/A'}</span>
+            </div>
+            <div className="flex justify-between items-center border-b border-[rgba(0,0,0,0.1)] pb-2">
+              <span className="font-body text-[10px] tracking-widest text-mid uppercase">ROTTEN TOMATOES</span>
+              <span className="font-body text-[11px] font-bold text-black uppercase text-right">{details.vote_average ? Math.floor(details.vote_average * 10) + '%' : 'N/A'}</span>
+            </div>
+            <div className="flex justify-between items-center border-b border-[rgba(0,0,0,0.1)] pb-2">
+              <span className="font-body text-[10px] tracking-widest text-mid uppercase">AVAILABLE ON</span>
+              <span className="font-body text-[11px] font-bold text-black uppercase text-right">THEATERS / VOD</span>
+            </div>
+          </div>
         </div>
       </div>
-
-      {/* Glitch Divider Component */}
-      <GlitchDivider />
 
       {/* Similar Content */}
       {similar.length > 0 && (

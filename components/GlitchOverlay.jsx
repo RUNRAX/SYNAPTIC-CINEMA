@@ -16,8 +16,8 @@ export default function GlitchOverlay() {
         return
       }
 
-      // Slices for the glitch
-      const slices = overlay.querySelectorAll('.transition-slice')
+      // Shapes for the glitch
+      const shapes = overlay.querySelectorAll('.geo-shape')
       const rgbCyan = overlay.querySelector('.rgb-cyan')
       const rgbRed = overlay.querySelector('.rgb-red')
       const scanlineBurst = overlay.querySelector('.scanline-burst')
@@ -28,18 +28,21 @@ export default function GlitchOverlay() {
         onComplete: () => {
           gsap.set(overlay, { opacity: 0 })
           // Reset styles
-          gsap.set(slices, { clearProps: 'all' })
+          gsap.set(shapes, { clearProps: 'all' })
           gsap.set([rgbCyan, rgbRed, scanlineBurst, noise], { clearProps: 'all' })
         }
       })
 
       // Phase 1: Break
-      gsap.set(overlay, { opacity: 1 })
+      gsap.set(overlay, { opacity: 1, backgroundColor: 'rgba(0,0,0,0)' })
       
-      tl.to(slices, {
-        x: () => gsap.utils.random(-80, 80),
-        scaleX: () => gsap.utils.random(0.9, 1.1),
-        skewX: () => gsap.utils.random(-10, 10),
+      tl.to(shapes, {
+        x: () => gsap.utils.random(-150, 150),
+        y: () => gsap.utils.random(-150, 150),
+        scale: () => gsap.utils.random(0.5, 2.5),
+        skewX: () => gsap.utils.random(-30, 30),
+        rotation: () => gsap.utils.random(-45, 45),
+        opacity: () => gsap.utils.random(0.5, 1),
         duration: 0.15,
         stagger: 0.01,
         ease: 'steps(3)'
@@ -47,20 +50,20 @@ export default function GlitchOverlay() {
 
       tl.to([rgbCyan, rgbRed], {
         x: (i) => i === 0 ? -6 : 6,
-        opacity: 0.8,
+        opacity: 0.6,
         duration: 0.1,
         ease: 'none'
       }, 0)
 
       tl.to(scanlineBurst, {
-        opacity: 0.5,
+        opacity: 0.3,
         scaleY: 1.2,
         duration: 0.2
       }, 0)
 
       // Phase 2: Hold & Flash
       tl.to(overlay, {
-        backgroundColor: 'var(--cream)',
+        backgroundColor: 'rgba(255,255,255,0.1)',
         duration: 0.05,
         yoyo: true,
         repeat: 3
@@ -73,9 +76,9 @@ export default function GlitchOverlay() {
         repeat: 2
       }, 0.2)
 
-      // Phase 3: Execute Callback (Black Screen)
+      // Phase 3: Execute Callback (Semi-transparent Screen)
       tl.to(overlay, {
-        backgroundColor: 'var(--black)',
+        backgroundColor: 'rgba(0,0,0,0.5)',
         duration: 0.1,
         onComplete: () => {
           if (callback) callback()
@@ -83,10 +86,13 @@ export default function GlitchOverlay() {
       }, 0.4)
 
       // Phase 4: Resolve (Fade out)
-      tl.to(slices, {
+      tl.to(shapes, {
         x: 0,
-        scaleX: 1,
+        y: 0,
+        scale: 1,
         skewX: 0,
+        rotation: 0,
+        opacity: 0,
         duration: 0.15,
         ease: 'power2.out'
       }, 0.55)
@@ -110,22 +116,35 @@ export default function GlitchOverlay() {
     <div 
       id="glitch-overlay" 
       ref={overlayRef}
-      className="fixed inset-0 z-[8888] pointer-events-none flex flex-col opacity-0"
+      className="fixed inset-0 z-[8888] pointer-events-none flex items-center justify-center opacity-0 bg-black/50 backdrop-blur-sm"
     >
-      {/* 10 Horizontal Slices */}
-      {Array.from({ length: 10 }).map((_, i) => (
-        <div 
-          key={i} 
-          className="transition-slice flex-1 bg-black will-change-transform"
-        ></div>
-      ))}
+      {/* Geometric Center Shapes */}
+      <div className="relative w-[300px] h-[300px] flex items-center justify-center">
+        {Array.from({ length: 8 }).map((_, i) => {
+          const types = ['rounded-full', 'rounded-none', 'rounded-none w-32 h-4', 'rounded-none w-4 h-32'];
+          const shapeClass = types[i % types.length];
+          // Use pseudo-random static sizing to avoid hydration mismatch if not handled,
+          // but since this is client side overlay rendering it's fine.
+          const size = 40 + (i * 15) % 80;
+          return (
+            <div 
+              key={i} 
+              className={`geo-shape absolute bg-black border border-white will-change-transform opacity-0 ${shapeClass}`}
+              style={{ 
+                width: shapeClass.includes('w-') ? undefined : size, 
+                height: shapeClass.includes('h-') ? undefined : size 
+              }}
+            ></div>
+          )
+        })}
+      </div>
 
       {/* RGB Layers */}
-      <div className="rgb-cyan absolute inset-0 bg-[rgba(0,255,255,0.3)] mix-blend-screen opacity-0 will-change-transform"></div>
-      <div className="rgb-red absolute inset-0 bg-[rgba(255,0,0,0.3)] mix-blend-screen opacity-0 will-change-transform"></div>
+      <div className="rgb-cyan absolute inset-0 bg-[rgba(0,255,255,0.2)] mix-blend-screen opacity-0 will-change-transform"></div>
+      <div className="rgb-red absolute inset-0 bg-[rgba(255,0,0,0.2)] mix-blend-screen opacity-0 will-change-transform"></div>
 
       {/* Scanline Burst */}
-      <div className="scanline-burst absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.8)_2px,rgba(0,0,0,0.8)_4px)] opacity-0 mix-blend-overlay will-change-transform"></div>
+      <div className="scanline-burst absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.5)_2px,rgba(0,0,0,0.5)_4px)] opacity-0 mix-blend-overlay will-change-transform"></div>
 
       {/* Noise Burst */}
       <div className="noise-burst absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg viewBox=\\'0 0 256 256\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Cfilter id=\\'noise\\'%3E%3CfeTurbulence type=\\'fractalNoise\\' baseFrequency=\\'0.9\\' numOctaves=\\'4\\' stitchTiles=\\'stitch\\'/%3E%3C/filter%3E%3Crect width=\\'100%25\\' height=\\'100%25\\' filter=\\'url(%23noise)\\'/%3E%3C/svg%3E')] opacity-0 mix-blend-difference will-change-opacity"></div>
